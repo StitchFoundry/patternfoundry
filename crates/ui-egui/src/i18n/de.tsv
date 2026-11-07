@@ -5361,3 +5361,6 @@ menu	Pattern	Schnitt
 @msg	The design is too large to open: at most 32 MB.	Das Design ist zu groß zum Öffnen: höchstens 32 MB.
 @msg	PatternFoundry opens SVG and DXF designs from MakerFoundry; that file is neither.	PatternFoundry öffnet SVG- und DXF-Designs von MakerFoundry; diese Datei ist keins von beiden.
 @msg	The design couldn't be downloaded from MakerFoundry: {0}	Das Design konnte nicht von MakerFoundry geladen werden: {0}
+	Select a drafted block first	Wählen Sie zuerst einen gezeichneten Grundschnitt aus
+	This block needs these measurements: {names}	Für diesen Grundschnitt fehlen diese Maße: {names}
+	Enter them in the Measurements panel, or pick a size there, then draft the block again	Geben Sie sie im Bedienfeld Maße ein oder wählen Sie dort eine Größe, und konstruieren Sie den Grundschnitt dann erneut

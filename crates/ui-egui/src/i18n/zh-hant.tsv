@@ -5411,3 +5411,6 @@ menu	Pattern	紙型
 @msg	The design is too large to open: at most 32 MB.	設計太大，無法開啟：最多 32 MB。
 @msg	PatternFoundry opens SVG and DXF designs from MakerFoundry; that file is neither.	PatternFoundry 可開啟 MakerFoundry 上的 SVG 和 DXF 設計；該檔案兩者皆非。
 @msg	The design couldn't be downloaded from MakerFoundry: {0}	無法從 MakerFoundry 下載設計：{0}
+	Select a drafted block first	請先選擇一個已繪製的原型
+	This block needs these measurements: {names}	此原型需要以下尺寸: {names}
+	Enter them in the Measurements panel, or pick a size there, then draft the block again	請在尺寸面板中輸入，或在該處選擇尺碼，然後重新繪製原型

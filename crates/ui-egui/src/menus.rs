@@ -2323,6 +2323,11 @@ pub fn enabled(app: &VectorcraftApp, id: &str) -> bool {
     if waits_for_ime(app, id) {
         return false;
     }
+    // Pattern › Draft … Block opens a document when none is open, and Block Options… says what to
+    // select: neither is greyed out for a new user ([`invoke`]).
+    if BLOCK_DRAFTS.contains(&id) || id == "ui.blockOptions" {
+        return true;
+    }
     if let Some(c) = vectorcraft_engine::find_command(id) {
         // The system clipboard's contents can be pasted with an empty internal clipboard.
         return (c.enabled)(&app.session).is_ok() || app.system_paste && id.starts_with("edit.paste");
@@ -2335,7 +2340,7 @@ pub fn enabled(app: &VectorcraftApp, id: &str) -> bool {
         "file.reveal" => app.services.reveal.is_some() && app.session.active().is_some_and(|d| d.path.is_some()),
         "ui.askAboutPatterns" | "ui.checkMuslin" | "ui.account" => crate::ai::available(app),
         "ui.publishToMakerFoundry" => crate::ai::available(app) && app.session.active().is_some_and(|st| st.doc.art_bounds().is_some()),
-        "ui.checkSleeveEase" | "ui.checkTrouserSeams" | "ui.checkMarker" | "ui.projector" | "ui.blockOptions" => app.session.active().is_some(),
+        "ui.checkSleeveEase" | "ui.checkTrouserSeams" | "ui.checkMarker" | "ui.projector" => app.session.active().is_some(),
         "file.cancelExport" | "file.exportInBackground" => app.background.jobs.iter().any(|j| j.progress.is_some() && !j.cancelled()),
         "file.place"
         | "file.export.svg"
@@ -3771,6 +3776,18 @@ pub fn invoke(app: &mut VectorcraftApp, id: &str, p: Value) {
         app.open_link(id);
         return;
     }
+    // Pattern › Draft … Block, and Block Options… with no block selected: a dialog says what is
+    // wanted instead of a line in the status bar.
+    if BLOCK_DRAFTS.contains(&id) {
+        draft_block(app, id, p);
+        return;
+    }
+    if id == "ui.blockOptions" {
+        if app.run(id, p).is_err() {
+            crate::dialogs::confirm::tell(app, tl!("Select a drafted block first"), "");
+        }
+        return;
+    }
     // Object → Align aligns to what the align buttons align to, unless the call names `to`. With
     // anchors selected (Direct Selection) it sends its params unchanged, and the points align to
     // their own bounds.
@@ -3782,6 +3799,40 @@ pub fn invoke(app: &mut VectorcraftApp, id: &str, p: Value) {
         app.status(e);
     } else if matches!(id, "object.pattern.make" | "object.pattern.edit") {
         app.ui.open_panel = Some("patternOptions".into());
+    }
+}
+
+/// The Pattern menu's block drafts.
+const BLOCK_DRAFTS: &[&str] = &[
+    "block.bodice",
+    "block.skirt",
+    "block.sleeve",
+    "block.trousers",
+    "block.mensTrousers",
+    "block.mensShirt",
+    "block.mensShirtSleeve",
+];
+
+/// Pattern › Draft … Block (`id`): opens a document first when none is open. When the document
+/// lacks measurements the block needs, it opens the Measurements panel and a dialog names them,
+/// and drafts nothing. Any other failure shows in a dialog too, not only in the status bar.
+fn draft_block(app: &mut VectorcraftApp, id: &str, p: Value) {
+    if app.session.active().is_none()
+        && let Err(e) = app.run("file.new", json!({}))
+    {
+        app.status(e);
+        return;
+    }
+    let Err(e) = app.run(id, p) else { return };
+    app.status(e.clone());
+    match e.split_once("needs these measurements: ") {
+        Some((_, names)) => {
+            app.ui.open_panel = Some("measurements".into());
+            let message = crate::i18n::fmt(tl!("This block needs these measurements: {names}"), &[("names", names.trim())]);
+            let detail = tl!("Enter them in the Measurements panel, or pick a size there, then draft the block again");
+            crate::dialogs::confirm::tell(app, &message, detail);
+        }
+        None => crate::dialogs::confirm::tell(app, &crate::i18n::message(crate::i18n::current(), &e), ""),
     }
 }
 
@@ -4856,5 +4907,49 @@ mod tests {
         let tall = rect(3000.0);
         assert!(tall.height() > short.height() + 100.0, "{} vs {}", tall.height(), short.height());
         assert!(tall.bottom() < 3000.0);
+    }
+
+    /// Block parts in the active document.
+    fn blocks(app: &VectorcraftApp) -> usize {
+        let mut n = 0;
+        app.session.active().unwrap().doc.walk(|node| n += usize::from(node.extras().block.is_some()));
+        n
+    }
+
+    fn message_of(app: &VectorcraftApp) -> String {
+        let d = app.ui.dialog.as_ref().expect("a dialog is open");
+        assert_eq!(d.kind, "message");
+        d.fields["message"].as_str().unwrap_or_default().to_string()
+    }
+
+    #[test]
+    fn draft_block_with_no_document_opens_one_and_asks_for_the_measurements() {
+        let mut app = VectorcraftApp::new(vectorcraft_engine::Session::new(), crate::Services::default());
+        assert!(enabled(&app, "block.bodice") && enabled(&app, "ui.blockOptions"), "not greyed out without a document");
+        invoke(&mut app, "block.bodice", json!({}));
+        assert!(app.session.active().is_some(), "a document was opened");
+        assert_eq!(blocks(&app), 0, "nothing drafted");
+        assert!(message_of(&app).contains("bust"));
+        assert_eq!(app.ui.open_panel.as_deref(), Some("measurements"));
+    }
+
+    #[test]
+    fn draft_block_after_a_size_is_picked_draws_the_pieces() {
+        let mut app = VectorcraftApp::new(vectorcraft_engine::Session::new(), crate::Services::default());
+        app.run("file.new", json!({"width": 1400, "height": 1000})).unwrap();
+        let chart = "size,bust,waist,nape_to_waist,back_width,chest,shoulder,neck,armscye_depth\n12,88,68,41,34.5,32.5,12.2,37,21\n";
+        app.run("measure.importChart", json!({"data": chart, "name": "Chart"})).unwrap();
+        app.run("measure.useSize", json!({"size": "12"})).unwrap();
+        invoke(&mut app, "block.bodice", json!({}));
+        assert!(app.ui.dialog.is_none(), "no message");
+        assert_eq!(blocks(&app), 2, "back and front");
+    }
+
+    #[test]
+    fn block_options_with_nothing_selected_says_to_select_a_block() {
+        let mut app = VectorcraftApp::new(vectorcraft_engine::Session::new(), crate::Services::default());
+        app.run("file.new", json!({})).unwrap();
+        invoke(&mut app, "ui.blockOptions", json!({}));
+        assert_eq!(message_of(&app), "Select a drafted block first");
     }
 }

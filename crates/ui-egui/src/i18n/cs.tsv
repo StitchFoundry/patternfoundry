@@ -5779,3 +5779,6 @@ menu	Pattern	Střih
 @msg	The design is too large to open: at most 32 MB.	Návrh je příliš velký na otevření: nejvýše 32 MB.
 @msg	PatternFoundry opens SVG and DXF designs from MakerFoundry; that file is neither.	PatternFoundry otevírá návrhy SVG a DXF z MakerFoundry; tento soubor není ani jedno.
 @msg	The design couldn't be downloaded from MakerFoundry: {0}	Návrh se nepodařilo stáhnout z MakerFoundry: {0}
+	Select a drafted block first	Nejprve vyberte sestrojený základní střih
+	This block needs these measurements: {names}	Tento základní střih potřebuje tyto míry: {names}
+	Enter them in the Measurements panel, or pick a size there, then draft the block again	Zadejte je v panelu Míry nebo tam vyberte velikost a základní střih pak sestrojte znovu

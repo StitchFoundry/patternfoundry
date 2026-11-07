@@ -5357,3 +5357,6 @@ menu	Pattern	패턴
 @msg	The design is too large to open: at most 32 MB.	디자인이 너무 커서 열 수 없습니다: 최대 32MB.
 @msg	PatternFoundry opens SVG and DXF designs from MakerFoundry; that file is neither.	PatternFoundry는 MakerFoundry의 SVG 및 DXF 디자인을 엽니다. 이 파일은 둘 다 아닙니다.
 @msg	The design couldn't be downloaded from MakerFoundry: {0}	MakerFoundry에서 디자인을 내려받지 못했습니다: {0}
+	Select a drafted block first	먼저 제도한 원형을 선택하세요
+	This block needs these measurements: {names}	이 원형에는 다음 치수가 필요합니다: {names}
+	Enter them in the Measurements panel, or pick a size there, then draft the block again	치수 패널에 입력하거나 그곳에서 사이즈를 고른 다음 원형을 다시 제도하세요

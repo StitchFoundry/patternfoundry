@@ -5687,3 +5687,6 @@ menu	Pattern	თარგი
 @msg	The design is too large to open: at most 32 MB.	დიზაინი გასახსნელად ზედმეტად დიდია: მაქსიმუმ 32 MB.
 @msg	PatternFoundry opens SVG and DXF designs from MakerFoundry; that file is neither.	PatternFoundry ხსნის MakerFoundry-ის SVG და DXF დიზაინებს; ეს ფაილი არც ერთია.
 @msg	The design couldn't be downloaded from MakerFoundry: {0}	დიზაინი MakerFoundry-დან ვერ ჩამოიტვირთა: {0}
+	Select a drafted block first	ჯერ აირჩიეთ აგებული საბაზისო თარგი
+	This block needs these measurements: {names}	ამ საბაზისო თარგს ესაჭიროება ეს ზომები: {names}
+	Enter them in the Measurements panel, or pick a size there, then draft the block again	შეიყვანეთ ისინი ზომების პანელში ან აირჩიეთ იქ ზომა და ხელახლა ააგეთ საბაზისო თარგი

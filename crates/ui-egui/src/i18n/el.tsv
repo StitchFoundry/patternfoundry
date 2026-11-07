@@ -5731,3 +5731,6 @@ menu	Pattern	Πατρόν
 @msg	The design is too large to open: at most 32 MB.	Το σχέδιο είναι πολύ μεγάλο για να ανοίξει: έως 32 MB.
 @msg	PatternFoundry opens SVG and DXF designs from MakerFoundry; that file is neither.	Το PatternFoundry ανοίγει σχέδια SVG και DXF από το MakerFoundry· αυτό το αρχείο δεν είναι κανένα από τα δύο.
 @msg	The design couldn't be downloaded from MakerFoundry: {0}	Δεν ήταν δυνατή η λήψη του σχεδίου από το MakerFoundry: {0}
+	Select a drafted block first	Επιλέξτε πρώτα ένα σχεδιασμένο βασικό πατρόν
+	This block needs these measurements: {names}	Αυτό το βασικό πατρόν χρειάζεται αυτά τα μέτρα: {names}
+	Enter them in the Measurements panel, or pick a size there, then draft the block again	Εισαγάγετε τα στον πίνακα Μέτρα ή επιλέξτε εκεί μέγεθος και σχεδιάστε ξανά το βασικό πατρόν

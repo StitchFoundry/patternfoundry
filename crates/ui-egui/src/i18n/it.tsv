@@ -5394,3 +5394,6 @@ menu	Pattern	Cartamodello
 @msg	The design is too large to open: at most 32 MB.	Il design è troppo grande da aprire: al massimo 32 MB.
 @msg	PatternFoundry opens SVG and DXF designs from MakerFoundry; that file is neither.	PatternFoundry apre design SVG e DXF da MakerFoundry; quel file non è né l'uno né l'altro.
 @msg	The design couldn't be downloaded from MakerFoundry: {0}	Impossibile scaricare il design da MakerFoundry: {0}
+	Select a drafted block first	Seleziona prima un cartamodello base tracciato
+	This block needs these measurements: {names}	Questo cartamodello base richiede queste misure: {names}
+	Enter them in the Measurements panel, or pick a size there, then draft the block again	Inseriscile nel pannello Misure o scegli lì una taglia, poi traccia di nuovo il cartamodello base

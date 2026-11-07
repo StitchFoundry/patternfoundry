@@ -5743,3 +5743,6 @@ menu	Pattern	Кройка
 @msg	The design is too large to open: at most 32 MB.	Дизайнът е твърде голям за отваряне: най-много 32 MB.
 @msg	PatternFoundry opens SVG and DXF designs from MakerFoundry; that file is neither.	PatternFoundry отваря дизайни SVG и DXF от MakerFoundry; този файл не е нито едното, нито другото.
 @msg	The design couldn't be downloaded from MakerFoundry: {0}	Дизайнът не можа да бъде изтеглен от MakerFoundry: {0}
+	Select a drafted block first	Първо изберете построена основна кройка
+	This block needs these measurements: {names}	Тази основна кройка изисква мерки: {names}
+	Enter them in the Measurements panel, or pick a size there, then draft the block again	Въведете ги в панела „Мерки“ или изберете там размер, след което построете основната кройка отново

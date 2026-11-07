@@ -5765,3 +5765,6 @@ menu	Pattern	Szabásminta
 @msg	The design is too large to open: at most 32 MB.	A terv túl nagy a megnyitáshoz: legfeljebb 32 MB.
 @msg	PatternFoundry opens SVG and DXF designs from MakerFoundry; that file is neither.	A PatternFoundry SVG- és DXF-terveket nyit meg a MakerFoundryról; ez a fájl egyik sem.
 @msg	The design couldn't be downloaded from MakerFoundry: {0}	A tervet nem sikerült letölteni a MakerFoundryról: {0}
+	Select a drafted block first	Előbb válasszon ki egy megszerkesztett alapszabásmintát
+	This block needs these measurements: {names}	Ehhez az alapszabásmintához ezek a méretek kellenek: {names}
+	Enter them in the Measurements panel, or pick a size there, then draft the block again	Adja meg őket a Méretek panelen, vagy válasszon ott méretet, majd szerkessze meg újra az alapszabásmintát

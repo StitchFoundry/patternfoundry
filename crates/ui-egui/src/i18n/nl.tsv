@@ -5804,3 +5804,6 @@ menu	Pattern	Patroon
 @msg	The design is too large to open: at most 32 MB.	Het ontwerp is te groot om te openen: hooguit 32 MB.
 @msg	PatternFoundry opens SVG and DXF designs from MakerFoundry; that file is neither.	PatternFoundry opent SVG- en DXF-ontwerpen van MakerFoundry; dat bestand is geen van beide.
 @msg	The design couldn't be downloaded from MakerFoundry: {0}	Het ontwerp kon niet van MakerFoundry worden gedownload: {0}
+	Select a drafted block first	Selecteer eerst een getekend basispatroon
+	This block needs these measurements: {names}	Dit basispatroon heeft deze maten nodig: {names}
+	Enter them in the Measurements panel, or pick a size there, then draft the block again	Voer ze in het paneel Maten in of kies daar een maat, en teken het basispatroon opnieuw

@@ -5743,3 +5743,6 @@ menu	Pattern	Kaava
 @msg	The design is too large to open: at most 32 MB.	Malli on liian suuri avattavaksi: enintään 32 Mt.
 @msg	PatternFoundry opens SVG and DXF designs from MakerFoundry; that file is neither.	PatternFoundry avaa MakerFoundrysta SVG- ja DXF-malleja; tiedosto ei ole kumpaakaan.
 @msg	The design couldn't be downloaded from MakerFoundry: {0}	Mallia ei voitu ladata MakerFoundrysta: {0}
+	Select a drafted block first	Valitse ensin piirretty peruskaava
+	This block needs these measurements: {names}	Tämä peruskaava tarvitsee nämä mitat: {names}
+	Enter them in the Measurements panel, or pick a size there, then draft the block again	Syötä ne Mitat-paneeliin tai valitse siellä koko, ja piirrä sitten peruskaava uudelleen

@@ -5632,3 +5632,6 @@ menu	Pattern	Wykrój
 @msg	The design is too large to open: at most 32 MB.	Projekt jest za duży do otwarcia: najwyżej 32 MB.
 @msg	PatternFoundry opens SVG and DXF designs from MakerFoundry; that file is neither.	PatternFoundry otwiera projekty SVG i DXF z MakerFoundry; ten plik nie jest żadnym z nich.
 @msg	The design couldn't be downloaded from MakerFoundry: {0}	Nie udało się pobrać projektu z MakerFoundry: {0}
+	Select a drafted block first	Najpierw zaznacz narysowaną formę podstawową
+	This block needs these measurements: {names}	Ta forma podstawowa wymaga tych wymiarów: {names}
+	Enter them in the Measurements panel, or pick a size there, then draft the block again	Wpisz je w panelu Wymiary lub wybierz tam rozmiar, a potem narysuj formę podstawową ponownie

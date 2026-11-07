@@ -5778,3 +5778,6 @@ menu	Pattern	Patron
 @msg	The design is too large to open: at most 32 MB.	Le motif est trop lourd pour être ouvert : 32 Mo au plus.
 @msg	PatternFoundry opens SVG and DXF designs from MakerFoundry; that file is neither.	PatternFoundry ouvre les motifs SVG et DXF de MakerFoundry ; ce fichier n'est ni l'un ni l'autre.
 @msg	The design couldn't be downloaded from MakerFoundry: {0}	Le motif n'a pas pu être téléchargé depuis MakerFoundry : {0}
+	Select a drafted block first	Sélectionnez au préalable un patron de base tracé
+	This block needs these measurements: {names}	Ce patron de base nécessite ces mesures : {names}
+	Enter them in the Measurements panel, or pick a size there, then draft the block again	Saisissez-les dans le panneau Mesures ou choisissez-y une taille, puis retracez le patron de base

@@ -5697,3 +5697,6 @@ menu	Pattern	Molde
 @msg	The design is too large to open: at most 32 MB.	O design é grande demais para abrir: no máximo 32 MB.
 @msg	PatternFoundry opens SVG and DXF designs from MakerFoundry; that file is neither.	O PatternFoundry abre designs SVG e DXF do MakerFoundry; esse arquivo não é nenhum dos dois.
 @msg	The design couldn't be downloaded from MakerFoundry: {0}	Não foi possível baixar o design do MakerFoundry: {0}
+	Select a drafted block first	Selecione primeiro um molde base traçado
+	This block needs these measurements: {names}	Este molde base precisa destas medidas: {names}
+	Enter them in the Measurements panel, or pick a size there, then draft the block again	Digite-as no painel Medidas ou escolha um tamanho lá e trace o molde base de novo

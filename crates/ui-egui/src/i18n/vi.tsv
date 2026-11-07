@@ -5374,3 +5374,6 @@ menu	Pattern	Rập
 @msg	The design is too large to open: at most 32 MB.	Thiết kế quá lớn để mở: tối đa 32 MB.
 @msg	PatternFoundry opens SVG and DXF designs from MakerFoundry; that file is neither.	PatternFoundry mở thiết kế SVG và DXF từ MakerFoundry; tệp đó không phải loại nào trong hai loại này.
 @msg	The design couldn't be downloaded from MakerFoundry: {0}	Không tải được thiết kế từ MakerFoundry: {0}
+	Select a drafted block first	Hãy chọn một rập cơ bản đã dựng trước
+	This block needs these measurements: {names}	Rập cơ bản này cần các số đo sau: {names}
+	Enter them in the Measurements panel, or pick a size there, then draft the block again	Nhập chúng trong bảng Số đo hoặc chọn một cỡ ở đó, rồi dựng lại rập cơ bản

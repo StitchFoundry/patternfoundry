@@ -5390,3 +5390,6 @@ menu	Pattern	Выкройка
 @msg	The design is too large to open: at most 32 MB.	Дизайн слишком велик для открытия: не более 32 МБ.
 @msg	PatternFoundry opens SVG and DXF designs from MakerFoundry; that file is neither.	PatternFoundry открывает с MakerFoundry дизайны SVG и DXF; этот файл не относится ни к одному из них.
 @msg	The design couldn't be downloaded from MakerFoundry: {0}	Не удалось загрузить дизайн с MakerFoundry: {0}
+	Select a drafted block first	Сначала выберите построенную базовую выкройку
+	This block needs these measurements: {names}	Для этой базовой выкройки нужны мерки: {names}
+	Enter them in the Measurements panel, or pick a size there, then draft the block again	Введите их на панели «Мерки» или выберите там размер, затем постройте базовую выкройку снова

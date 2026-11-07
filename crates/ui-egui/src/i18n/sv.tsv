@@ -5735,3 +5735,6 @@ menu	Pattern	Mönster
 @msg	The design is too large to open: at most 32 MB.	Designen är för stor att öppna: högst 32 MB.
 @msg	PatternFoundry opens SVG and DXF designs from MakerFoundry; that file is neither.	PatternFoundry öppnar SVG- och DXF-designer från MakerFoundry; filen är ingetdera.
 @msg	The design couldn't be downloaded from MakerFoundry: {0}	Designen kunde inte hämtas från MakerFoundry: {0}
+	Select a drafted block first	Markera först ett konstruerat grundmönster
+	This block needs these measurements: {names}	Det här grundmönstret behöver de här måtten: {names}
+	Enter them in the Measurements panel, or pick a size there, then draft the block again	Ange dem i panelen Mått eller välj en storlek där, och konstruera sedan grundmönstret igen

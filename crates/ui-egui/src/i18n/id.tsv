@@ -5762,3 +5762,6 @@ menu	Pattern	Pola
 @msg	The design is too large to open: at most 32 MB.	Desain terlalu besar untuk dibuka: paling banyak 32 MB.
 @msg	PatternFoundry opens SVG and DXF designs from MakerFoundry; that file is neither.	PatternFoundry membuka desain SVG dan DXF dari MakerFoundry; file itu bukan keduanya.
 @msg	The design couldn't be downloaded from MakerFoundry: {0}	Desain tidak dapat diunduh dari MakerFoundry: {0}
+	Select a drafted block first	Pilih dulu pola dasar yang sudah dibuat
+	This block needs these measurements: {names}	Pola dasar ini memerlukan ukuran berikut: {names}
+	Enter them in the Measurements panel, or pick a size there, then draft the block again	Masukkan di panel Ukuran atau pilih ukuran di sana, lalu buat ulang pola dasarnya
