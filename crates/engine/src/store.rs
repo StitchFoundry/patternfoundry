@@ -166,7 +166,7 @@ impl Session {
 
     /// The saved measurement sets, by name; files that can't be read are skipped (logged by file
     /// name, never by content).
-    pub(crate) fn measurement_sets(&self) -> Vec<pf_core::measure::Measurements> {
+    pub fn measurement_sets(&self) -> Vec<pf_core::measure::Measurements> {
         let Some(dir) = &self.measurement_dir else { return vec![] };
         let mut out: Vec<pf_core::measure::Measurements> = Vec::new();
         for path in list_files(dir, MEASUREMENTS_EXT) {

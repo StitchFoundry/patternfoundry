@@ -580,6 +580,12 @@ pub const UI_COMMANDS: &[(&str, &str, &str, &str)] = &[
         "{on?: bool (default: the other way), calibrate?: bool, mirror?: bool, openFolds?: bool (true), size?, scale?: screen points per mm on the mat (kept as Preferences › Devices › Projector Scale)} the pattern pieces full screen at true size, white on black, for a projector over the cutting table (piece.outlines); not calibrated, it opens on a 10 cm square to measure on the mat and size with the arrows (Enter keeps it). Keys: the arrows move the pattern 1 cm (Shift: 1 mm), M mirrors it, C calibrates, Escape leaves → {on, calibrating, mirror, openFolds, scale, pan}",
     ),
     (
+        "ui.startPattern",
+        "Start a Pattern…",
+        "",
+        "{} open Start a Pattern (dialog `startPattern`): the block to make (`block`: bodice, skirt, sleeve or trousers), whose measurements (`source`: enter, size or saved; `unit`: cm or in; `m.<name>`; `size`; `set`; `save` and `saveName` to keep typed ones in My Measurements); OK makes a new document, puts the measurements in it, drafts the block and fits the page to the pieces",
+    ),
+    (
         "ui.blockOptions",
         "Block Options…",
         "",
@@ -1615,6 +1621,10 @@ pub fn run_ui_command(app: &mut VectorcraftApp, id: &str, p: &Value) -> Option<R
         "ui.tileEdgeColor" => crate::dialogs::tile_edge_color::open(app),
         "ui.askAboutPatterns" => crate::ai::ask::open(app, p),
         "ui.checkSleeveEase" => crate::dialogs::sleeve_ease::check(app, p),
+        "ui.startPattern" => {
+            crate::dialogs::open_start_pattern(app);
+            Ok(Value::Null)
+        }
         "ui.blockOptions" => crate::dialogs::block_options::open(app, p),
         "ui.checkTrouserSeams" => crate::dialogs::trouser_seams::check(app, p),
         "ui.checkMarker" => crate::dialogs::check_marker::check(app, p),
@@ -2443,6 +2453,7 @@ pub fn menu_tree_named(english_names: bool) -> Vec<(&'static str, Vec<Item>)> {
         (
             "File",
             vec![
+                c("Start a Pattern…", "ui.startPattern"),
                 c("New…", "file.newDialog"),
                 c("New from Template…", "file.newFromTemplate"),
                 c("Open…", "file.open"),
@@ -3803,15 +3814,8 @@ pub fn invoke(app: &mut VectorcraftApp, id: &str, p: Value) {
 }
 
 /// The Pattern menu's block drafts.
-const BLOCK_DRAFTS: &[&str] = &[
-    "block.bodice",
-    "block.skirt",
-    "block.sleeve",
-    "block.trousers",
-    "block.mensTrousers",
-    "block.mensShirt",
-    "block.mensShirtSleeve",
-];
+const BLOCK_DRAFTS: &[&str] =
+    &["block.bodice", "block.skirt", "block.sleeve", "block.trousers", "block.mensTrousers", "block.mensShirt", "block.mensShirtSleeve"];
 
 /// Pattern › Draft … Block (`id`): opens a document first when none is open. When the document
 /// lacks measurements the block needs, it opens the Measurements panel and a dialog names them,
