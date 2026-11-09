@@ -1978,7 +1978,7 @@ lighting	Light	Světlo
 
 # Dialogs
 	Graphics: {adapter}	Grafika: {adapter}
-	By SiteSentrix, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	Od SiteSentrix, na základě aplikace VectorCraft od týmu ArtCraft. MIT OR Apache-2.0. Písma: Source Sans 3, Inter, JetBrains Mono (OFL). Ikony: Lucide (ISC) + VectorCraft.
+	From the StitchFoundry family, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	Od StitchFoundry, na základě aplikace VectorCraft od týmu ArtCraft. MIT OR Apache-2.0. Písma: Source Sans 3, Inter, JetBrains Mono (OFL). Ikony: Lucide (ISC) + VectorCraft.
 	Version {version} — open-source sewing-pattern design in pure Rust.	Verze {version} — open-source návrh střihů v čistém Rustu.
 	Align to Page	Zarovnat ke stránce
 	Smooth Color	Plynulá barva
@@ -5390,7 +5390,7 @@ file-filter	PDF for projector	PDF pro projektor
 	Its pieces and sizes, and which measurements are set: never their values	Jeho díly a velikosti a které míry jsou nastavené: nikdy jejich hodnoty
 	Leave it empty for the Foundry service.	Nechte prázdné pro službu Foundry.
 	Not allowed:	Nepovoleno:
-	One account for every SiteSentrix app	Jeden účet pro všechny aplikace SiteSentrix
+	One account for every Foundry app	Jeden účet pro všechny aplikace Foundry
 	Read your measurements	Číst vaše míry
 @msg	Ask About Patterns needs a build that can reach the AI service	Zeptat se na střihy vyžaduje verzi, která se může připojit ke službě AI
 @msg	Foundry Account needs a build that can reach the AI service	Účet Foundry vyžaduje verzi, která se může připojit ke službě AI

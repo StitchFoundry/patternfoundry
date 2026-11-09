@@ -2151,7 +2151,7 @@ file-filter	Templates	Vorlagen
 	Paragraph Style Options	Absatzformatoptionen
 	Paragraph Styles	Absatzformate
 	Paragraph Symbol	Absatzmarke
-	By SiteSentrix, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	Von SiteSentrix, auf Basis von VectorCraft vom ArtCraft-Team. MIT OR Apache-2.0. Schriften: Source Sans 3, Inter, JetBrains Mono (OFL). Symbole: Lucide (ISC) + VectorCraft.
+	From the StitchFoundry family, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	Von StitchFoundry, auf Basis von VectorCraft vom ArtCraft-Team. MIT OR Apache-2.0. Schriften: Source Sans 3, Inter, JetBrains Mono (OFL). Symbole: Lucide (ISC) + VectorCraft.
 	Password	Kennwort
 	Paste	Einfügen
 	Paste in Back	Dahinter einfügen
@@ -4971,7 +4971,7 @@ file-filter	PDF for projector	PDF für Projektor
 	Its pieces and sizes, and which measurements are set: never their values	Seine Schnittteile und Größen und welche Maße festgelegt sind: nie deren Werte
 	Leave it empty for the Foundry service.	Leer lassen für den Foundry-Dienst.
 	Not allowed:	Nicht erlaubt:
-	One account for every SiteSentrix app	Ein Konto für alle SiteSentrix-Apps
+	One account for every Foundry app	Ein Konto für alle Foundry-Apps
 	Read your measurements	Ihre Maße lesen
 @msg	Ask About Patterns needs a build that can reach the AI service	„Fragen zu Schnittmustern“ erfordert eine Version, die den KI-Dienst erreichen kann
 @msg	Foundry Account needs a build that can reach the AI service	„Foundry-Konto“ erfordert eine Version, die den KI-Dienst erreichen kann

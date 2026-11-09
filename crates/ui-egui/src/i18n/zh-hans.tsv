@@ -2092,7 +2092,7 @@ file-filter	Templates	模板
 	Paragraph Style Options	段落样式选项
 	Paragraph Styles	段落样式
 	Paragraph Symbol	段落符号
-	By SiteSentrix, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	由 SiteSentrix 制作，基于 ArtCraft 团队的 VectorCraft。MIT OR Apache-2.0。字体：Source Sans 3、Inter、JetBrains Mono (OFL)。图标：Lucide (ISC) + VectorCraft。
+	From the StitchFoundry family, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	由 StitchFoundry 制作，基于 ArtCraft 团队的 VectorCraft。MIT OR Apache-2.0。字体：Source Sans 3、Inter、JetBrains Mono (OFL)。图标：Lucide (ISC) + VectorCraft。
 	Password	口令
 	Paste	粘贴
 	Paste in Back	贴在后面
@@ -5225,7 +5225,7 @@ file-filter	PDF for projector	用于投影仪的 PDF
 	Its pieces and sizes, and which measurements are set: never their values	其裁片和尺码，以及设置了哪些尺寸：绝不包括具体数值
 	Leave it empty for the Foundry service.	留空则使用 Foundry 服务。
 	Not allowed:	不允许：
-	One account for every SiteSentrix app	一个账户通用所有 SiteSentrix 应用
+	One account for every Foundry app	一个账户通用所有 Foundry 应用
 	Read your measurements	读取您的尺寸
 @msg	Ask About Patterns needs a build that can reach the AI service	“询问纸样问题”需要能连接 AI 服务的版本
 @msg	Foundry Account needs a build that can reach the AI service	“Foundry 账户”需要能连接 AI 服务的版本

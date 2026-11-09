@@ -1,7 +1,7 @@
 <h1 align="center">PatternFoundry</h1>
 
 <p align="center">
-  <b>Open-source sewing-pattern design software, by SiteSentrix.</b>
+  <b>Open-source sewing-pattern design software, part of the StitchFoundry family.</b>
 </p>
 
 <p align="center">
@@ -17,7 +17,7 @@
   <img alt="License: MIT OR Apache-2.0" src="https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-555555">
 </p>
 
-By [SiteSentrix](https://sitesentrix.com), the makers of [StitchFoundry](https://stitchfoundry.app).
+Part of the [StitchFoundry](https://stitchfoundry.app) family of apps for people who sew and make.
 
 ## Status
 Early development (October 2026). PatternFoundry is VectorCraft renamed (PF-0 done), with the pattern tools
