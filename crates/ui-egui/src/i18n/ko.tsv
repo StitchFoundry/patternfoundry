@@ -3419,7 +3419,7 @@ file-filter	Templates	템플릿
 	Packaged {n} file(s){note}	파일 {n}개를 패키지했습니다{note}
 	Page information	페이지 정보
 	Paragraph Style	단락 스타일
-	By SiteSentrix, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	SiteSentrix 제작, ArtCraft 팀의 VectorCraft 기반. MIT OR Apache-2.0. 글꼴: Source Sans 3, Inter, JetBrains Mono (OFL). 아이콘: Lucide (ISC) + VectorCraft.
+	From the StitchFoundry family, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	StitchFoundry 제작, ArtCraft 팀의 VectorCraft 기반. MIT OR Apache-2.0. 글꼴: Source Sans 3, Inter, JetBrains Mono (OFL). 아이콘: Lucide (ISC) + VectorCraft.
 	Perspective grid presets	원근 격자 프리셋
 	Phone 390×844	휴대폰 390×844
 	Place onto a new locked, dimmed template layer below the current layer	현재 레이어 아래의 잠기고 흐리게 처리된 새 템플릿 레이어에 배치
@@ -4959,7 +4959,7 @@ file-filter	PDF for projector	프로젝터용 PDF
 	Its pieces and sizes, and which measurements are set: never their values	조각과 사이즈, 설정된 치수 항목: 치수 값은 절대 보내지 않음
 	Leave it empty for the Foundry service.	Foundry 서비스를 쓰려면 비워 두세요.
 	Not allowed:	허용 안 됨:
-	One account for every SiteSentrix app	모든 SiteSentrix 앱에서 쓰는 하나의 계정
+	One account for every Foundry app	모든 Foundry 앱에서 쓰는 하나의 계정
 	Read your measurements	치수 읽기
 @msg	An account with that email already exists: sign in instead.	이 이메일을 쓰는 계정이 이미 있습니다. 대신 로그인하세요.
 @msg	Ask About Patterns needs a build that can reach the AI service	'패턴에 대해 질문'에는 AI 서비스에 연결할 수 있는 빌드가 필요합니다

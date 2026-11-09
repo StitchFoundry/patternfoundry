@@ -2132,7 +2132,7 @@
 	Paragraph Style Options	Alternativ för styckestil
 	Paragraph Styles	Styckestilar
 	Paragraph Symbol	Styckesymbol
-	By SiteSentrix, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	Av SiteSentrix, baserat på VectorCraft av ArtCraft-teamet. MIT OR Apache-2.0. Typsnitt: Source Sans 3, Inter, JetBrains Mono (OFL). Ikoner: Lucide (ISC) + VectorCraft.
+	From the StitchFoundry family, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	Av StitchFoundry, baserat på VectorCraft av ArtCraft-teamet. MIT OR Apache-2.0. Typsnitt: Source Sans 3, Inter, JetBrains Mono (OFL). Ikoner: Lucide (ISC) + VectorCraft.
 	Password	Lösenord
 	Paste	Klistra in
 	Paste in Back	Klistra in bakom
@@ -5337,7 +5337,7 @@ file-filter	PDF for projector	PDF för projektor
 	Its pieces and sizes, and which measurements are set: never their values	Dess delar och storlekar, och vilka mått som är angivna: aldrig deras värden
 	Leave it empty for the Foundry service.	Lämna tomt för Foundry-tjänsten.
 	Not allowed:	Inte tillåtet:
-	One account for every SiteSentrix app	Ett konto för alla SiteSentrix-appar
+	One account for every Foundry app	Ett konto för alla Foundry-appar
 	Read your measurements	Läsa dina mått
 @msg	An account with that email already exists: sign in instead.	Det finns redan ett konto med den e-postadressen: logga in i stället.
 @msg	Ask About Patterns needs a build that can reach the AI service	Fråga om mönster kräver en version som kan nå AI-tjänsten

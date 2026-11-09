@@ -1805,7 +1805,7 @@ lighting	Light	Lys
 	Select All Bound Objects	Markér alle bundne objekter
 	Multiple objects	Flere objekter
 	Graphics: {adapter}	Grafik: {adapter}
-	By SiteSentrix, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	Af SiteSentrix, baseret på VectorCraft fra ArtCraft-teamet. MIT OR Apache-2.0. Skrifttyper: Source Sans 3, Inter, JetBrains Mono (OFL). Ikoner: Lucide (ISC) + VectorCraft.
+	From the StitchFoundry family, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	Af StitchFoundry, baseret på VectorCraft fra ArtCraft-teamet. MIT OR Apache-2.0. Skrifttyper: Source Sans 3, Inter, JetBrains Mono (OFL). Ikoner: Lucide (ISC) + VectorCraft.
 	Version {version} — open-source sewing-pattern design in pure Rust.	Version {version} — open source-design af symønstre i ren Rust.
 	Align to Page	Justér til side
 	Smooth Color	Jævn farve
@@ -5349,7 +5349,7 @@ file-filter	PDF for projector	PDF til projektor
 	Its pieces and sizes, and which measurements are set: never their values	Dets dele og størrelser, og hvilke mål der er angivet: aldrig deres værdier
 	Leave it empty for the Foundry service.	Lad det være tomt for at bruge Foundry-tjenesten.
 	Not allowed:	Ikke tilladt:
-	One account for every SiteSentrix app	Én konto til alle SiteSentrix-apps
+	One account for every Foundry app	Én konto til alle Foundry-apps
 	Read your measurements	Læse dine mål
 @msg	An account with that email already exists: sign in instead.	Der findes allerede en konto med den e-mail: log ind i stedet.
 @msg	Ask About Patterns needs a build that can reach the AI service	Spørg om mønstre kræver en version, der kan nå AI-tjenesten

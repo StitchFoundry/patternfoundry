@@ -25,7 +25,7 @@ fn style(version: Version) -> Style {
     };
     Style {
         name: "Test".into(),
-        author: "SiteSentrix;PatternFoundry;0.1".into(),
+        author: "StitchFoundry;PatternFoundry;0.1".into(),
         date: "21-10-2026".into(),
         time: "01:30".into(),
         sample_size: "M".into(),

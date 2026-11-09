@@ -1706,7 +1706,7 @@ lighting	Light	სინათლე
 	Select All Bound Objects	ყველა დაკავშირებული ობიექტის მონიშვნა
 	Multiple objects	რამდენიმე ობიექტი
 	Graphics: {adapter}	გრაფიკა: {adapter}
-	By SiteSentrix, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	SiteSentrix-ისგან, ArtCraft-ის გუნდის VectorCraft-ზე დაფუძნებული. MIT OR Apache-2.0. შრიფტები: Source Sans 3, Inter, JetBrains Mono (OFL). ხატულები: Lucide (ISC) + VectorCraft.
+	From the StitchFoundry family, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	StitchFoundry-ისგან, ArtCraft-ის გუნდის VectorCraft-ზე დაფუძნებული. MIT OR Apache-2.0. შრიფტები: Source Sans 3, Inter, JetBrains Mono (OFL). ხატულები: Lucide (ISC) + VectorCraft.
 	Version {version} — open-source sewing-pattern design in pure Rust.	ვერსია {version} — ღია კოდის სამკერვალო თარგების დიზაინი სუფთა Rust-ზე.
 	Align to Page	გვერდზე სწორება
 	Smooth Color	ფერის გლუვი გადასვლა
@@ -5274,7 +5274,7 @@ file-filter	PDF for projector	PDF პროექტორისთვის
 	Its pieces and sizes, and which measurements are set: never their values	მისი დეტალები და ზომები და რომელი ზომებია დაყენებული: მათი მნიშვნელობები არასდროს
 	Leave it empty for the Foundry service.	Foundry-ის სერვისისთვის ცარიელი დატოვეთ.
 	Not allowed:	არ არის დაშვებული:
-	One account for every SiteSentrix app	ერთი ანგარიში SiteSentrix-ის ყველა აპისთვის
+	One account for every Foundry app	ერთი ანგარიში Foundry-ის ყველა აპისთვის
 	Read your measurements	თქვენი ზომების წაკითხვა
 @msg	An account with that email already exists: sign in instead.	ამ ელფოსტით ანგარიში უკვე არსებობს: ამის ნაცვლად შედით.
 @msg	Ask About Patterns needs a build that can reach the AI service	„კითხვა თარგების შესახებ“ საჭიროებს ვერსიას, რომელიც AI სერვისს უკავშირდება
