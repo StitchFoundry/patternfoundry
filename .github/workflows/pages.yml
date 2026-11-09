@@ -1,5 +1,5 @@
 # The web app on GitHub Pages (free for a public repository): every push to main builds the
-# browser version and publishes it at https://sitesentrix.github.io/patternfoundry/. Also run by
+# browser version and publishes it at https://stitchfoundry.github.io/patternfoundry/. Also run by
 # hand from Actions › Web app › Run workflow.
 #
 # One-time setting (repository owner): Settings › Pages › Build and deployment › Source:

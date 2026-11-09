@@ -14,7 +14,7 @@ section: graphics
 priority: optional
 maintainer: ${VECTORCRAFT_MAINTAINER}
 vendor: StitchFoundry
-homepage: https://github.com/SiteSentrix/patternfoundry
+homepage: https://github.com/StitchFoundry/patternfoundry
 license: MIT OR Apache-2.0
 description: |-
   Open-source sewing-pattern design software, built on a full vector editor:

@@ -80,7 +80,7 @@ is built on, plus a pattern mode, the way StitchFoundry adds embroidery:
   garment type, tile sizes) is queued as MakerFoundry issue #47; the owner decides when.
   Opening from a link (PF-12) follows MakerFoundry's file address contract. Only the `sfs_`
   session token is ever sent (never an Anthropic key); the draft page opens only if it is on the
-  site the request went to. The web app's origin (https://sitesentrix.github.io) has to be added
+  site the request went to. The web app's origin (https://stitchfoundry.github.io) has to be added
   to MakerFoundry's MF_API_ORIGINS before the web app can publish or open (the desktop app is
   unaffected); a content security policy, if one is added, names both MakerFoundry hosts in
   connect-src, with a test that every inline script's SHA-256 is in script-src. The owner agreed
@@ -104,7 +104,7 @@ is built on, plus a pattern mode, the way StitchFoundry adds embroidery:
   text, and WiX refuses a second one (WIX0091). Fixed with one combined text; a workspace test
   (`xtask/src/wix.rs`) now fails on any duplicate WiX `Id`, so this is caught in PR CI.
 - 2026-10-31, **PF-12**: the web app opens MakerFoundry links:
-  `https://sitesentrix.github.io/patternfoundry/?open=<URL-encoded design file address>`. The
+  `https://stitchfoundry.github.io/patternfoundry/?open=<URL-encoded design file address>`. The
   address must be `https://makerfoundry.app/api/v1/…` (or `www.`), a path of `a-z 0-9 - . /`
   without dot segments, and at most `?t=` with 48 lowercase hex digits; it is rebuilt from the
   checked parts (`pf-ai::makerfoundry::open_address`) and taken out of the page address once
@@ -114,7 +114,7 @@ is built on, plus a pattern mode, the way StitchFoundry adds embroidery:
   now also sends no cookies and follows no redirect. Tested in Chromium against a mocked
   MakerFoundry; `apps/vectorcraft-web/src/csp.rs` checks any future content security policy
   (both MakerFoundry hosts in `connect-src`, every inline script's SHA-256 in `script-src`).
-  Waiting on MakerFoundry: `https://sitesentrix.github.io` in its `MF_API_ORIGINS`, then the button.
+  Waiting on MakerFoundry: `https://stitchfoundry.github.io` in its `MF_API_ORIGINS`, then the button.
 - 2026-10-31, **PF-11**: File › Publish to MakerFoundry… (`ui.publishToMakerFoundry`). The
   document goes as SVG, named by the person (the draft's title comes from the file name), with
   their Foundry Account session (`Bearer sfs_…`, never another key) to
