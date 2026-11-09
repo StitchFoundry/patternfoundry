@@ -30,6 +30,22 @@ anything he clicks through.
 - Websites on Cloudflare Pages from bwattendorf/sitesentrix-web; email through Cloudflare Email
   Routing and Resend; hosting on Railway Pro.
 
+## Getting started (the new-user flow, #146)
+
+A pattern starts from measurements, not a page size. On the Home screen choose **Start a pattern**
+(or File › Start a Pattern…):
+
+1. **What are you making?** A bodice, skirt, sleeve or trousers.
+2. **Whose measurements?** Type your own (each has a short "how to measure" line; choose centimetres
+   or inches), pick one of the round sample sizes, or use a set you kept in My Measurements.
+3. **Create Pattern.** The pieces are drafted and the page is fitted to them; the paper size is only
+   chosen later, at Print (home printers get tiled pages with the 10 cm test square).
+
+Typed measurements stay on your computer. Tick "Keep these measurements" to save them to My
+Measurements for next time. Prefer the old way? **Blank page** (or File › New…) still offers the page presets.
+
+Code: `crates/ui-egui/src/dialogs/start_pattern.rs` (the dialog, `ui.startPattern`). Pattern › Draft … Block with no document or no measurements now opens a document or the Measurements panel and says what is missing (#138).
+
 ## Decided
 - Name: **PatternFoundry**; sewing-pattern design software; built on VectorCraft like
   StitchFoundry.
