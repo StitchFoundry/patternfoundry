@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/SiteSentrix/patternfoundry/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/SiteSentrix/patternfoundry/actions/workflows/ci.yml/badge.svg"></a>
+  <a href="https://github.com/StitchFoundry/patternfoundry/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/StitchFoundry/patternfoundry/actions/workflows/ci.yml/badge.svg"></a>
   <img alt="Status: early development" src="https://img.shields.io/badge/status-early%20development-555555">
   <img alt="Written in pure Rust" src="https://img.shields.io/badge/pure-Rust-b83a24?logo=rust&logoColor=white">
   <img alt="License: MIT OR Apache-2.0" src="https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-555555">
