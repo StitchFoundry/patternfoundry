@@ -2132,7 +2132,7 @@
 	Paragraph Style Options	Опции за стил на абзац
 	Paragraph Styles	Стилове на абзац
 	Paragraph Symbol	Символ за абзац
-	By SiteSentrix, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	От SiteSentrix, на основата на VectorCraft от екипа на ArtCraft. MIT OR Apache-2.0. Шрифтове: Source Sans 3, Inter, JetBrains Mono (OFL). Икони: Lucide (ISC) + VectorCraft.
+	From the StitchFoundry family, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	От StitchFoundry, на основата на VectorCraft от екипа на ArtCraft. MIT OR Apache-2.0. Шрифтове: Source Sans 3, Inter, JetBrains Mono (OFL). Икони: Lucide (ISC) + VectorCraft.
 	Password	Парола
 	Paste	Поставяне
 	Paste in Back	Поставяне отзад
@@ -5345,7 +5345,7 @@ file-filter	PDF for projector	PDF за проектор
 	Its pieces and sizes, and which measurements are set: never their values	Детайлите и размерите ѝ и кои мерки са зададени: никога техните стойности
 	Leave it empty for the Foundry service.	Оставете празно за услугата Foundry.
 	Not allowed:	Не е разрешено:
-	One account for every SiteSentrix app	Един акаунт за всички приложения на SiteSentrix
+	One account for every Foundry app	Един акаунт за всички приложения на Foundry
 	Read your measurements	Четене на мерките ви
 @msg	An account with that email already exists: sign in instead.	Вече има акаунт с този имейл: влезте в него.
 @msg	Ask About Patterns needs a build that can reach the AI service	„Питане за кройки“ изисква версия, която може да се свърже с услугата с ИИ

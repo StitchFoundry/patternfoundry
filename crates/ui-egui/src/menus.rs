@@ -619,7 +619,7 @@ pub const UI_COMMANDS: &[(&str, &str, &str, &str)] = &[
         "ui.account",
         "Foundry Account…",
         "",
-        "{create?: bool (open on Create Account, else Sign In)} open Foundry Account: make an account or sign in to the Foundry service shared by the SiteSentrix apps, see the credits and buy more (Stripe's page opens in the browser), and choose to pay for the AI features with them instead of your own Anthropic API key → {open, signedIn, server, credits, payWithCredits}",
+        "{create?: bool (open on Create Account, else Sign In)} open Foundry Account: make an account or sign in to the Foundry service shared by the Foundry apps, see the credits and buy more (Stripe's page opens in the browser), and choose to pay for the AI features with them instead of your own Anthropic API key → {open, signedIn, server, credits, payWithCredits}",
     ),
     (
         "ui.tileEdgeColor",

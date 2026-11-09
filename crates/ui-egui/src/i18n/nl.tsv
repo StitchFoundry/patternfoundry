@@ -1819,7 +1819,7 @@ lighting	Light	Licht
 	Select All Bound Objects	Alle gekoppelde objecten selecteren
 	Multiple objects	Meerdere objecten
 	Graphics: {adapter}	Grafisch: {adapter}
-	By SiteSentrix, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	Door SiteSentrix, gebaseerd op VectorCraft van het ArtCraft-team. MIT OR Apache-2.0. Lettertypen: Source Sans 3, Inter, JetBrains Mono (OFL). Pictogrammen: Lucide (ISC) + VectorCraft.
+	From the StitchFoundry family, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	Door StitchFoundry, gebaseerd op VectorCraft van het ArtCraft-team. MIT OR Apache-2.0. Lettertypen: Source Sans 3, Inter, JetBrains Mono (OFL). Pictogrammen: Lucide (ISC) + VectorCraft.
 	Version {version} — open-source sewing-pattern design in pure Rust.	Versie {version} — open-source naaipatroonontwerp in pure Rust.
 	Align to Page	Uitlijnen op pagina
 	Smooth Color	Vloeiende kleur
@@ -5391,7 +5391,7 @@ file-filter	PDF for projector	PDF voor projector
 	Its pieces and sizes, and which measurements are set: never their values	De delen en maten ervan, en welke lichaamsmaten zijn ingesteld: nooit de waarden
 	Leave it empty for the Foundry service.	Laat dit leeg voor de Foundry-dienst.
 	Not allowed:	Niet toegestaan:
-	One account for every SiteSentrix app	Eén account voor alle apps van SiteSentrix
+	One account for every Foundry app	Eén account voor alle apps van Foundry
 	Read your measurements	Uw maten lezen
 @msg	An account with that email already exists: sign in instead.	Er bestaat al een account met dat e-mailadres: meld u in plaats daarvan aan.
 @msg	Ask About Patterns needs a build that can reach the AI service	Vraag over patronen heeft een versie nodig die de AI-dienst kan bereiken

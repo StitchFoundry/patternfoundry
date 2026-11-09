@@ -1939,7 +1939,7 @@ lighting	Light	Valo
 	Select All Bound Objects	Valitse kaikki sidotut objektit
 	Multiple objects	Useita objekteja
 	Graphics: {adapter}	Grafiikka: {adapter}
-	By SiteSentrix, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	Tekijä SiteSentrix, perustuu ArtCraft-tiimin VectorCraftiin. MIT OR Apache-2.0. Fontit: Source Sans 3, Inter, JetBrains Mono (OFL). Kuvakkeet: Lucide (ISC) + VectorCraft.
+	From the StitchFoundry family, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	Tekijä StitchFoundry, perustuu ArtCraft-tiimin VectorCraftiin. MIT OR Apache-2.0. Fontit: Source Sans 3, Inter, JetBrains Mono (OFL). Kuvakkeet: Lucide (ISC) + VectorCraft.
 	Version {version} — open-source sewing-pattern design in pure Rust.	Versio {version} — avoimen lähdekoodin kaavasuunnitteluohjelma puhtaalla Rustilla.
 	Align to Page	Tasaa sivuun
 	Smooth Color	Tasainen väri
@@ -5345,7 +5345,7 @@ file-filter	PDF for projector	PDF projektorille
 	Its pieces and sizes, and which measurements are set: never their values	Sen osat ja koot sekä mitkä mitat on asetettu: ei koskaan niiden arvoja
 	Leave it empty for the Foundry service.	Jätä tyhjäksi Foundry-palvelua varten.
 	Not allowed:	Ei sallittu:
-	One account for every SiteSentrix app	Yksi tili kaikkiin SiteSentrix-sovelluksiin
+	One account for every Foundry app	Yksi tili kaikkiin Foundry-sovelluksiin
 	Read your measurements	Lukea mittasi
 @msg	An account with that email already exists: sign in instead.	Tällä sähköpostiosoitteella on jo tili: kirjaudu sen sijaan sisään.
 @msg	Ask About Patterns needs a build that can reach the AI service	Kysy kaavoista vaatii version, joka saa yhteyden tekoälypalveluun

@@ -2202,7 +2202,7 @@ file-filter	Templates	Modelli
 	Paragraph Style Options	Opzioni stile paragrafo
 	Paragraph Styles	Stili paragrafo
 	Paragraph Symbol	Segno di paragrafo
-	By SiteSentrix, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	Di SiteSentrix, basato su VectorCraft del team ArtCraft. MIT OR Apache-2.0. Font: Source Sans 3, Inter, JetBrains Mono (OFL). Icone: Lucide (ISC) + VectorCraft.
+	From the StitchFoundry family, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	Di StitchFoundry, basato su VectorCraft del team ArtCraft. MIT OR Apache-2.0. Font: Source Sans 3, Inter, JetBrains Mono (OFL). Icone: Lucide (ISC) + VectorCraft.
 	Password	Password
 	Paste	Incolla
 	Paste in Back	Incolla dietro
@@ -5005,7 +5005,7 @@ file-filter	PDF for projector	PDF per proiettore
 	Its pieces and sizes, and which measurements are set: never their values	I suoi pezzi e le taglie, e quali misure sono impostate: mai i loro valori
 	Leave it empty for the Foundry service.	Lascia vuoto per il servizio Foundry.
 	Not allowed:	Non consentito:
-	One account for every SiteSentrix app	Un solo account per tutte le app SiteSentrix
+	One account for every Foundry app	Un solo account per tutte le app Foundry
 	Read your measurements	Leggere le tue misure
 @msg	Ask About Patterns needs a build that can reach the AI service	Domande sui cartamodelli richiede una versione che possa raggiungere il servizio di IA
 @msg	Foundry Account needs a build that can reach the AI service	Account Foundry richiede una versione che possa raggiungere il servizio di IA

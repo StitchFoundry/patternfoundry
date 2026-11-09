@@ -1895,7 +1895,7 @@ lighting	Light	Światło
 	Select All Bound Objects	Zaznacz wszystkie powiązane obiekty
 	Multiple objects	Wiele obiektów
 	Graphics: {adapter}	Grafika: {adapter}
-	By SiteSentrix, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	SiteSentrix, na podstawie VectorCraft zespołu ArtCraft. MIT OR Apache-2.0. Czcionki: Source Sans 3, Inter, JetBrains Mono (OFL). Ikony: Lucide (ISC) + VectorCraft.
+	From the StitchFoundry family, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	StitchFoundry, na podstawie VectorCraft zespołu ArtCraft. MIT OR Apache-2.0. Czcionki: Source Sans 3, Inter, JetBrains Mono (OFL). Ikony: Lucide (ISC) + VectorCraft.
 	Version {version} — open-source sewing-pattern design in pure Rust.	Wersja {version} — otwartoźródłowe projektowanie wykrojów krawieckich w czystym Ruście.
 	Align to Page	Wyrównaj do strony
 	Smooth Color	Gładki kolor
@@ -5234,7 +5234,7 @@ file-filter	PDF for projector	PDF do projektora
 	Its pieces and sizes, and which measurements are set: never their values	Jego elementy i rozmiary oraz to, które wymiary są ustawione: nigdy ich wartości
 	Leave it empty for the Foundry service.	Zostaw puste dla usługi Foundry.
 	Not allowed:	Niedozwolone:
-	One account for every SiteSentrix app	Jedno konto dla wszystkich aplikacji SiteSentrix
+	One account for every Foundry app	Jedno konto dla wszystkich aplikacji Foundry
 	Read your measurements	Odczyt Twoich wymiarów
 @msg	An account with that email already exists: sign in instead.	Konto z tym adresem e-mail już istnieje: zamiast tego zaloguj się.
 @msg	Ask About Patterns needs a build that can reach the AI service	Zapytaj o wykroje wymaga wersji, która może połączyć się z usługą AI
