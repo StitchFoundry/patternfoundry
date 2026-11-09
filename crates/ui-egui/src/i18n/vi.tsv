@@ -2472,7 +2472,7 @@ file-filter	Templates	Mẫu
 	Paragraph Style Options	Tùy chọn kiểu đoạn văn
 	Paragraph Styles	Kiểu đoạn văn
 	Paragraph Symbol	Ký hiệu đoạn văn
-	By SiteSentrix, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	Bởi SiteSentrix, dựa trên VectorCraft của nhóm ArtCraft. MIT OR Apache-2.0. Phông chữ: Source Sans 3, Inter, JetBrains Mono (OFL). Biểu tượng: Lucide (ISC) + VectorCraft.
+	From the StitchFoundry family, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	Bởi StitchFoundry, dựa trên VectorCraft của nhóm ArtCraft. MIT OR Apache-2.0. Phông chữ: Source Sans 3, Inter, JetBrains Mono (OFL). Biểu tượng: Lucide (ISC) + VectorCraft.
 	Password	Mật khẩu
 	Paste	Dán
 	Paste Design	Dán thiết kế
@@ -4976,7 +4976,7 @@ file-filter	PDF for projector	PDF cho máy chiếu
 	Its pieces and sizes, and which measurements are set: never their values	Các chi tiết và cỡ của rập, cùng những số đo đã được đặt: không bao giờ gửi giá trị
 	Leave it empty for the Foundry service.	Để trống để dùng dịch vụ Foundry.
 	Not allowed:	Không được phép:
-	One account for every SiteSentrix app	Một tài khoản cho mọi ứng dụng SiteSentrix
+	One account for every Foundry app	Một tài khoản cho mọi ứng dụng Foundry
 	Read your measurements	Đọc số đo của bạn
 @msg	An account with that email already exists: sign in instead.	Đã có tài khoản với email đó: hãy đăng nhập.
 @msg	Ask About Patterns needs a build that can reach the AI service	Hỏi về rập cần bản dựng có thể kết nối tới dịch vụ AI

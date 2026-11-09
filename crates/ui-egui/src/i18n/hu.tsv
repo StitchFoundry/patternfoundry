@@ -2665,7 +2665,7 @@ file-filter	Templates	Sablonok
 	Paragraph Style Options	Bekezdésstílus beállításai
 	Paragraph Styles	Bekezdésstílusok
 	Paragraph Symbol	Bekezdésjel
-	By SiteSentrix, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	Készítette: SiteSentrix, a VectorCraft alapján, amelyet az ArtCraft csapata készít. MIT OR Apache-2.0. Betűtípusok: Source Sans 3, Inter, JetBrains Mono (OFL). Ikonok: Lucide (ISC) + VectorCraft.
+	From the StitchFoundry family, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	Készítette: StitchFoundry, a VectorCraft alapján, amelyet az ArtCraft csapata készít. MIT OR Apache-2.0. Betűtípusok: Source Sans 3, Inter, JetBrains Mono (OFL). Ikonok: Lucide (ISC) + VectorCraft.
 	Password	Jelszó
 	Paste	Beillesztés
 	Paste in Back	Beillesztés mögé
@@ -5367,7 +5367,7 @@ file-filter	PDF for projector	PDF projektorhoz
 	Its pieces and sizes, and which measurements are set: never their values	Darabjai és méretei, valamint hogy mely méretek vannak megadva: az értékeik soha
 	Leave it empty for the Foundry service.	Hagyja üresen a Foundry szolgáltatáshoz.
 	Not allowed:	Nem engedélyezett:
-	One account for every SiteSentrix app	Egy fiók az összes SiteSentrix-alkalmazáshoz
+	One account for every Foundry app	Egy fiók az összes Foundry-alkalmazáshoz
 	Read your measurements	Az Ön méreteinek beolvasása
 @msg	An account with that email already exists: sign in instead.	Ezzel az e-mail-címmel már létezik fiók: inkább jelentkezzen be.
 @msg	Ask About Patterns needs a build that can reach the AI service	A Kérdezzen a szabásmintákról funkcióhoz olyan verzió kell, amely eléri az MI-szolgáltatást

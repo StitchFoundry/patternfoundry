@@ -278,7 +278,7 @@ pub(super) fn encode(doc: &Document, p: &Value) -> Result<Encoded> {
     let [y, mo, d, h, mi, _] = vectorcraft_doc::metadata::output_time().map(vectorcraft_doc::metadata::civil).unwrap_or([1970, 1, 1, 0, 0, 0]);
     let style = AamaStyle {
         name: text("styleName", "Pattern"),
-        author: format!("SiteSentrix;PatternFoundry;{}", env!("CARGO_PKG_VERSION")),
+        author: format!("StitchFoundry;PatternFoundry;{}", env!("CARGO_PKG_VERSION")),
         date: format!("{d:02}-{mo:02}-{y:04}"),
         time: format!("{h:02}:{mi:02}"),
         sample_size: text("sampleSize", ""),

@@ -2194,7 +2194,7 @@ file-filter	Templates	Шаблони
 	Paragraph Style Options	Параметри стилю абзацу
 	Paragraph Styles	Стилі абзаців
 	Paragraph Symbol	Символ абзацу
-	By SiteSentrix, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	Від SiteSentrix, на основі VectorCraft від команди ArtCraft. MIT OR Apache-2.0. Шрифти: Source Sans 3, Inter, JetBrains Mono (OFL). Значки: Lucide (ISC) + VectorCraft.
+	From the StitchFoundry family, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	Від StitchFoundry, на основі VectorCraft від команди ArtCraft. MIT OR Apache-2.0. Шрифти: Source Sans 3, Inter, JetBrains Mono (OFL). Значки: Lucide (ISC) + VectorCraft.
 	Password	Пароль
 	Paste	Вставити
 	Paste in Back	Вставити позаду
@@ -4985,7 +4985,7 @@ file-filter	PDF for projector	PDF для проєктора
 	Its pieces and sizes, and which measurements are set: never their values	Її деталі та розміри, а також які мірки задано, але ніколи не їхні значення
 	Leave it empty for the Foundry service.	Залиште порожнім для сервісу Foundry.
 	Not allowed:	Не дозволено:
-	One account for every SiteSentrix app	Один обліковий запис для всіх застосунків SiteSentrix
+	One account for every Foundry app	Один обліковий запис для всіх застосунків Foundry
 	Read your measurements	Прочитати ваші мірки
 @msg	Ask About Patterns needs a build that can reach the AI service	«Запитати про викрійки» потребує збірки з доступом до служби ШІ
 @msg	Foundry Account needs a build that can reach the AI service	«Обліковий запис Foundry» потребує збірки з доступом до служби ШІ

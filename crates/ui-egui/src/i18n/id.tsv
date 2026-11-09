@@ -1805,7 +1805,7 @@ lighting	Light	Cahaya
 	Select All Bound Objects	Pilih semua objek terikat
 	Multiple objects	Beberapa objek
 	Graphics: {adapter}	Grafis: {adapter}
-	By SiteSentrix, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	Oleh SiteSentrix, berdasarkan VectorCraft dari tim ArtCraft. MIT OR Apache-2.0. Font: Source Sans 3, Inter, JetBrains Mono (OFL). Ikon: Lucide (ISC) + VectorCraft.
+	From the StitchFoundry family, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	Oleh StitchFoundry, berdasarkan VectorCraft dari tim ArtCraft. MIT OR Apache-2.0. Font: Source Sans 3, Inter, JetBrains Mono (OFL). Ikon: Lucide (ISC) + VectorCraft.
 	Version {version} — open-source sewing-pattern design in pure Rust.	Versi {version} — desain pola jahit sumber terbuka dalam Rust murni.
 	Align to Page	Ratakan ke halaman
 	Smooth Color	Warna mulus
@@ -5349,7 +5349,7 @@ file-filter	PDF for projector	PDF untuk proyektor
 	Its pieces and sizes, and which measurements are set: never their values	Bagian dan ukurannya, serta ukuran badan mana yang sudah diatur: tidak pernah nilainya
 	Leave it empty for the Foundry service.	Kosongkan untuk memakai layanan Foundry.
 	Not allowed:	Tidak diizinkan:
-	One account for every SiteSentrix app	Satu akun untuk semua aplikasi SiteSentrix
+	One account for every Foundry app	Satu akun untuk semua aplikasi Foundry
 	Read your measurements	Membaca ukuran badan Anda
 @msg	An account with that email already exists: sign in instead.	Akun dengan email itu sudah ada: silakan masuk.
 @msg	Ask About Patterns needs a build that can reach the AI service	Tanya tentang pola memerlukan build yang dapat menjangkau layanan AI

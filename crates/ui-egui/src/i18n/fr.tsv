@@ -2173,7 +2173,7 @@
 	Paragraph Style Options	Options de style de paragraphe
 	Paragraph Styles	Styles de paragraphe
 	Paragraph Symbol	Symbole de paragraphe
-	By SiteSentrix, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	Par SiteSentrix, d’après VectorCraft de l’équipe ArtCraft. MIT OR Apache-2.0. Polices : Source Sans 3, Inter, JetBrains Mono (OFL). Icônes : Lucide (ISC) + VectorCraft.
+	From the StitchFoundry family, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	Par StitchFoundry, d’après VectorCraft de l’équipe ArtCraft. MIT OR Apache-2.0. Polices : Source Sans 3, Inter, JetBrains Mono (OFL). Icônes : Lucide (ISC) + VectorCraft.
 	Password	Mot de passe
 	Paste	Coller
 	Paste in Back	Coller derrière
@@ -5389,7 +5389,7 @@ file-filter	PDF for projector	PDF pour projecteur
 	Its pieces and sizes, and which measurements are set: never their values	Ses pièces et ses tailles, et les mesures définies : jamais leurs valeurs
 	Leave it empty for the Foundry service.	Laissez vide pour le service Foundry.
 	Not allowed:	Non autorisé :
-	One account for every SiteSentrix app	Un seul compte pour toutes les applications SiteSentrix
+	One account for every Foundry app	Un seul compte pour toutes les applications Foundry
 	Read your measurements	Lire vos mesures
 @msg	Ask About Patterns needs a build that can reach the AI service	Questions sur les patrons nécessite une version qui peut joindre le service d’IA
 @msg	Foundry Account needs a build that can reach the AI service	Compte Foundry nécessite une version qui peut joindre le service d’IA
