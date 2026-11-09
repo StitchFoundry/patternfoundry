@@ -1,6 +1,6 @@
 //! Foundry accounts: the requests the app sends the Foundry cloud service (the StitchFoundry
 //! service, `apps/stitchfoundry-cloud` and `docs/cloud.md` in github.com/Stitchwright/StitchFoundry,
-//! shared by every SiteSentrix app) to sign in, read the credits and buy more, and how an AI
+//! shared by every Foundry app) to sign in, read the credits and buy more, and how an AI
 //! request is sent through it, paid in credits, instead of to Anthropic with the user's own key
 //! ([`through_cloud`]). As elsewhere in [`super`], no network code lives here.
 

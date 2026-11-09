@@ -4315,7 +4315,7 @@ axis	Both	Ambos
 	Packaged {n} file(s){note}	{n} arquivo(s) empacotado(s){note}
 	Page information	Informações da página
 	Paragraph Style	Estilo de Parágrafo
-	By SiteSentrix, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	Por SiteSentrix, baseado no VectorCraft da equipe ArtCraft. MIT OR Apache-2.0. Fontes: Source Sans 3, Inter, JetBrains Mono (OFL). Ícones: Lucide (ISC) + VectorCraft.
+	From the StitchFoundry family, based on VectorCraft by the ArtCraft team. MIT OR Apache-2.0. Fonts: Source Sans 3, Inter, JetBrains Mono (OFL). Icons: Lucide (ISC) + VectorCraft.	Por StitchFoundry, baseado no VectorCraft da equipe ArtCraft. MIT OR Apache-2.0. Fontes: Source Sans 3, Inter, JetBrains Mono (OFL). Ícones: Lucide (ISC) + VectorCraft.
 	Perspective grid presets	Predefinidos de grade de perspectiva
 	Phone 390×844	Celular 390×844
 	Place onto a new locked, dimmed template layer below the current layer	Colocar em uma nova camada de modelo bloqueada e esmaecida abaixo da camada atual
@@ -5292,7 +5292,7 @@ file-filter	PDF for projector	PDF para projetor
 	Its pieces and sizes, and which measurements are set: never their values	As peças e os tamanhos, e quais medidas estão definidas: nunca os valores delas
 	Leave it empty for the Foundry service.	Deixe vazio para usar o serviço Foundry.
 	Not allowed:	Não permitido:
-	One account for every SiteSentrix app	Uma conta para todos os aplicativos da SiteSentrix
+	One account for every Foundry app	Uma conta para todos os aplicativos da Foundry
 	Read your measurements	Ler suas medidas
 @msg	An account with that email already exists: sign in instead.	Já existe uma conta com esse e-mail: entre nela.
 @msg	Ask About Patterns needs a build that can reach the AI service	Perguntar sobre moldes precisa de uma versão que consiga acessar o serviço de IA

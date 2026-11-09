@@ -15,7 +15,7 @@ fn main() -> Result<(), String> {
     res.set_icon("../../assets/app-icon/patternfoundry.ico")
         .set("ProductName", "PatternFoundry")
         .set("FileDescription", "PatternFoundry sewing-pattern design software")
-        .set("CompanyName", "SiteSentrix")
+        .set("CompanyName", "StitchFoundry")
         .set("LegalCopyright", "Copyright (c) Bruce Wattendorf (SiteSentrix) and the PatternFoundry authors. MIT OR Apache-2.0.")
         .set("OriginalFilename", "patternfoundry.exe")
         .set("InternalName", "patternfoundry");

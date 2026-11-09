@@ -1,4 +1,4 @@
-//! Foundry Account (Help menu): sign in to the Foundry cloud service (shared by the SiteSentrix
+//! Foundry Account (Help menu): sign in to the Foundry cloud service (shared by the Foundry
 //! apps) or make an account, see the credits, buy more (Stripe's checkout page opens in the
 //! browser) and choose to pay for the AI features with them instead of one's own Anthropic API key.
 //! With that on, Ask About Patterns sends its requests through the service ([`super::post_ai`]
@@ -338,7 +338,7 @@ pub fn window(app: &mut VectorcraftApp, ctx: &egui::Context) {
                     ui.label(RichText::new(tl!("Create a free Foundry Account")).strong().size(16.0));
                     for line in [
                         tl!("Free credits to try the AI features: Ask About Patterns drafts and changes patterns with you"),
-                        tl!("One account for every SiteSentrix app"),
+                        tl!("One account for every Foundry app"),
                         tl!("No card needed, and no API key to set up"),
                     ] {
                         ui.label(RichText::new(format!("•  {line}")).color(t.text_dim));
