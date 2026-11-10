@@ -5771,6 +5771,7 @@ menu	Pattern	Pola
 	Bodice	Bodice
 	Choose a saved set of measurements	Choose a saved set of measurements
 	Enter a number for: {names}	Enter a number for: {names}
+	Your measurements were not kept: {why}	Your measurements were not kept: {why}
 	I'll enter my measurements	I'll enter my measurements
 	Keep these measurements on this computer (My Measurements)	Keep these measurements on this computer (My Measurements)
 	Nothing saved yet. Enter your measurements once and tick “Keep these measurements”.	Nothing saved yet. Enter your measurements once and tick “Keep these measurements”.
