@@ -53,9 +53,14 @@ pub(crate) fn post_ai<T: Send + 'static>(
     account::require_account(app)?;
     let server = account::server(app).ok_or_else(|| AiError::NoServer.to_string())?;
     let http = cloud::through_cloud(http, &server, path, extra).map_err(|e| e.to_string())?;
-    post_plain(app, http, thread, move |status, body| {
-        if matches!(status, 401 | 402 | 403 | 503) { Err(cloud::status_error(status, body)) } else { parse(status, body) }
-    })
+    post_plain(
+        app,
+        http,
+        thread,
+        move |status, body| {
+            if matches!(status, 401 | 402 | 403 | 503) { Err(cloud::status_error(status, body)) } else { parse(status, body) }
+        },
+    )
 }
 
 /// Sends `http` with the host's service and reads the answer with `parse`: on the desktop on a

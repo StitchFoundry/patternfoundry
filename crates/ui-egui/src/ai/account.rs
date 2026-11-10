@@ -157,7 +157,9 @@ pub fn open(app: &mut VectorcraftApp, p: &Value) -> Result<Value, String> {
         app.ai.account.stale = true;
     }
     let st = &app.ai.account;
-    Ok(json!({ "open": true, "signedIn": !st.token.is_empty(), "server": server(app), "credits": credits(app), "payWithCredits": paying_with_credits(app) }))
+    Ok(
+        json!({ "open": true, "signedIn": !st.token.is_empty(), "server": server(app), "credits": credits(app), "payWithCredits": paying_with_credits(app) }),
+    )
 }
 
 fn send(app: &mut VectorcraftApp, http: Result<HttpRequest, AiError>, action: Action) {
@@ -269,11 +271,9 @@ fn answered(app: &mut VectorcraftApp, action: Action, r: Result<Value, AiError>)
             let st = &mut app.ai.account;
             st.token = token;
             st.password.clear();
-            // signing in is choosing to pay with credits
             st.info = Some(v["account"].clone());
             st.stale = true;
             st.note = Some(if action == Action::SignUp { "Account made: welcome to PatternFoundry.".into() } else { "Signed in.".into() });
-            keep(app, CREDITS_NAME, Some("1"));
         }
         Action::Refresh => app.ai.account.info = Some(v),
         Action::Buy => match v["url"].as_str().filter(|u| u.starts_with("https://")) {

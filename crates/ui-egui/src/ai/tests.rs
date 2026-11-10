@@ -532,8 +532,9 @@ fn a_draft_on_another_site_is_not_opened_and_refusals_say_makerfoundrys_sentence
 
 #[test]
 fn nothing_is_sent_without_a_session_a_design_or_the_window() {
-    // Signed out (only an Anthropic key kept): refused before anything leaves.
-    let (mut app, sent, _) = app(vec![]);
+    // Signed out: refused before anything leaves.
+    let (mut app, sent, keys) = app(vec![]);
+    keys.save(pf_ai::cloud::TOKEN_NAME, None).unwrap();
     app.run("shape.rectangle", json!({"x": 10, "y": 10, "width": 100, "height": 60})).unwrap();
     assert!(app.run("ui.publishToMakerFoundry", json!({"send": true})).unwrap_err().contains("open Publish to MakerFoundry first"));
     let r = app.run("ui.publishToMakerFoundry", json!({})).unwrap();
