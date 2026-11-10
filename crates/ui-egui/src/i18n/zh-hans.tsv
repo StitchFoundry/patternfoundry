@@ -5156,30 +5156,23 @@ file-filter	PDF for projector	用于投影仪的 PDF
 	A password needs at least 8 characters.	密码至少需要 8 个字符。
 	Account	账户
 	Allow	允许
-	Anthropic API key:	Anthropic API 密钥：
 	Ask	提问
 	Buy credits	购买点数
 	Buy…	购买…
-	Change key	更换密钥
 	Create Free Account	创建免费账户
 	Create a free Foundry Account	创建免费 Foundry 账户
 	Don't Allow	不允许
 	Edit › Undo takes each change back.	编辑 › 还原可撤销每项修改。
 	Email	电子邮件
 	Foundry Account	Foundry 账户
-	Foundry accounts aren't open yet. Until then, the AI features work with your own Anthropic API key.	Foundry 账户尚未开放。在此之前，AI 功能使用您自己的 Anthropic API 密钥。
-	Get a key	获取密钥
 	I have an account: Sign In	已有账户:登录
 	New Conversation	新对话
 	New here? Create a free account	新用户?创建免费账户
-	No card needed, and no API key to set up	无需银行卡,也无需设置 API 密钥
 	Paid with Foundry credits ({n} left).	用 Foundry 点数支付（剩余 {n}）。
 	Paid with Foundry credits.	用 Foundry 点数支付。
-	Pay for the AI features with my Foundry credits	用我的 Foundry 点数支付 AI 功能
 	Pay with Foundry credits instead	改用 Foundry 点数支付
 	Payment is on Stripe's secure page, in your browser; your card never reaches PatternFoundry.	在浏览器中的 Stripe 安全页面付款；您的银行卡信息绝不会到达 PatternFoundry。
 	Reading your credits…	正在读取点数…
-	Remember the key on this computer	在此计算机上记住密钥
 	Server	服务器
 	Sign In	登录
 	Sign Out	退出登录
@@ -5192,7 +5185,7 @@ file-filter	PDF for projector	用于投影仪的 PDF
 @msg	An account with that email already exists: sign in instead.	该电子邮件已有账户：请直接登录。
 @msg	Anthropic refused the API key: {0}	Anthropic 拒绝了此 API 密钥：{0}
 @msg	Couldn't reach the AI service: {0}	无法连接到 AI 服务：{0}
-@msg	Enter your Anthropic API key first.	请先输入您的 Anthropic API 密钥。
+@msg	AI now uses your Foundry Account. Sign in to continue.	AI 现在使用您的 Foundry 账户。请登录后继续。
 @msg	Foundry accounts aren't open yet.	Foundry 账户尚未开放。
 @msg	Not enough Foundry credits: buy more in Foundry Account.	Foundry 点数不足：请在 Foundry 账户中购买。
 @msg	The AI declined to answer this: ask another way.	AI 拒绝回答此问题：请换一种问法。
@@ -5213,13 +5206,12 @@ file-filter	PDF for projector	用于投影仪的 PDF
 @msg	Type your email address.	请输入您的电子邮件地址。
 @msg	Pay on the page that opened in your browser, then press Refresh.	请在浏览器打开的页面中付款，然后按“刷新”。
 	Ask About Patterns…	询问纸样问题…
-	Answers come from Claude with your own Anthropic API key, billed to your Anthropic account. They can be wrong: sew a muslin before cutting good fabric.	回答由 Claude 使用您自己的 Anthropic API 密钥生成，费用计入您的 Anthropic 账户。回答可能有误：裁剪好面料前请先用白坯布缝制样衣。
+	Answers come from Claude. They can be wrong: sew a muslin before cutting good fabric.	回答由 Claude 给出。回答可能有误：裁剪好面料前请先用白坯布缝制样衣。
 	Ask About Patterns	询问纸样问题
 	Ask anything about sewing patterns or PatternFoundry: how much ease to add, how to move a dart, which block to start from, where a feature is. Claude can also draft and change your pattern when you ask, after you allow it.	关于纸样或 PatternFoundry 的任何问题都可以问：该加多少放松量、如何转移省道、从哪个原型开始、某个功能在哪里。在您允许后，Claude 还可以按您的要求绘制和修改纸样。
 	Claude asks to:	Claude 请求：
 	Couldn't do:	无法完成：
 	Done:	已完成：
-	Free credits for the AI features, no API key needed	AI 功能免费点数，无需 API 密钥
 	Free credits to try the AI features: Ask About Patterns drafts and changes patterns with you	免费点数试用 AI 功能：“询问纸样问题”与您一起绘制和修改纸样
 	Include my pattern	附上我的纸样
 	Its pieces and sizes, and which measurements are set: never their values	其裁片和尺码，以及设置了哪些尺寸：绝不包括具体数值
@@ -5239,7 +5231,7 @@ file-filter	PDF for projector	用于投影仪的 PDF
 	About the fit	关于合体度
 	Anything else? For example: folds below the back neck	还有别的吗？例如：后领口下方有褶皱
 	Check My Muslin	检查我的样衣
-	Claude looks at the photos with your own Anthropic API key, billed to your Anthropic account. It can be wrong: sew the altered part again in muslin before cutting good fabric.	Claude 使用您自己的 Anthropic API 密钥查看照片，费用计入您的 Anthropic 账户。它可能出错：裁剪好面料前，请先用白坯布把修改过的部分重新缝制一次样衣。
+	Claude looks at the photos. It can be wrong: sew the altered part again in muslin before cutting good fabric.	Claude 会查看照片。它可能出错：裁剪好面料前，请先用白坯布把修改过的部分重新缝制一次样衣。
 	Final fabric	正式面料
 	Hard to raise my arms	手臂难以抬起
 	How it feels:	穿着感受：

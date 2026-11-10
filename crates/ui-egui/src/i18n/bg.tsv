@@ -5284,30 +5284,23 @@ file-filter	PDF for projector	PDF за проектор
 	A password needs at least 8 characters.	Паролата трябва да е поне 8 знака.
 	Account	Акаунт
 	Allow	Разрешаване
-	Anthropic API key:	API ключ за Anthropic:
 	Ask	Питане
 	Buy credits	Купуване на кредити
 	Buy…	Купуване…
-	Change key	Смяна на ключа
 	Create Free Account	Създаване на безплатен акаунт
 	Create a free Foundry Account	Създайте безплатен акаунт в Foundry
 	Don't Allow	Без разрешение
 	Edit › Undo takes each change back.	Редактиране › Отмени връща всяка промяна.
 	Email	Имейл
 	Foundry Account	Акаунт в Foundry
-	Foundry accounts aren't open yet. Until then, the AI features work with your own Anthropic API key.	Акаунтите в Foundry още не са отворени. Дотогава функциите с ИИ работят със собствения ви API ключ на Anthropic.
-	Get a key	Вземете ключ
 	I have an account: Sign In	Имам акаунт: вход
 	New Conversation	Нов разговор
 	New here? Create a free account	Нови сте тук? Създайте безплатен акаунт
-	No card needed, and no API key to set up	Без карта и без API ключ за настройване
 	Paid with Foundry credits ({n} left).	Платено с кредити на Foundry (остават {n}).
 	Paid with Foundry credits.	Платено с кредити на Foundry.
-	Pay for the AI features with my Foundry credits	Плащане на функциите с ИИ с моите кредити на Foundry
 	Pay with Foundry credits instead	Плащане с кредити на Foundry вместо това
 	Payment is on Stripe's secure page, in your browser; your card never reaches PatternFoundry.	Плащането става на защитената страница на Stripe в браузъра ви; картата ви никога не стига до PatternFoundry.
 	Reading your credits…	Четене на кредитите…
-	Remember the key on this computer	Запомняне на ключа на този компютър
 	Server	Сървър
 	Sign In	Вход
 	Sign Out	Изход
@@ -5319,7 +5312,7 @@ file-filter	PDF for projector	PDF за проектор
 	{n} credits for {price}	{n} кредита за {price}
 @msg	Anthropic refused the API key: {0}	Anthropic отхвърли API ключа: {0}
 @msg	Couldn't reach the AI service: {0}	Няма връзка с AI услугата: {0}
-@msg	Enter your Anthropic API key first.	Първо въведете своя API ключ за Anthropic.
+@msg	AI now uses your Foundry Account. Sign in to continue.	ИИ вече използва вашия Foundry акаунт. Влезте, за да продължите.
 @msg	The AI declined to answer this: ask another way.	AI отказа да отговори на това: попитайте по друг начин.
 @msg	The AI service failed (error {0}): try again later.	AI услугата не успя (грешка {0}): опитайте отново по-късно.
 @msg	The AI service is busy: try again in a minute.	AI услугата е заета: опитайте отново след минута.
@@ -5333,13 +5326,12 @@ file-filter	PDF for projector	PDF за проектор
 @msg	This conversation is long: start a New Conversation.	Този разговор е дълъг: започнете нов разговор.
 @msg	Claude took too many steps: ask again, more simply.	Claude направи твърде много стъпки: попитайте отново, по-просто.
 	Ask About Patterns…	Питане за кройки…
-	Answers come from Claude with your own Anthropic API key, billed to your Anthropic account. They can be wrong: sew a muslin before cutting good fabric.	Отговорите идват от Claude с вашия собствен API ключ за Anthropic, като разходите се начисляват по вашия акаунт в Anthropic. Те може да са грешни: ушийте пробен модел от евтин плат, преди да кроите хубав плат.
+	Answers come from Claude. They can be wrong: sew a muslin before cutting good fabric.	Отговорите идват от Claude. Те може да са грешни: ушийте пробен модел от евтин плат, преди да кроите хубав плат.
 	Ask About Patterns	Питане за кройки
 	Ask anything about sewing patterns or PatternFoundry: how much ease to add, how to move a dart, which block to start from, where a feature is. Claude can also draft and change your pattern when you ask, after you allow it.	Питайте каквото и да е за кройки или PatternFoundry: колко свобода да добавите, как да преместите пенс, от коя основна кройка да започнете, къде е дадена функция. Claude може също да конструира и променя кройката ви, когато поискате, след като разрешите.
 	Claude asks to:	Claude иска да:
 	Couldn't do:	Не можа да се изпълни:
 	Done:	Готово:
-	Free credits for the AI features, no API key needed	Безплатни кредити за функциите с ИИ, без API ключ
 	Free credits to try the AI features: Ask About Patterns drafts and changes patterns with you	Безплатни кредити, за да опитате функциите с ИИ: „Питане за кройки“ конструира и променя кройки заедно с вас
 	Include my pattern	Включване на моята кройка
 	Its pieces and sizes, and which measurements are set: never their values	Детайлите и размерите ѝ и кои мерки са зададени: никога техните стойности
@@ -5365,7 +5357,7 @@ file-filter	PDF for projector	PDF за проектор
 	About the fit	За прилягането
 	Anything else? For example: folds below the back neck	Нещо друго? Например: гънки под задното деколте
 	Check My Muslin	Проверка на пробния модел
-	Claude looks at the photos with your own Anthropic API key, billed to your Anthropic account. It can be wrong: sew the altered part again in muslin before cutting good fabric.	Claude разглежда снимките с вашия собствен API ключ на Anthropic, таксуван към вашия акаунт в Anthropic. Може да греши: ушийте отново променената част като пробен модел от евтин плат, преди да кроите хубав плат.
+	Claude looks at the photos. It can be wrong: sew the altered part again in muslin before cutting good fabric.	Claude разглежда снимките. Може да греши: ушийте отново променената част като пробен модел от евтин плат, преди да кроите хубав плат.
 	Final fabric	Окончателен плат
 	Hard to raise my arms	Трудно вдигам ръцете си
 	How it feels:	Как стои:

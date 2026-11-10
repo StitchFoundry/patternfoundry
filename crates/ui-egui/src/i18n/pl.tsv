@@ -5173,30 +5173,23 @@ file-filter	PDF for projector	PDF do projektora
 	A password needs at least 8 characters.	Hasło musi mieć co najmniej 8 znaków.
 	Account	Konto
 	Allow	Zezwól
-	Anthropic API key:	Klucz API Anthropic:
 	Ask	Zapytaj
 	Buy credits	Kup kredyty
 	Buy…	Kup…
-	Change key	Zmień klucz
 	Create Free Account	Utwórz darmowe konto
 	Create a free Foundry Account	Utwórz darmowe konto Foundry
 	Don't Allow	Nie zezwalaj
 	Edit › Undo takes each change back.	Edycja › Cofnij wycofuje każdą zmianę.
 	Email	E-mail
 	Foundry Account	Konto Foundry
-	Foundry accounts aren't open yet. Until then, the AI features work with your own Anthropic API key.	Konta Foundry nie są jeszcze otwarte. Do tego czasu funkcje AI działają z Twoim własnym kluczem API Anthropic.
-	Get a key	Uzyskaj klucz
 	I have an account: Sign In	Mam konto: zaloguj się
 	New Conversation	Nowa rozmowa
 	New here? Create a free account	Nowy? Utwórz darmowe konto
-	No card needed, and no API key to set up	Bez karty i bez klucza API do ustawiania
 	Paid with Foundry credits ({n} left).	Opłacone kredytami Foundry (zostało {n}).
 	Paid with Foundry credits.	Opłacone kredytami Foundry.
-	Pay for the AI features with my Foundry credits	Płać za funkcje AI moimi kredytami Foundry
 	Pay with Foundry credits instead	Zapłać zamiast tego kredytami Foundry
 	Payment is on Stripe's secure page, in your browser; your card never reaches PatternFoundry.	Płatność odbywa się na bezpiecznej stronie Stripe w Twojej przeglądarce; Twoja karta nigdy nie trafia do PatternFoundry.
 	Reading your credits…	Wczytywanie kredytów…
-	Remember the key on this computer	Zapamiętaj klucz na tym komputerze
 	Server	Serwer
 	Sign In	Zaloguj się
 	Sign Out	Wyloguj się
@@ -5208,7 +5201,7 @@ file-filter	PDF for projector	PDF do projektora
 	{n} credits for {price}	{n} kredytów za {price}
 @msg	Anthropic refused the API key: {0}	Anthropic odrzucił klucz API: {0}
 @msg	Couldn't reach the AI service: {0}	Nie udało się połączyć z usługą AI: {0}
-@msg	Enter your Anthropic API key first.	Najpierw wprowadź klucz API Anthropic.
+@msg	AI now uses your Foundry Account. Sign in to continue.	AI korzysta teraz z Twojego konta Foundry. Zaloguj się, aby kontynuować.
 @msg	The AI declined to answer this: ask another way.	AI odmówiła odpowiedzi na to: zapytaj inaczej.
 @msg	The AI service failed (error {0}): try again later.	Usługa AI zawiodła (błąd {0}): spróbuj ponownie później.
 @msg	The AI service is busy: try again in a minute.	Usługa AI jest zajęta: spróbuj ponownie za minutę.
@@ -5222,13 +5215,12 @@ file-filter	PDF for projector	PDF do projektora
 @msg	This conversation is long: start a New Conversation.	Ta rozmowa jest długa: rozpocznij Nową rozmowę.
 @msg	Claude took too many steps: ask again, more simply.	Claude wykonał zbyt wiele kroków: zapytaj ponownie, prościej.
 	Ask About Patterns…	Zapytaj o wykroje…
-	Answers come from Claude with your own Anthropic API key, billed to your Anthropic account. They can be wrong: sew a muslin before cutting good fabric.	Odpowiedzi pochodzą od Claude i używają Twojego własnego klucza API Anthropic, a opłaty obciążają Twoje konto Anthropic. Mogą być błędne: zanim skroisz dobrą tkaninę, uszyj próbny model z surówki.
+	Answers come from Claude. They can be wrong: sew a muslin before cutting good fabric.	Odpowiedzi pochodzą od Claude’a. Mogą być błędne: zanim skroisz dobrą tkaninę, uszyj próbny model z surówki.
 	Ask About Patterns	Zapytaj o wykroje
 	Ask anything about sewing patterns or PatternFoundry: how much ease to add, how to move a dart, which block to start from, where a feature is. Claude can also draft and change your pattern when you ask, after you allow it.	Pytaj o wszystko, co dotyczy wykrojów lub PatternFoundry: ile luzu dodać, jak przenieść zaszewkę, od której formy podstawowej zacząć, gdzie jest dana funkcja. Claude może też konstruować i zmieniać Twój wykrój na Twoją prośbę, gdy na to pozwolisz.
 	Claude asks to:	Claude prosi o:
 	Couldn't do:	Nie udało się wykonać:
 	Done:	Wykonano:
-	Free credits for the AI features, no API key needed	Darmowe kredyty na funkcje AI, bez klucza API
 	Free credits to try the AI features: Ask About Patterns drafts and changes patterns with you	Darmowe kredyty na wypróbowanie funkcji AI: Zapytaj o wykroje konstruuje i zmienia wykroje razem z Tobą
 	Include my pattern	Dołącz mój wykrój
 	Its pieces and sizes, and which measurements are set: never their values	Jego elementy i rozmiary oraz to, które wymiary są ustawione: nigdy ich wartości
@@ -5254,7 +5246,7 @@ file-filter	PDF for projector	PDF do projektora
 	About the fit	O dopasowaniu
 	Anything else? For example: folds below the back neck	Coś jeszcze? Na przykład: fałdy poniżej karku z tyłu
 	Check My Muslin	Sprawdź mój próbny model
-	Claude looks at the photos with your own Anthropic API key, billed to your Anthropic account. It can be wrong: sew the altered part again in muslin before cutting good fabric.	Claude ogląda zdjęcia z Twoim własnym kluczem API Anthropic, rozliczanym na Twoim koncie Anthropic. Może się mylić: zanim skroisz dobrą tkaninę, uszyj zmienioną część jeszcze raz z surówki.
+	Claude looks at the photos. It can be wrong: sew the altered part again in muslin before cutting good fabric.	Claude ogląda zdjęcia. Może się mylić: zanim skroisz dobrą tkaninę, uszyj zmienioną część jeszcze raz z surówki.
 	Final fabric	Docelowa tkanina
 	Hard to raise my arms	Trudno mi podnieść ręce
 	How it feels:	Jak leży:

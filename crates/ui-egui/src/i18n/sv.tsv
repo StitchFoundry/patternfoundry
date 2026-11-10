@@ -5276,30 +5276,23 @@ file-filter	PDF for projector	PDF för projektor
 	A password needs at least 8 characters.	Ett lösenord behöver minst 8 tecken.
 	Account	Konto
 	Allow	Tillåt
-	Anthropic API key:	Anthropic API-nyckel:
 	Ask	Fråga
 	Buy credits	Köp krediter
 	Buy…	Köp…
-	Change key	Byt nyckel
 	Create Free Account	Skapa gratis konto
 	Create a free Foundry Account	Skapa ett gratis Foundry-konto
 	Don't Allow	Tillåt inte
 	Edit › Undo takes each change back.	Redigera › Ångra tar tillbaka varje ändring.
 	Email	E-post
 	Foundry Account	Foundry-konto
-	Foundry accounts aren't open yet. Until then, the AI features work with your own Anthropic API key.	Foundry-konton har inte öppnat än. Tills dess fungerar AI-funktionerna med din egen API-nyckel från Anthropic.
-	Get a key	Skaffa en nyckel
 	I have an account: Sign In	Jag har ett konto: logga in
 	New Conversation	Ny konversation
 	New here? Create a free account	Ny här? Skapa ett gratis konto
-	No card needed, and no API key to set up	Inget kort och ingen API-nyckel att ställa in
 	Paid with Foundry credits ({n} left).	Betalt med Foundry-krediter ({n} kvar).
 	Paid with Foundry credits.	Betalt med Foundry-krediter.
-	Pay for the AI features with my Foundry credits	Betala AI-funktionerna med mina Foundry-krediter
 	Pay with Foundry credits instead	Betala med Foundry-krediter i stället
 	Payment is on Stripe's secure page, in your browser; your card never reaches PatternFoundry.	Betalningen sker på Stripes säkra sida i din webbläsare; ditt kort når aldrig PatternFoundry.
 	Reading your credits…	Läser dina krediter…
-	Remember the key on this computer	Kom ihåg nyckeln på den här datorn
 	Server	Server
 	Sign In	Logga in
 	Sign Out	Logga ut
@@ -5311,7 +5304,7 @@ file-filter	PDF for projector	PDF för projektor
 	{n} credits for {price}	{n} krediter för {price}
 @msg	Anthropic refused the API key: {0}	Anthropic avvisade API-nyckeln: {0}
 @msg	Couldn't reach the AI service: {0}	Kunde inte nå AI-tjänsten: {0}
-@msg	Enter your Anthropic API key first.	Ange din Anthropic API-nyckel först.
+@msg	AI now uses your Foundry Account. Sign in to continue.	AI använder nu ditt Foundry-konto. Logga in för att fortsätta.
 @msg	The AI declined to answer this: ask another way.	AI:n avböjde att svara på detta: fråga på ett annat sätt.
 @msg	The AI service failed (error {0}): try again later.	AI-tjänsten misslyckades (fel {0}): försök igen senare.
 @msg	The AI service is busy: try again in a minute.	AI-tjänsten är upptagen: försök igen om en minut.
@@ -5325,13 +5318,12 @@ file-filter	PDF for projector	PDF för projektor
 @msg	This conversation is long: start a New Conversation.	Den här konversationen är lång: starta en ny konversation.
 @msg	Claude took too many steps: ask again, more simply.	Claude tog för många steg: fråga igen, enklare.
 	Ask About Patterns…	Fråga om mönster…
-	Answers come from Claude with your own Anthropic API key, billed to your Anthropic account. They can be wrong: sew a muslin before cutting good fabric.	Svaren kommer från Claude med din egen Anthropic API-nyckel, debiterat ditt Anthropic-konto. De kan vara fel: sy en provmodell i nessel innan du klipper till fint tyg.
+	Answers come from Claude. They can be wrong: sew a muslin before cutting good fabric.	Svaren kommer från Claude. De kan vara fel: sy en provmodell i nessel innan du klipper till fint tyg.
 	Ask About Patterns	Fråga om mönster
 	Ask anything about sewing patterns or PatternFoundry: how much ease to add, how to move a dart, which block to start from, where a feature is. Claude can also draft and change your pattern when you ask, after you allow it.	Fråga vad som helst om symönster eller PatternFoundry: hur mycket rörelsevidd du ska lägga till, hur du flyttar en inprovning, vilket grundmönster du ska utgå från, var en funktion finns. Claude kan också konstruera och ändra ditt mönster när du ber om det, efter att du har tillåtit det.
 	Claude asks to:	Claude ber om att:
 	Couldn't do:	Kunde inte utföra:
 	Done:	Klart:
-	Free credits for the AI features, no API key needed	Gratis krediter för AI-funktionerna, ingen API-nyckel behövs
 	Free credits to try the AI features: Ask About Patterns drafts and changes patterns with you	Gratis krediter för att prova AI-funktionerna: Fråga om mönster konstruerar och ändrar mönster tillsammans med dig
 	Include my pattern	Inkludera mitt mönster
 	Its pieces and sizes, and which measurements are set: never their values	Dess delar och storlekar, och vilka mått som är angivna: aldrig deras värden
@@ -5357,7 +5349,7 @@ file-filter	PDF for projector	PDF för projektor
 	About the fit	Om passformen
 	Anything else? For example: folds below the back neck	Något annat? Till exempel: veck nedanför nacken bak
 	Check My Muslin	Kontrollera min provmodell
-	Claude looks at the photos with your own Anthropic API key, billed to your Anthropic account. It can be wrong: sew the altered part again in muslin before cutting good fabric.	Claude tittar på fotona med din egen API-nyckel från Anthropic, som debiteras ditt Anthropic-konto. Den kan ha fel: sy den ändrade delen igen i nessel innan du klipper till fint tyg.
+	Claude looks at the photos. It can be wrong: sew the altered part again in muslin before cutting good fabric.	Claude tittar på bilderna. Den kan ha fel: sy den ändrade delen igen i nessel innan du klipper till fint tyg.
 	Final fabric	Slutligt tyg
 	Hard to raise my arms	Svårt att lyfta armarna
 	How it feels:	Hur den känns:

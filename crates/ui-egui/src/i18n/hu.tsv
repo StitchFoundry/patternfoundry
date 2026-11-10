@@ -5306,30 +5306,23 @@ file-filter	PDF for projector	PDF projektorhoz
 	A password needs at least 8 characters.	A jelszónak legalább 8 karakterből kell állnia.
 	Account	Fiók
 	Allow	Engedélyezés
-	Anthropic API key:	Anthropic API-kulcs:
 	Ask	Kérdezés
 	Buy credits	Kredit vásárlása
 	Buy…	Vásárlás…
-	Change key	Kulcs módosítása
 	Create Free Account	Ingyenes fiók létrehozása
 	Create a free Foundry Account	Hozzon létre ingyenes Foundry-fiókot
 	Don't Allow	Tiltás
 	Edit › Undo takes each change back.	A Szerkesztés › Visszavonás egyenként visszavonja a módosításokat.
 	Email	E-mail
 	Foundry Account	Foundry-fiók
-	Foundry accounts aren't open yet. Until then, the AI features work with your own Anthropic API key.	A Foundry-fiókok még nem nyíltak meg. Addig az MI-funkciók a saját Anthropic API-kulcsával működnek.
-	Get a key	Kulcs igénylése
 	I have an account: Sign In	Van fiókom: bejelentkezés
 	New Conversation	Új beszélgetés
 	New here? Create a free account	Új itt? Hozzon létre ingyenes fiókot
-	No card needed, and no API key to set up	Nem kell kártya, és API-kulcsot sem kell beállítani
 	Paid with Foundry credits ({n} left).	Foundry-kredittel fizetve ({n} maradt).
 	Paid with Foundry credits.	Foundry-kredittel fizetve.
-	Pay for the AI features with my Foundry credits	Az MI-funkciók fizetése a Foundry-kreditjeimmel
 	Pay with Foundry credits instead	Fizetés inkább Foundry-kredittel
 	Payment is on Stripe's secure page, in your browser; your card never reaches PatternFoundry.	A fizetés a Stripe biztonságos oldalán történik a böngészőjében; a kártyája sosem jut el a PatternFoundryhez.
 	Reading your credits…	Kreditek beolvasása…
-	Remember the key on this computer	A kulcs megjegyzése ezen a számítógépen
 	Server	Kiszolgáló
 	Sign In	Bejelentkezés
 	Sign Out	Kijelentkezés
@@ -5341,7 +5334,7 @@ file-filter	PDF for projector	PDF projektorhoz
 	{n} credits for {price}	{n} kredit {price} áron
 @msg	Anthropic refused the API key: {0}	Az Anthropic elutasította az API-kulcsot: {0}
 @msg	Couldn't reach the AI service: {0}	Nem érhető el az MI-szolgáltatás: {0}
-@msg	Enter your Anthropic API key first.	Előbb add meg az Anthropic API-kulcsodat.
+@msg	AI now uses your Foundry Account. Sign in to continue.	Az MI mostantól a Foundry-fiókodat használja. Jelentkezz be a folytatáshoz.
 @msg	The AI declined to answer this: ask another way.	Az MI nem vállalta a válaszadást: kérdezz másképp.
 @msg	The AI service failed (error {0}): try again later.	Az MI-szolgáltatás hibát jelzett ({0}): próbáld újra később.
 @msg	The AI service is busy: try again in a minute.	Az MI-szolgáltatás foglalt: próbáld újra egy perc múlva.
@@ -5355,13 +5348,12 @@ file-filter	PDF for projector	PDF projektorhoz
 @msg	This conversation is long: start a New Conversation.	Ez a beszélgetés hosszú: kezdj egy új beszélgetést.
 @msg	Claude took too many steps: ask again, more simply.	Claude túl sok lépést tett: kérdezz újra, egyszerűbben.
 	Ask About Patterns…	Kérdezzen a szabásmintákról…
-	Answers come from Claude with your own Anthropic API key, billed to your Anthropic account. They can be wrong: sew a muslin before cutting good fabric.	A válaszokat Claude adja az Ön saját Anthropic API-kulcsával, a díjat az Anthropic-fiókja terheli. Tévedhetnek: mielőtt értékes anyagot szab ki, varrjon próbadarabot olcsó vászonból.
+	Answers come from Claude. They can be wrong: sew a muslin before cutting good fabric.	A válaszokat Claude adja. Tévedhetnek: mielőtt értékes anyagot szab ki, varrjon próbadarabot olcsó vászonból.
 	Ask About Patterns	Kérdezzen a szabásmintákról
 	Ask anything about sewing patterns or PatternFoundry: how much ease to add, how to move a dart, which block to start from, where a feature is. Claude can also draft and change your pattern when you ask, after you allow it.	Kérdezzen bármit a szabásmintákról vagy a PatternFoundryról: mennyi bőséget adjon hozzá, hogyan helyezzen át egy varrást, melyik alapszabásmintából induljon, hol talál egy funkciót. Claude kérésre meg is szerkesztheti és módosíthatja a szabásmintáját, miután engedélyezte.
 	Claude asks to:	Claude engedélyt kér erre:
 	Couldn't do:	Nem sikerült:
 	Done:	Kész:
-	Free credits for the AI features, no API key needed	Ingyenes kreditek az MI-funkciókhoz, API-kulcs nélkül
 	Free credits to try the AI features: Ask About Patterns drafts and changes patterns with you	Ingyenes kreditek az MI-funkciók kipróbálásához: a Kérdezzen a szabásmintákról Önnel együtt szerkeszt és módosít szabásmintákat
 	Include my pattern	A szabásmintám csatolása
 	Its pieces and sizes, and which measurements are set: never their values	Darabjai és méretei, valamint hogy mely méretek vannak megadva: az értékeik soha
@@ -5387,7 +5379,7 @@ file-filter	PDF for projector	PDF projektorhoz
 	About the fit	Az illeszkedésről
 	Anything else? For example: folds below the back neck	Valami más? Például: ráncok a hátsó nyakkivágás alatt
 	Check My Muslin	Próbadarabom ellenőrzése
-	Claude looks at the photos with your own Anthropic API key, billed to your Anthropic account. It can be wrong: sew the altered part again in muslin before cutting good fabric.	Claude a saját Anthropic API-kulcsával nézi meg a fotókat, az Anthropic-fiókja terhére. Tévedhet: mielőtt értékes anyagot szab ki, varrja meg újra a módosított részt próbadarabként olcsó vászonból.
+	Claude looks at the photos. It can be wrong: sew the altered part again in muslin before cutting good fabric.	Claude megnézi a fényképeket. Tévedhet: mielőtt értékes anyagot szab ki, varrja meg újra a módosított részt próbadarabként olcsó vászonból.
 	Final fabric	Végleges anyag
 	Hard to raise my arms	Nehezen emelem fel a karomat
 	How it feels:	Milyen viselni:

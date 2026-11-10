@@ -61,8 +61,9 @@ Code: `crates/ui-egui/src/dialogs/start_pattern.rs` (the dialog, `ui.startPatter
 - **Accounts and AI:** the shared **Foundry Account** (one sign-in and one balance of "Foundry
   credits" across all SiteSentrix apps), served by the StitchFoundry cloud service,
   https://cloud.stitchfoundry.app. PatternFoundry never holds an Anthropic key: AI requests go
-  through the service, which adds the owner's key and charges the user's credits. Users may still
-  enter their own Anthropic key in the app's AI settings instead.
+  through the service, which adds the owner's key and charges the user's credits. The Foundry
+  Account is the only way to sign in and pay for AI: the app has no "use my own API key" option
+  (#140; a key saved by an older version is deleted on load).
 - **Building the AI features (PF-8):** reuse StitchFoundry's client code
   (`crates/sf-core/src/ai/cloud.rs`, and the Foundry Account window in
   `crates/ui-egui/src/embroidery/account.rs`), and point builds at the service with `SF_CLOUD_URL`,

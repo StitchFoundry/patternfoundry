@@ -32,12 +32,13 @@ impl SecretStore for Keys {
     }
 }
 
-/// An app whose AI service answers with `replies` in turn, recording what it was sent, with an
-/// API key kept.
+/// An app whose AI service answers with `replies` in turn, recording what it was sent, signed in
+/// to a Foundry service.
 fn app(replies: Vec<(u16, String)>) -> (VectorcraftApp, Sent, Keys) {
     let sent: Sent = Arc::default();
     let keys = Keys::default();
-    keys.save(super::KEY_NAME, Some("sk-ant-test")).unwrap();
+    keys.save(pf_ai::cloud::TOKEN_NAME, Some("sfs_session")).unwrap();
+    keys.save("foundry-server", Some("https://cloud.example.com")).unwrap();
     let queue = Arc::new(Mutex::new(VecDeque::from(replies)));
     let log = sent.clone();
     let services = Services {
@@ -248,34 +249,32 @@ fn what_claude_may_run() {
 }
 
 #[test]
-fn without_a_key_or_a_question_nothing_is_sent() {
-    let err = json!({"type": "error", "error": {"message": "invalid x-api-key"}}).to_string();
-    let (mut app, sent, keys) = app(vec![(401, err)]);
-    keys.save(super::KEY_NAME, None).unwrap();
+fn without_an_account_or_a_question_nothing_is_sent() {
+    let (mut app, sent, keys) = app(vec![answer("Use 1.5 cm seams.")]);
+    keys.save(pf_ai::cloud::TOKEN_NAME, None).unwrap();
     app.run("ui.askAboutPatterns", json!({})).unwrap();
-    assert!(window_text(&mut app).iter().any(|t| t == "Anthropic API key:"), "no key yet: its row shows");
     app.ai.ask.input = "Where do I add seam allowance?".into();
-    assert_eq!(ask::send(&mut app).unwrap_err(), "Enter your Anthropic API key first.");
-    app.ai.key = "sk-ant-bad".into();
+    assert_eq!(ask::send(&mut app).unwrap_err(), "AI now uses your Foundry Account. Sign in to continue.");
+    assert!(app.ai.account.open, "the Foundry Account window opens to sign in");
     app.ai.ask.input = "   ".into();
-    assert_eq!(ask::send(&mut app).unwrap_err(), "Type a question first.");
+    assert_eq!(ask::send(&mut app).unwrap_err(), "AI now uses your Foundry Account. Sign in to continue.");
     assert!(sent.lock().unwrap().is_empty());
+    // signed in: an empty question is still refused, a real one goes to the service
+    app.ai.account.token = "sfs_session".into();
+    assert_eq!(ask::send(&mut app).unwrap_err(), "Type a question first.");
     app.ai.ask.input = "Where do I add seam allowance?".into();
     ask::send(&mut app).unwrap();
     assert!(ask::send(&mut app).is_err(), "one question at a time");
     wait(&mut app);
-    let st = &app.ai.ask;
-    assert_eq!(st.error.as_deref(), Some("Anthropic refused the API key: invalid x-api-key"));
-    assert_eq!(st.input, "Where do I add seam allowance?", "the question stays to ask again");
-    assert!(st.entries.is_empty() && !st.asking(), "{:?}", st.entries);
-    assert_eq!(keys.load(super::KEY_NAME), None, "a refused key isn't remembered");
+    assert_eq!(sent.lock().unwrap().len(), 1);
+    assert_eq!(sent.lock().unwrap()[0].url, "https://cloud.example.com/v1/messages");
     // a build without a way to reach the service
     let mut bare = VectorcraftApp::new(Session::new(), Services::default());
     assert!(!crate::menus::enabled(&bare, "ui.askAboutPatterns") && !crate::menus::enabled(&bare, "ui.account"));
     assert!(bare.run("ui.askAboutPatterns", json!({})).is_err());
 }
 
-/// The web: the browser's fetch answers later, on the UI thread, and the key stays in its store.
+/// The web: the browser's fetch answers later, on the UI thread, and the session stays in its store.
 #[test]
 fn the_web_sends_through_the_browser() {
     let sent: Sent = Arc::default();
@@ -284,6 +283,8 @@ fn the_web_sends_through_the_browser() {
     let later: std::rc::Rc<std::cell::RefCell<Vec<Done>>> = Default::default();
     let queue = later.clone();
     let keys = Keys::default();
+    keys.save(pf_ai::cloud::TOKEN_NAME, Some("sfs_web")).unwrap();
+    keys.save("foundry-server", Some("https://cloud.example.com")).unwrap();
     let services = Services {
         http_post_async: Some(std::rc::Rc::new(move |r: HttpRequest, done| {
             log.lock().unwrap().push(r);
@@ -294,15 +295,48 @@ fn the_web_sends_through_the_browser() {
     };
     let mut app = VectorcraftApp::new(Session::new(), services);
     app.run("file.new", json!({"width": 400, "height": 300})).unwrap();
-    app.ai.key = "sk-ant-web".into();
     app.run("ui.askAboutPatterns", json!({"question": "What is a toile?"})).unwrap();
     assert_eq!(sent.lock().unwrap().len(), 1);
+    assert_eq!(sent.lock().unwrap()[0].url, "https://cloud.example.com/v1/messages");
     assert!(app.ai.ask.waiting_for(0.0).is_some(), "waiting for the browser");
     let done = later.borrow_mut().pop().unwrap();
     done(Ok(answer("A test garment in cheap fabric.")));
     ask::poll(&mut app, &egui::Context::default());
     assert_eq!(app.ai.ask.entries.last(), Some(&Entry::Answer("A test garment in cheap fabric.".into())));
-    assert_eq!(keys.load(super::KEY_NAME).as_deref(), Some("sk-ant-web"), "remembered in the browser's store");
+}
+
+/// #140: the Foundry Account is the only way to pay for AI. The windows have no API key option, a
+/// key kept by an older version is deleted on load (and never sent), and every request goes to the
+/// account service.
+#[test]
+fn the_window_has_no_api_key_option_and_a_stored_key_is_deleted() {
+    let (mut app, sent, keys) = app(vec![answer("Use 1.5 cm seams.")]);
+    keys.save(super::LEGACY_KEY_NAME, Some("sk-ant-old")).unwrap();
+    keys.save(super::LEGACY_CREDITS_NAME, Some("0")).unwrap();
+    app.run("ui.askAboutPatterns", json!({"question": "Seam allowance?"})).unwrap();
+    assert_eq!(keys.load(super::LEGACY_KEY_NAME), None, "the old key is deleted from the store");
+    assert_eq!(keys.load(super::LEGACY_CREDITS_NAME), None);
+    assert!(app.ai.account.legacy_key_removed);
+    wait(&mut app);
+    {
+        let sent = sent.lock().unwrap();
+        assert_eq!(sent.len(), 1);
+        assert_eq!(sent[0].url, "https://cloud.example.com/v1/messages", "AI requests go to the account service only");
+        assert!(sent.iter().all(|r| r.headers.iter().all(|h| h.0 != "x-api-key") && !r.body.contains("sk-ant-old")));
+    }
+    let shown = window_text(&mut app).join("\n").to_lowercase();
+    for gone in ["api key", "anthropic", "remember the key", "get a key", "change key"] {
+        assert!(!shown.contains(gone), "{gone:?} in the Ask window: {shown}");
+    }
+    // signed out: the same, plus the one note
+    let (mut app, _, keys) = self::app(vec![]);
+    keys.save(pf_ai::cloud::TOKEN_NAME, None).unwrap();
+    keys.save(super::LEGACY_KEY_NAME, Some("sk-ant-old")).unwrap();
+    app.run("ui.askAboutPatterns", json!({})).unwrap();
+    let shown = window_text(&mut app).join("\n");
+    assert!(shown.contains("AI now uses your Foundry Account. Sign in to continue."), "{shown}");
+    assert!(!shown.to_lowercase().contains("api key"), "{shown}");
+    assert_eq!(keys.load(super::LEGACY_KEY_NAME), None);
 }
 
 #[test]

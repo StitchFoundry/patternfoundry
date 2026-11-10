@@ -5284,30 +5284,23 @@ file-filter	PDF for projector	PDF projektorille
 	A password needs at least 8 characters.	Salasanassa on oltava vähintään 8 merkkiä.
 	Account	Tili
 	Allow	Salli
-	Anthropic API key:	Anthropic API -avain:
 	Ask	Kysy
 	Buy credits	Osta krediittejä
 	Buy…	Osta…
-	Change key	Vaihda avain
 	Create Free Account	Luo ilmainen tili
 	Create a free Foundry Account	Luo ilmainen Foundry-tili
 	Don't Allow	Älä salli
 	Edit › Undo takes each change back.	Muokkaa › Kumoa peruu jokaisen muutoksen.
 	Email	Sähköposti
 	Foundry Account	Foundry-tili
-	Foundry accounts aren't open yet. Until then, the AI features work with your own Anthropic API key.	Foundry-tilit eivät ole vielä auki. Siihen asti tekoälytoiminnot toimivat omalla Anthropic API -avaimellasi.
-	Get a key	Hanki avain
 	I have an account: Sign In	Minulla on tili: kirjaudu
 	New Conversation	Uusi keskustelu
 	New here? Create a free account	Uusi täällä? Luo ilmainen tili
-	No card needed, and no API key to set up	Ei korttia eikä API-avainta asetettavaksi
 	Paid with Foundry credits ({n} left).	Maksettu Foundry-krediiteillä ({n} jäljellä).
 	Paid with Foundry credits.	Maksettu Foundry-krediiteillä.
-	Pay for the AI features with my Foundry credits	Maksa tekoälytoiminnot Foundry-krediiteilläni
 	Pay with Foundry credits instead	Maksa sen sijaan Foundry-krediiteillä
 	Payment is on Stripe's secure page, in your browser; your card never reaches PatternFoundry.	Maksu tehdään Stripen suojatulla sivulla selaimessasi; korttisi ei koskaan päädy PatternFoundrylle.
 	Reading your credits…	Luetaan krediittejä…
-	Remember the key on this computer	Muista avain tällä tietokoneella
 	Server	Palvelin
 	Sign In	Kirjaudu sisään
 	Sign Out	Kirjaudu ulos
@@ -5319,7 +5312,7 @@ file-filter	PDF for projector	PDF projektorille
 	{n} credits for {price}	{n} krediittiä hintaan {price}
 @msg	Anthropic refused the API key: {0}	Anthropic hylkäsi API-avaimen: {0}
 @msg	Couldn't reach the AI service: {0}	Tekoälypalveluun ei saatu yhteyttä: {0}
-@msg	Enter your Anthropic API key first.	Anna ensin Anthropic API -avaimesi.
+@msg	AI now uses your Foundry Account. Sign in to continue.	Tekoäly käyttää nyt Foundry-tiliäsi. Kirjaudu sisään jatkaaksesi.
 @msg	The AI declined to answer this: ask another way.	Tekoäly kieltäytyi vastaamasta tähän: kysy toisin.
 @msg	The AI service failed (error {0}): try again later.	Tekoälypalvelu epäonnistui (virhe {0}): yritä myöhemmin uudelleen.
 @msg	The AI service is busy: try again in a minute.	Tekoälypalvelu on varattu: yritä uudelleen minuutin kuluttua.
@@ -5333,13 +5326,12 @@ file-filter	PDF for projector	PDF projektorille
 @msg	This conversation is long: start a New Conversation.	Tämä keskustelu on pitkä: aloita uusi keskustelu.
 @msg	Claude took too many steps: ask again, more simply.	Claude otti liian monta vaihetta: kysy uudelleen yksinkertaisemmin.
 	Ask About Patterns…	Kysy kaavoista…
-	Answers come from Claude with your own Anthropic API key, billed to your Anthropic account. They can be wrong: sew a muslin before cutting good fabric.	Vastaukset tulevat Claudelta omalla Anthropic API -avaimellasi, ja ne laskutetaan Anthropic-tililtäsi. Ne voivat olla vääriä: ompele koeasu ennen kuin leikkaat hyvää kangasta.
+	Answers come from Claude. They can be wrong: sew a muslin before cutting good fabric.	Vastaukset tulevat Claudelta. Ne voivat olla vääriä: ompele koeasu ennen kuin leikkaat hyvää kangasta.
 	Ask About Patterns	Kysy kaavoista
 	Ask anything about sewing patterns or PatternFoundry: how much ease to add, how to move a dart, which block to start from, where a feature is. Claude can also draft and change your pattern when you ask, after you allow it.	Kysy mitä tahansa ompelukaavoista tai PatternFoundrysta: kuinka paljon väljyyttä lisätään, miten laskos siirretään, mistä peruskaavasta aloitetaan, missä jokin toiminto on. Claude voi myös piirtää ja muuttaa kaavaasi pyynnöstäsi, kun olet sallinut sen.
 	Claude asks to:	Claude pyytää:
 	Couldn't do:	Ei voitu tehdä:
 	Done:	Tehty:
-	Free credits for the AI features, no API key needed	Ilmaisia krediittejä tekoälytoimintoihin, ei API-avainta
 	Free credits to try the AI features: Ask About Patterns drafts and changes patterns with you	Ilmaisia krediittejä tekoälytoimintojen kokeiluun: Kysy kaavoista piirtää ja muuttaa kaavoja kanssasi
 	Include my pattern	Liitä mukaan kaavani
 	Its pieces and sizes, and which measurements are set: never their values	Sen osat ja koot sekä mitkä mitat on asetettu: ei koskaan niiden arvoja
@@ -5365,7 +5357,7 @@ file-filter	PDF for projector	PDF projektorille
 	About the fit	Istuvuudesta
 	Anything else? For example: folds below the back neck	Jotain muuta? Esimerkiksi: poimuja takaniskan alapuolella
 	Check My Muslin	Tarkista koeasuni
-	Claude looks at the photos with your own Anthropic API key, billed to your Anthropic account. It can be wrong: sew the altered part again in muslin before cutting good fabric.	Claude katsoo kuvat omalla Anthropic API -avaimellasi, ja maksu menee Anthropic-tilillesi. Se voi erehtyä: ompele muutettu osa uudelleen koeasuksi ennen kuin leikkaat hyvää kangasta.
+	Claude looks at the photos. It can be wrong: sew the altered part again in muslin before cutting good fabric.	Claude katsoo kuvia. Se voi erehtyä: ompele muutettu osa uudelleen koeasuksi ennen kuin leikkaat hyvää kangasta.
 	Final fabric	Lopullinen kangas
 	Hard to raise my arms	Käsiä on vaikea nostaa
 	How it feels:	Miltä se tuntuu:

@@ -4915,30 +4915,23 @@ file-filter	PDF for projector	PDF cho máy chiếu
 	A password needs at least 8 characters.	Mật khẩu cần ít nhất 8 ký tự.
 	Account	Tài khoản
 	Allow	Cho phép
-	Anthropic API key:	Khóa API Anthropic:
 	Ask	Hỏi
 	Buy credits	Mua tín dụng
 	Buy…	Mua…
-	Change key	Đổi khóa
 	Create Free Account	Tạo tài khoản miễn phí
 	Create a free Foundry Account	Tạo tài khoản Foundry miễn phí
 	Don't Allow	Không cho phép
 	Edit › Undo takes each change back.	Chỉnh sửa › Hoàn tác lấy lại từng thay đổi.
 	Email	Email
 	Foundry Account	Tài khoản Foundry
-	Foundry accounts aren't open yet. Until then, the AI features work with your own Anthropic API key.	Tài khoản Foundry chưa mở. Cho đến lúc đó, tính năng AI dùng khóa API Anthropic của riêng bạn.
-	Get a key	Lấy khóa
 	I have an account: Sign In	Tôi đã có tài khoản: Đăng nhập
 	New Conversation	Cuộc trò chuyện mới
 	New here? Create a free account	Mới đến? Tạo tài khoản miễn phí
-	No card needed, and no API key to set up	Không cần thẻ, không cần cài khóa API
 	Paid with Foundry credits ({n} left).	Trả bằng tín dụng Foundry (còn {n}).
 	Paid with Foundry credits.	Trả bằng tín dụng Foundry.
-	Pay for the AI features with my Foundry credits	Trả tiền tính năng AI bằng tín dụng Foundry của tôi
 	Pay with Foundry credits instead	Trả bằng tín dụng Foundry thay vào đó
 	Payment is on Stripe's secure page, in your browser; your card never reaches PatternFoundry.	Thanh toán diễn ra trên trang bảo mật của Stripe trong trình duyệt; thẻ của bạn không bao giờ đến PatternFoundry.
 	Reading your credits…	Đang đọc tín dụng…
-	Remember the key on this computer	Ghi nhớ khóa trên máy tính này
 	Server	Máy chủ
 	Sign In	Đăng nhập
 	Sign Out	Đăng xuất
@@ -4950,7 +4943,7 @@ file-filter	PDF for projector	PDF cho máy chiếu
 	{n} credits for {price}	{n} tín dụng giá {price}
 @msg	Anthropic refused the API key: {0}	Anthropic từ chối khóa API: {0}
 @msg	Couldn't reach the AI service: {0}	Không thể kết nối dịch vụ AI: {0}
-@msg	Enter your Anthropic API key first.	Hãy nhập khóa API Anthropic trước.
+@msg	AI now uses your Foundry Account. Sign in to continue.	AI giờ dùng Tài khoản Foundry của bạn. Hãy đăng nhập để tiếp tục.
 @msg	The AI declined to answer this: ask another way.	AI từ chối trả lời câu này: hãy hỏi theo cách khác.
 @msg	The AI service failed (error {0}): try again later.	Dịch vụ AI gặp lỗi (lỗi {0}): hãy thử lại sau.
 @msg	The AI service is busy: try again in a minute.	Dịch vụ AI đang bận: hãy thử lại sau một phút.
@@ -4964,13 +4957,12 @@ file-filter	PDF for projector	PDF cho máy chiếu
 @msg	This conversation is long: start a New Conversation.	Cuộc trò chuyện này đã dài: hãy bắt đầu Cuộc trò chuyện mới.
 @msg	Claude took too many steps: ask again, more simply.	Claude đã thực hiện quá nhiều bước: hãy hỏi lại, đơn giản hơn.
 	Ask About Patterns…	Hỏi về rập…
-	Answers come from Claude with your own Anthropic API key, billed to your Anthropic account. They can be wrong: sew a muslin before cutting good fabric.	Câu trả lời đến từ Claude bằng khóa API Anthropic của riêng bạn, tính phí vào tài khoản Anthropic của bạn. Chúng có thể sai: hãy may thử bằng vải mộc trước khi cắt vải tốt.
+	Answers come from Claude. They can be wrong: sew a muslin before cutting good fabric.	Câu trả lời do Claude đưa ra. Chúng có thể sai: hãy may thử bằng vải mộc trước khi cắt vải tốt.
 	Ask About Patterns	Hỏi về rập
 	Ask anything about sewing patterns or PatternFoundry: how much ease to add, how to move a dart, which block to start from, where a feature is. Claude can also draft and change your pattern when you ask, after you allow it.	Hỏi bất cứ điều gì về rập may hoặc PatternFoundry: nên thêm bao nhiêu độ cử động, cách xoay pen, nên bắt đầu từ rập cơ bản nào, một tính năng nằm ở đâu. Claude cũng có thể dựng và thay đổi rập của bạn khi bạn yêu cầu, sau khi bạn cho phép.
 	Claude asks to:	Claude xin phép:
 	Couldn't do:	Không thể thực hiện:
 	Done:	Đã xong:
-	Free credits for the AI features, no API key needed	Tín dụng miễn phí cho các tính năng AI, không cần khóa API
 	Free credits to try the AI features: Ask About Patterns drafts and changes patterns with you	Tín dụng miễn phí để dùng thử các tính năng AI: Hỏi về rập cùng bạn dựng và thay đổi rập
 	Include my pattern	Kèm rập của tôi
 	Its pieces and sizes, and which measurements are set: never their values	Các chi tiết và cỡ của rập, cùng những số đo đã được đặt: không bao giờ gửi giá trị
@@ -4996,7 +4988,7 @@ file-filter	PDF for projector	PDF cho máy chiếu
 	About the fit	Về độ vừa vặn
 	Anything else? For example: folds below the back neck	Còn gì khác? Ví dụ: nếp nhăn dưới cổ áo phía sau
 	Check My Muslin	Kiểm tra bản may thử của tôi
-	Claude looks at the photos with your own Anthropic API key, billed to your Anthropic account. It can be wrong: sew the altered part again in muslin before cutting good fabric.	Claude xem ảnh bằng khóa API Anthropic của bạn, tính phí vào tài khoản Anthropic của bạn. Nó có thể sai: hãy may thử lại phần đã chỉnh bằng vải mộc trước khi cắt vải tốt.
+	Claude looks at the photos. It can be wrong: sew the altered part again in muslin before cutting good fabric.	Claude xem các bức ảnh. Nó có thể sai: hãy may thử lại phần đã chỉnh bằng vải mộc trước khi cắt vải tốt.
 	Final fabric	Vải chính
 	Hard to raise my arms	Khó giơ tay lên
 	How it feels:	Cảm giác khi mặc:

@@ -5303,30 +5303,23 @@ file-filter	PDF for projector	PDF til projektor
 	A password needs at least 8 characters.	En adgangskode skal have mindst 8 tegn.
 	Account	Konto
 	Allow	Tillad
-	Anthropic API key:	Anthropic API-nøgle:
 	Ask	Spørg
 	Buy credits	Køb kreditter
 	Buy…	Køb…
-	Change key	Skift nøgle
 	Create Free Account	Opret gratis konto
 	Create a free Foundry Account	Opret en gratis Foundry-konto
 	Don't Allow	Tillad ikke
 	Edit › Undo takes each change back.	Redigér › Fortryd tager hver ændring tilbage.
 	Email	E-mail
 	Foundry Account	Foundry-konto
-	Foundry accounts aren't open yet. Until then, the AI features work with your own Anthropic API key.	Foundry-konti er ikke åbnet endnu. Indtil da virker AI-funktionerne med din egen Anthropic API-nøgle.
-	Get a key	Hent en nøgle
 	I have an account: Sign In	Jeg har en konto: log ind
 	New Conversation	Ny samtale
 	New here? Create a free account	Ny her? Opret en gratis konto
-	No card needed, and no API key to set up	Intet kort, og ingen API-nøgle at sætte op
 	Paid with Foundry credits ({n} left).	Betalt med Foundry-kreditter ({n} tilbage).
 	Paid with Foundry credits.	Betalt med Foundry-kreditter.
-	Pay for the AI features with my Foundry credits	Betal for AI-funktionerne med mine Foundry-kreditter
 	Pay with Foundry credits instead	Betal med Foundry-kreditter i stedet
 	Payment is on Stripe's secure page, in your browser; your card never reaches PatternFoundry.	Betalingen sker på Stripes sikre side i din browser; dit kort når aldrig PatternFoundry.
 	Reading your credits…	Henter dine kreditter…
-	Remember the key on this computer	Husk nøglen på denne computer
 	Server	Server
 	Sign In	Log ind
 	Sign Out	Log ud
@@ -5337,13 +5330,12 @@ file-filter	PDF for projector	PDF til projektor
 	{n} credits	{n} kreditter
 	{n} credits for {price}	{n} kreditter for {price}
 	Ask About Patterns…	Spørg om mønstre…
-	Answers come from Claude with your own Anthropic API key, billed to your Anthropic account. They can be wrong: sew a muslin before cutting good fabric.	Svarene kommer fra Claude med din egen Anthropic API-nøgle og faktureres til din Anthropic-konto. De kan være forkerte: sy en prøvemodel i nessel, før du klipper i godt stof.
+	Answers come from Claude. They can be wrong: sew a muslin before cutting good fabric.	Svarene kommer fra Claude. De kan være forkerte: sy en prøvemodel i nessel, før du klipper i godt stof.
 	Ask About Patterns	Spørg om mønstre
 	Ask anything about sewing patterns or PatternFoundry: how much ease to add, how to move a dart, which block to start from, where a feature is. Claude can also draft and change your pattern when you ask, after you allow it.	Spørg om alt om symønstre eller PatternFoundry: hvor meget bevægelsesvidde du skal tilføje, hvordan du flytter et indsnit, hvilket grundmønster du skal starte fra, hvor en funktion findes. Claude kan også konstruere og ændre dit mønster, når du beder om det, efter at du har tilladt det.
 	Claude asks to:	Claude beder om at:
 	Couldn't do:	Kunne ikke udføre:
 	Done:	Udført:
-	Free credits for the AI features, no API key needed	Gratis kreditter til AI-funktionerne, ingen API-nøgle nødvendig
 	Free credits to try the AI features: Ask About Patterns drafts and changes patterns with you	Gratis kreditter til at prøve AI-funktionerne: Spørg om mønstre konstruerer og ændrer mønstre sammen med dig
 	Include my pattern	Medtag mit mønster
 	Its pieces and sizes, and which measurements are set: never their values	Dets dele og størrelser, og hvilke mål der er angivet: aldrig deres værdier
@@ -5366,7 +5358,7 @@ file-filter	PDF for projector	PDF til projektor
 @msg	Pay on the page that opened in your browser, then press Refresh.	Betal på siden, der åbnede i din browser, og tryk derefter på Opdatér.
 @msg	Anthropic refused the API key: {0}	Anthropic afviste API-nøglen: {0}
 @msg	Couldn't reach the AI service: {0}	Kunne ikke nå AI-tjenesten: {0}
-@msg	Enter your Anthropic API key first.	Indtast først din Anthropic API-nøgle.
+@msg	AI now uses your Foundry Account. Sign in to continue.	AI bruger nu din Foundry-konto. Log ind for at fortsætte.
 @msg	The AI declined to answer this: ask another way.	AI'en ville ikke svare på dette: spørg på en anden måde.
 @msg	The AI service failed (error {0}): try again later.	AI-tjenesten fejlede (fejl {0}): prøv igen senere.
 @msg	The AI service is busy: try again in a minute.	AI-tjenesten er optaget: prøv igen om et minut.
@@ -5384,7 +5376,7 @@ file-filter	PDF for projector	PDF til projektor
 	About the fit	Om pasformen
 	Anything else? For example: folds below the back neck	Andet? For eksempel: folder under nakken bagpå
 	Check My Muslin	Tjek min prøvemodel
-	Claude looks at the photos with your own Anthropic API key, billed to your Anthropic account. It can be wrong: sew the altered part again in muslin before cutting good fabric.	Claude ser på fotoene med din egen Anthropic API-nøgle, faktureret til din Anthropic-konto. Det kan tage fejl: sy den ændrede del igen i nessel, før du klipper i godt stof.
+	Claude looks at the photos. It can be wrong: sew the altered part again in muslin before cutting good fabric.	Claude ser på billederne. Det kan tage fejl: sy den ændrede del igen i nessel, før du klipper i godt stof.
 	Final fabric	Endeligt stof
 	Hard to raise my arms	Svært at løfte armene
 	How it feels:	Sådan føles den:
