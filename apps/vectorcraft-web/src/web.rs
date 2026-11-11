@@ -66,6 +66,7 @@ pub fn start() {
         return;
     };
     detect_language();
+    crate::makerfoundry::choose_services();
     // Read and taken out of the page address before anything else can see it.
     let link = crate::makerfoundry::take_link();
     wasm_bindgen_futures::spawn_local(async move {

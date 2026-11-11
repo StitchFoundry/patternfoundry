@@ -96,6 +96,10 @@ pub(crate) fn keep(app: &VectorcraftApp, name: &str, value: Option<&str>) {
 
 /// The service's address in use (`None`: accounts aren't open).
 pub fn server(app: &VectorcraftApp) -> Option<String> {
+    // The web app's staging switch: the compiled-in staging service, whatever the Server row says.
+    if pf_ai::makerfoundry::staging() {
+        return cloud::clean_server(pf_ai::makerfoundry::STAGING_CLOUD);
+    }
     let typed = app.ai.account.server.trim();
     if typed.is_empty() { cloud::clean_server(&default_server()) } else { cloud::clean_server(typed) }
 }

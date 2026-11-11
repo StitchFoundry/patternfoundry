@@ -9,7 +9,8 @@
 use sha2::{Digest, Sha256};
 
 /// The hosts the page must be able to fetch from.
-const MUST_CONNECT: [&str; 2] = ["https://makerfoundry.app", "https://www.makerfoundry.app"];
+const MUST_CONNECT: [&str; 4] =
+    ["https://makerfoundry.app", "https://www.makerfoundry.app", pf_ai::makerfoundry::STAGING_SITE, pf_ai::makerfoundry::STAGING_CLOUD];
 
 /// What is wrong with the policy of the page `html`, if it has one.
 fn problems(html: &str) -> Vec<String> {
@@ -71,14 +72,15 @@ fn a_policy_missing_a_host_or_a_script_hash_is_caught() {
             "<html><head><meta http-equiv=\"Content-Security-Policy\" content=\"{policy}\"><script>{script}</script><script src=\"a.js\"></script></head></html>"
         )
     };
-    let good = format!("default-src 'self'; connect-src 'self' https://makerfoundry.app https://www.makerfoundry.app; script-src 'self' {hash}");
+    let staging = format!("{} {}", pf_ai::makerfoundry::STAGING_SITE, pf_ai::makerfoundry::STAGING_CLOUD);
+    let good = format!("default-src 'self'; connect-src 'self' https://makerfoundry.app https://www.makerfoundry.app {staging}; script-src 'self' {hash}");
     assert_eq!(problems(&page(&good)), Vec::<String>::new());
     let no_www = good.replace(" https://www.makerfoundry.app", "");
     assert_eq!(problems(&page(&no_www)), ["connect-src doesn't allow https://www.makerfoundry.app"]);
     let no_hash = good.replace(&format!(" {hash}"), "");
     assert_eq!(problems(&page(&no_hash)).len(), 1);
     // Without connect-src, default-src decides.
-    assert_eq!(problems(&page("default-src 'self'")).len(), 3);
+    assert_eq!(problems(&page("default-src 'self'")).len(), 5);
     // No policy: nothing to check.
     assert!(problems("<html><script>x</script></html>").is_empty());
 }

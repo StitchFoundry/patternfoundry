@@ -17,6 +17,8 @@
 //! [`download_name`] names the file, and [`download_refusal`] reads a refusal. The web app
 //! (`apps/vectorcraft-web/src/makerfoundry.rs`) does the fetching.
 
+use std::sync::atomic::{AtomicBool, Ordering};
+
 use serde_json::{Value, json};
 
 use super::HttpRequest;
@@ -26,6 +28,50 @@ use super::cloud::TOKEN_PREFIX;
 pub const SITE: &str = "https://makerfoundry.app";
 /// The site's host.
 pub const HOST: &str = "makerfoundry.app";
+/// The staging account service, compiled in: the web app's `?services=staging` switch uses it
+/// (and never an address taken from the page address).
+pub const STAGING_CLOUD: &str = "https://cloud-staging-staging.up.railway.app";
+/// Staging MakerFoundry's site.
+pub const STAGING_SITE: &str = "https://makerfoundry-test-test.up.railway.app";
+/// Staging MakerFoundry's host.
+pub const STAGING_HOST: &str = "makerfoundry-test-test.up.railway.app";
+/// The banner shown while the staging services are in use.
+pub const STAGING_BANNER: &str = "STAGING services (test data)";
+
+/// Whether this run talks to the staging services (set once at start, by the web app).
+static STAGING: AtomicBool = AtomicBool::new(false);
+
+/// Use the staging services (`true`) or production (`false`, the default) from now on.
+pub fn set_staging(on: bool) {
+    STAGING.store(on, Ordering::Relaxed);
+}
+
+/// Whether the staging services are in use.
+pub fn staging() -> bool {
+    STAGING.load(Ordering::Relaxed)
+}
+
+/// Whether the page address's query `search` (`?services=staging`) asks for the staging services,
+/// given what the tab remembers (`remembered`, from an earlier staging switch). Only the exact
+/// value `staging` switches; any other value is ignored (the remembered choice stands).
+pub fn wants_staging(search: &str, remembered: bool) -> bool {
+    let q = search.strip_prefix('?').unwrap_or(search);
+    q.split('&').any(|kv| kv == "services=staging") || remembered
+}
+
+/// MakerFoundry's site in use.
+pub fn site() -> &'static str {
+    site_in(staging())
+}
+
+fn site_in(staging: bool) -> &'static str {
+    if staging { STAGING_SITE } else { SITE }
+}
+
+fn host_in(staging: bool) -> &'static str {
+    if staging { STAGING_HOST } else { HOST }
+}
+
 /// The endpoint designs are published to.
 pub const DESIGNS: &str = "/api/v1/designs";
 /// The most a design file may weigh (MakerFoundry's limit for vector files).
@@ -93,6 +139,11 @@ pub fn file_name(title: &str, ext: &str) -> String {
 /// `file_name`, signed in with the Foundry session `token`, from app `app` ("PatternFoundry
 /// 0.13.1"). Only a session token is ever sent: anything else is refused before it leaves.
 pub fn publish(token: &str, file_name: &str, file_base64: &str, len: usize, app: &str) -> Result<HttpRequest, MfError> {
+    publish_to(site(), token, file_name, file_base64, len, app)
+}
+
+/// [`publish`] to the site `site`.
+fn publish_to(site: &str, token: &str, file_name: &str, file_base64: &str, len: usize, app: &str) -> Result<HttpRequest, MfError> {
     let token = token.trim();
     if !token.starts_with(TOKEN_PREFIX) || token.len() <= TOKEN_PREFIX.len() || !token.bytes().all(|b| b.is_ascii_graphic()) {
         return Err(MfError::SignIn);
@@ -105,7 +156,7 @@ pub fn publish(token: &str, file_name: &str, file_base64: &str, len: usize, app:
     }
     let body = json!({ "file_name": file_name, "file": file_base64, "app": app });
     Ok(HttpRequest {
-        url: format!("{SITE}{DESIGNS}"),
+        url: format!("{site}{DESIGNS}"),
         headers: vec![("content-type", "application/json".to_string()), ("authorization", format!("Bearer {token}"))],
         body: body.to_string(),
     })
@@ -153,12 +204,16 @@ fn sentence(s: &str) -> String {
 /// host exactly [`HOST`] (no user name, no port, no other host ending in it), then a path; printable
 /// ASCII without spaces or backslashes, at most [`MAX_ADDRESS`] characters.
 pub fn on_site(url: &str) -> bool {
+    on_site_in(url, staging())
+}
+
+fn on_site_in(url: &str, staging: bool) -> bool {
     if url.len() > MAX_ADDRESS || !url.bytes().all(|b| b.is_ascii_graphic() && b != b'\\') {
         return false;
     }
     let Some(rest) = url.strip_prefix("https://") else { return false };
     let host_end = rest.find(['/', '?', '#']).unwrap_or(rest.len());
-    &rest[..host_end] == HOST && rest[host_end..].starts_with('/')
+    rest[..host_end] == *host_in(staging) && rest[host_end..].starts_with('/')
 }
 
 // ---- PF-12: opening a design file from a MakerFoundry link ----
@@ -196,6 +251,11 @@ pub enum OpenError {
 /// [`FILE_PATHS`] of `a-z 0-9 - . /` only (no empty, `.` or `..` segment), and at most the access
 /// token `?t=` and 48 lowercase hex digits; printable ASCII, at most 2048 characters, no fragment.
 pub fn open_address(link: &str) -> Result<String, OpenError> {
+    open_address_in(link, staging())
+}
+
+/// [`open_address`] with the staging host accepted only when `staging`.
+fn open_address_in(link: &str, staging: bool) -> Result<String, OpenError> {
     let bad = OpenError::NotMakerFoundry;
     if link.is_empty() || link.len() > MAX_ADDRESS || !link.bytes().all(|b| b.is_ascii_graphic() && b != b'\\') {
         return Err(bad);
@@ -203,7 +263,7 @@ pub fn open_address(link: &str) -> Result<String, OpenError> {
     let rest = link.strip_prefix("https://").ok_or(bad.clone())?;
     let host_end = rest.find('/').ok_or(bad.clone())?;
     let host = &rest[..host_end];
-    let host = FILE_HOSTS.iter().find(|h| **h == host).ok_or(bad.clone())?;
+    let host = FILE_HOSTS.iter().copied().chain(staging.then_some(STAGING_HOST)).find(|h| *h == host).ok_or(bad.clone())?;
     let (path, query) = match rest[host_end..].split_once('?') {
         Some((p, q)) => (p, Some(q)),
         None => (&rest[host_end..], None),
@@ -502,5 +562,36 @@ mod tests {
         let said = download_refusal(404, &messy).to_string();
         assert!(said.starts_with("MakerFoundry: Gone. [31mxxx") && !said.chars().any(char::is_control), "{said}");
         assert_eq!(said.chars().count(), "MakerFoundry: ".len() + 300);
+    }
+
+    #[test]
+    fn staging_switches_the_addresses_and_nothing_else_does() {
+        assert!(wants_staging("?services=staging", false));
+        assert!(wants_staging("?lang=de&services=staging", false));
+        assert!(wants_staging("", true));
+        for other in ["", "?services=production", "?services=Staging", "?services=staging2", "?services=https://evil.com", "?xservices=staging", "?services="] {
+            assert!(!wants_staging(other, false), "{other:?}");
+        }
+        assert_eq!(site_in(false), "https://makerfoundry.app");
+        assert_eq!(site_in(true), STAGING_SITE);
+        let r = publish_to(site_in(true), "sfs_abc", "a.svg", "AAAA", 3, "PatternFoundry 1").unwrap();
+        assert_eq!(r.url, "https://makerfoundry-test-test.up.railway.app/api/v1/designs");
+        let file = "https://makerfoundry-test-test.up.railway.app/api/v1/designs/1/file/a.svg";
+        assert_eq!(open_address_in(file, true).as_deref(), Ok(file));
+        assert_eq!(open_address_in(file, false), Err(OpenError::NotMakerFoundry));
+        assert!(on_site_in("https://makerfoundry-test-test.up.railway.app/designs/1", true));
+        assert!(!on_site_in("https://makerfoundry-test-test.up.railway.app/designs/1", false));
+        assert!(!on_site_in("https://makerfoundry.app/designs/1", true));
+        for bad in [
+            "https://makerfoundry-test-test.up.railway.app.evil.com/api/v1/designs/1/file/a.svg",
+            "https://evil.com/makerfoundry-test-test.up.railway.app/api/v1/designs/1/file/a.svg",
+            "https://makerfoundry-test-test.up.railway.app@evil.com/api/v1/designs/1/file/a.svg",
+            "https://makerfoundry-test-test.up.railway.app:8443/api/v1/designs/1/file/a.svg",
+            "http://makerfoundry-test-test.up.railway.app/api/v1/designs/1/file/a.svg",
+        ] {
+            assert_eq!(open_address_in(bad, true), Err(OpenError::NotMakerFoundry), "{bad:?}");
+        }
+        // production is the default
+        assert!(!staging());
     }
 }

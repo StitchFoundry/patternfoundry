@@ -15,6 +15,8 @@
 //!
 //! URL query flags: `?webgl` forces the WebGL2 backend instead of WebGPU; `?lang=es` (any
 //! language code) stands in for the browser's languages when the interface language is Automatic;
+//! `?services=staging` uses the staging account service and staging MakerFoundry for the tab (with
+//! a banner; nothing else is accepted for `services`);
 //! `?open=<URL-encoded MakerFoundry design file address>` opens that design (`makerfoundry`).
 
 #[cfg(target_arch = "wasm32")]
