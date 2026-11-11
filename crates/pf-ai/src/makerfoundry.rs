@@ -569,7 +569,9 @@ mod tests {
         assert!(wants_staging("?services=staging", false));
         assert!(wants_staging("?lang=de&services=staging", false));
         assert!(wants_staging("", true));
-        for other in ["", "?services=production", "?services=Staging", "?services=staging2", "?services=https://evil.com", "?xservices=staging", "?services="] {
+        for other in
+            ["", "?services=production", "?services=Staging", "?services=staging2", "?services=https://evil.com", "?xservices=staging", "?services="]
+        {
             assert!(!wants_staging(other, false), "{other:?}");
         }
         assert_eq!(site_in(false), "https://makerfoundry.app");

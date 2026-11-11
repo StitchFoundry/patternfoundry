@@ -73,7 +73,8 @@ fn a_policy_missing_a_host_or_a_script_hash_is_caught() {
         )
     };
     let staging = format!("{} {}", pf_ai::makerfoundry::STAGING_SITE, pf_ai::makerfoundry::STAGING_CLOUD);
-    let good = format!("default-src 'self'; connect-src 'self' https://makerfoundry.app https://www.makerfoundry.app {staging}; script-src 'self' {hash}");
+    let good =
+        format!("default-src 'self'; connect-src 'self' https://makerfoundry.app https://www.makerfoundry.app {staging}; script-src 'self' {hash}");
     assert_eq!(problems(&page(&good)), Vec::<String>::new());
     let no_www = good.replace(" https://www.makerfoundry.app", "");
     assert_eq!(problems(&page(&no_www)), ["connect-src doesn't allow https://www.makerfoundry.app"]);
