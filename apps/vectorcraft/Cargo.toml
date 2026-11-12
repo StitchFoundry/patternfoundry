@@ -94,7 +94,7 @@ wayland-backend = { version = "0.3", features = ["client_system"] }
 # systems where rfd shows the portal's dialog. MIT, already in the build through accesskit. Pinned
 # exactly: review the diff before bumping.
 [target.'cfg(any(target_os = "linux", target_os = "freebsd", target_os = "dragonfly", target_os = "netbsd", target_os = "openbsd"))'.dependencies]
-zbus = "=5.19.0"
+zbus = "=6.2.1"
 
 [build-dependencies]
 # Icon + VERSIONINFO for patternfoundry.exe; build.rs only uses it when targeting Windows.
@@ -104,4 +104,4 @@ winresource = "0.1"
 # Bound socket buffers in real loopback transport deadline regressions.
 socket2 = { workspace = true }
 # src/portal_save.rs's tests build and read the portal's D-Bus values on every system.
-zbus = "=5.19.0"
+zbus = "=6.2.1"
