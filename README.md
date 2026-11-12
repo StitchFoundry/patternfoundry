@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/SiteSentrix/patternfoundry/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/SiteSentrix/patternfoundry/actions/workflows/ci.yml/badge.svg"></a>
+  <a href="https://github.com/StitchFoundry/patternfoundry/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/StitchFoundry/patternfoundry/actions/workflows/ci.yml/badge.svg"></a>
   <img alt="Status: early development" src="https://img.shields.io/badge/status-early%20development-555555">
   <img alt="Written in pure Rust" src="https://img.shields.io/badge/pure-Rust-b83a24?logo=rust&logoColor=white">
   <img alt="License: MIT OR Apache-2.0" src="https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-555555">
@@ -25,6 +25,20 @@ still to come: see [`docs/plan.md`](docs/plan.md) for the milestones (pattern pi
 printing, measurements, blocks, design tools, grading, cutting-room export) and
 [`docs/market.md`](docs/market.md) for the features we plan. There are no
 downloads yet.
+
+## Getting started
+
+A pattern starts from measurements, not a page size. On the Home screen choose **Start a pattern**
+(or File › Start a Pattern…):
+
+1. **What are you making?** A bodice, skirt, sleeve or trousers.
+2. **Whose measurements?** Type your own (each has a short "how to measure" line; choose centimetres
+   or inches), pick one of the round sample sizes, or use a set you kept in My Measurements.
+3. **Create Pattern.** The pieces are drafted and the page is fitted to them; the paper size is only
+   chosen later, at Print (home printers get tiled pages with the 10 cm test square).
+
+Typed measurements stay on your computer. Tick "Keep these measurements" to save them to My
+Measurements for next time. Prefer the old way? **Blank page** (or File › New…) still offers the page presets.
 
 ## Built on VectorCraft
 

@@ -194,7 +194,7 @@ against riscv64 libraries from ports.ubuntu.com (so the floor there is glibc 2.3
 `EMULATOR=qemu-riscv64` set: a `.tar.gz` only, with `patternfoundry-cli --version` run under QEMU.
 
 **AppImage updates.** Each AppImage embeds the update information
-`gh-releases-zsync|SiteSentrix|PatternFoundry|latest|patternfoundry-*-linux-<arch>.AppImage.zsync`
+`gh-releases-zsync|StitchFoundry|PatternFoundry|latest|patternfoundry-*-linux-<arch>.AppImage.zsync`
 (appimagetool `-u`), and `package.sh` writes the matching `.zsync` beside it when `zsyncmake` (the
 `zsync` package) is installed. [AppImageUpdate](https://github.com/AppImageCommunity/AppImageUpdate)
 and AppImageLauncher then download only the changed blocks from the newest published,

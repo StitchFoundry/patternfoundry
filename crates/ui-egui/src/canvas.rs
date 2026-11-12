@@ -2794,7 +2794,11 @@ fn home(app: &mut VectorcraftApp, ui: &mut Ui, rect: egui::Rect) {
     ui.label(egui::RichText::new(tl!("Vector illustration — fast, open, scriptable.")).size(14.0).color(t.text_dim));
     ui.add_space(22.0);
     ui.horizontal(|ui| {
-        if widgets::primary_button(ui, tl!("New file")).clicked() {
+        if widgets::primary_button(ui, tl!("Start a pattern")).clicked() {
+            app.run("ui.startPattern", json!({})).ok();
+        }
+        ui.add_space(8.0);
+        if widgets::secondary_button(ui, tl!("Blank page")).clicked() {
             app.run("file.newDialog", json!({})).ok();
         }
         ui.add_space(8.0);
