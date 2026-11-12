@@ -48,6 +48,108 @@ fn nearest_edge(ring: &[Mm], q: Mm) -> Option<(usize, f64, f64)> {
         .min_by(|a, b| a.2.total_cmp(&b.2))
 }
 
+/// The edges of a closed ring in a uniform grid, to find how far many points are from the ring
+/// without measuring every edge each time: a densely digitised piece has tens of thousands of
+/// edges on both its lines, and checking each pair froze the app for minutes (issue 169).
+struct EdgeGrid<'a> {
+    ring: &'a [Mm],
+    origin: Mm,
+    cell: f64,
+    cols: i64,
+    rows: i64,
+    /// The edges with a sample point in each cell, row by row.
+    cells: Vec<Vec<usize>>,
+}
+
+impl<'a> EdgeGrid<'a> {
+    fn new(ring: &'a [Mm]) -> Self {
+        let n = ring.len().max(1);
+        let (mut lo, mut hi) = ([f64::INFINITY; 2], [f64::NEG_INFINITY; 2]);
+        let mut perimeter = 0.0;
+        for (i, p) in ring.iter().enumerate() {
+            (lo, hi) = ([lo[0].min(p[0]), lo[1].min(p[1])], [hi[0].max(p[0]), hi[1].max(p[1])]);
+            let q = ring[(i + 1) % ring.len()];
+            perimeter += (q[0] - p[0]).hypot(q[1] - p[1]);
+        }
+        if ring.is_empty() {
+            (lo, hi) = ([0.0; 2], [0.0; 2]);
+        }
+        // About as many cells as edges, each holding a few edges.
+        let extent = (hi[0] - lo[0]).max(hi[1] - lo[1]);
+        let cell = (2.0 * perimeter / n as f64).max(extent / (n as f64).sqrt());
+        let cell = if cell.is_finite() && cell > 0.0 { cell } else { 1.0 };
+        let span = |a: f64, b: f64| ((b - a) / cell).floor().clamp(0.0, 1e6) as i64 + 1;
+        let (cols, rows) = (span(lo[0], hi[0]), span(lo[1], hi[1]));
+        let mut grid = EdgeGrid { ring, origin: lo, cell, cols, rows, cells: vec![Vec::new(); (cols * rows) as usize] };
+        // Each edge sampled every half cell, so every point on it is within a quarter cell of a
+        // sample, and so of a cell that lists it.
+        for (i, &a) in ring.iter().enumerate() {
+            let b = ring[(i + 1) % ring.len()];
+            let steps = ((b[0] - a[0]).hypot(b[1] - a[1]) / (cell / 2.0)).ceil().clamp(0.0, 1e7) as usize;
+            for k in 0..=steps {
+                let t = if steps == 0 { 0.0 } else { k as f64 / steps as f64 };
+                let (cx, cy) = grid.key([a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t]);
+                if let Some(c) = grid.index(cx, cy)
+                    && grid.cells[c].last() != Some(&i)
+                {
+                    grid.cells[c].push(i);
+                }
+            }
+        }
+        grid
+    }
+
+    fn key(&self, p: Mm) -> (i64, i64) {
+        (((p[0] - self.origin[0]) / self.cell).floor() as i64, ((p[1] - self.origin[1]) / self.cell).floor() as i64)
+    }
+
+    fn index(&self, cx: i64, cy: i64) -> Option<usize> {
+        ((0..self.cols).contains(&cx) && (0..self.rows).contains(&cy)).then(|| (cy * self.cols + cx) as usize)
+    }
+
+    /// How far `q` is from the ring: the distance of [`nearest_edge`], found from the cells round
+    /// `q` outward.
+    fn distance(&self, q: Mm) -> Option<f64> {
+        if self.ring.is_empty() {
+            return None;
+        }
+        let (cx, cy) = self.key(q);
+        let n = self.ring.len();
+        // From well outside the grid, searching outward costs more than measuring every edge.
+        let far = cx < -self.cols || cx > 2 * self.cols || cy < -self.rows || cy > 2 * self.rows;
+        if far {
+            return nearest_edge(self.ring, q).map(|e| e.2);
+        }
+        let last = (cx.max(self.cols - 1 - cx)).max(cy.max(self.rows - 1 - cy)).max(0);
+        let mut best = f64::INFINITY;
+        let visit = |x: i64, y: i64, best: &mut f64| {
+            for &i in self.index(x, y).map_or(&[][..], |c| &self.cells[c]) {
+                *best = best.min(to_segment(q, self.ring[i], self.ring[(i + 1) % n]).0);
+            }
+        };
+        for r in 0..=last {
+            // A sample in ring `r` (cells `r` from q's) is at least `r - 1` cells from q, and the
+            // edge it stands for at most a quarter cell nearer: nothing from here on is closer.
+            if (r - 1) as f64 * self.cell - self.cell / 4.0 >= best {
+                break;
+            }
+            if r == 0 {
+                visit(cx, cy, &mut best);
+                continue;
+            }
+            for x in (cx - r).max(-1)..=(cx + r).min(self.cols) {
+                visit(x, cy - r, &mut best);
+                visit(x, cy + r, &mut best);
+            }
+            for y in (cy - r + 1).max(-1)..=(cy + r - 1).min(self.rows) {
+                visit(cx - r, y, &mut best);
+                visit(cx + r, y, &mut best);
+            }
+        }
+        Some(best)
+    }
+}
+
 /// How far a point `q` is from the infinite line through `a` and `b`.
 fn to_line(q: Mm, a: Mm, b: Mm) -> f64 {
     let (dx, dy) = (b[0] - a[0], b[1] - a[1]);
@@ -131,12 +233,13 @@ pub(super) fn import(bytes: &[u8]) -> Result<(Document, Vec<String>)> {
         let mut allowance = 0.0;
         if sewn {
             let round = |v: f64| (v * 100.0).round() / 100.0;
-            let legs = dart_legs(seam);
+            let legs: std::collections::HashSet<usize> = dart_legs(seam).into_iter().collect();
+            let cutting = EdgeGrid::new(&ap.boundary);
             let gaps: Vec<(usize, f64)> = (0..seam.len())
                 .filter(|i| Some(*i) != fold && !legs.contains(i))
                 .filter_map(|i| {
                     let (p, q) = edge(i);
-                    nearest_edge(&ap.boundary, [(p[0] + q[0]) / 2.0, (p[1] + q[1]) / 2.0]).map(|e| (i, round(e.2)))
+                    cutting.distance([(p[0] + q[0]) / 2.0, (p[1] + q[1]) / 2.0]).map(|d| (i, round(d)))
                 })
                 .collect();
             let mut sorted: Vec<f64> = gaps.iter().map(|g| g.1).collect();
@@ -212,4 +315,41 @@ pub(super) fn import(bytes: &[u8]) -> Result<(Document, Vec<String>)> {
         warnings.push(format!("drafted in size {}; the file's grade rules are not read", style.sample_size.trim()));
     }
     Ok((d, warnings))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// A small deterministic generator (no new dependency).
+    fn lcg(seed: &mut u64) -> f64 {
+        *seed = seed.wrapping_mul(6_364_136_223_846_793_005).wrapping_add(1_442_695_040_888_963_407);
+        (*seed >> 11) as f64 / (1u64 << 53) as f64
+    }
+
+    #[test]
+    fn the_edge_grid_measures_the_same_distance_as_every_edge() {
+        let mut seed = 169;
+        let round: Vec<Mm> = (0..500)
+            .map(|i| {
+                let a = f64::from(i) / 500.0 * std::f64::consts::TAU;
+                [300.0 * a.cos(), 200.0 * a.sin()]
+            })
+            .collect();
+        let zigzag: Vec<Mm> = (0..300).map(|i| [f64::from(i % 2) * 400.0, f64::from(i)]).collect();
+        let random: Vec<Mm> = (0..200).map(|_| [lcg(&mut seed) * 1000.0, lcg(&mut seed) * 50.0]).collect();
+        let few: Vec<Mm> = vec![[0.0, 0.0], [1000.0, 0.0], [1000.0, 0.001]];
+        let one: Vec<Mm> = vec![[5.0, 5.0]];
+        for ring in [&round, &zigzag, &random, &few, &one] {
+            let grid = EdgeGrid::new(ring);
+            let mut points: Vec<Mm> = (0..400).map(|_| [lcg(&mut seed) * 1400.0 - 400.0, lcg(&mut seed) * 1400.0 - 400.0]).collect();
+            points.extend([[1e300, -1e300], [5.0, 5.0], [0.0, 0.0], [-1e6, 3.0]]);
+            for q in points {
+                let want = nearest_edge(ring, q).map(|e| e.2);
+                let got = grid.distance(q);
+                assert_eq!(got, want, "{q:?} on a ring of {}", ring.len());
+            }
+        }
+        assert_eq!(EdgeGrid::new(&[]).distance([0.0, 0.0]), None);
+    }
 }
