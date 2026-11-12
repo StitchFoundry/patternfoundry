@@ -1200,6 +1200,10 @@ fn outlines(s: &mut Session, p: &Value) -> Result<Value> {
         if !piece.material.is_empty() {
             text.push_str(&format!(" · {}", piece.material));
         }
+        for note in &piece.notes {
+            text.push('\n');
+            text.push_str(note);
+        }
         out.push(json!({
             "name": piece.name,
             "text": text,

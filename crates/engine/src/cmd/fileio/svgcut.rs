@@ -171,8 +171,14 @@ pub(super) fn encode(doc: &Document, p: &Value) -> Result<Encoded> {
             if !piece.material.is_empty() {
                 second.push_str(&format!(" · {}", piece.material));
             }
+            // Designs to embroider or print on the piece: a line each under the cut line.
+            let notes: String = piece
+                .notes
+                .iter()
+                .map(|note| format!("<tspan x=\"{}\" dy=\"{}\">{}</tspan>", n(t[0] + 3.0), n(TEXT_MM * 1.3), escape(note)))
+                .collect();
             out.push_str(&format!(
-                "    <text x=\"{}\" y=\"{}\" font-family=\"sans-serif\" font-size=\"{}\" fill=\"#000000\" stroke=\"none\"><tspan x=\"{}\">{}</tspan><tspan x=\"{}\" dy=\"{}\">{}</tspan></text>\n",
+                "    <text x=\"{}\" y=\"{}\" font-family=\"sans-serif\" font-size=\"{}\" fill=\"#000000\" stroke=\"none\"><tspan x=\"{}\">{}</tspan><tspan x=\"{}\" dy=\"{}\">{}</tspan>{}</text>\n",
                 n(t[0] + 3.0),
                 n(t[1]),
                 n(TEXT_MM),
@@ -180,7 +186,8 @@ pub(super) fn encode(doc: &Document, p: &Value) -> Result<Encoded> {
                 escape(&piece.name),
                 n(t[0] + 3.0),
                 n(TEXT_MM * 1.3),
-                escape(&second)
+                escape(&second),
+                notes
             ));
         }
         out.push_str("  </g>\n");

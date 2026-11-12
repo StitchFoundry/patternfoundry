@@ -140,6 +140,9 @@ pub struct Piece {
     /// Lines drawn on the piece but not cut (placements, fold lines, darts).
     pub internal: Vec<Vec<Mm>>,
     pub drills: Vec<Drill>,
+    /// Notes for the cut list (a design to embroider here, 90 x 60 mm): shown on the projector
+    /// view and the cutting SVG's labels; not written to the DXF-AAMA file.
+    pub notes: Vec<String>,
     /// Where the piece system text starts (inside the piece).
     pub text_at: Mm,
 }

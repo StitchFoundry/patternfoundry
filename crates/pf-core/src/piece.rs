@@ -321,7 +321,13 @@ impl Piece {
             cut.push_str(" · ");
             cut.push_str(&self.fabric);
         }
-        format!("{name}\n{cut}")
+        let mut label = format!("{name}\n{cut}");
+        // The cut list's notes: the designs to embroider or print on the piece, one line each.
+        for p in &self.placements {
+            label.push('\n');
+            label.push_str(&p.note());
+        }
+        label
     }
 
     /// Move the positions the piece stores (its grainline and drill holes) by `f`, as the host
@@ -476,6 +482,14 @@ mod tests {
         assert_eq!(Piece::default().label(), "Piece\nCut 1");
         let mut p = Piece { name: "Front".into(), fold: Some(3), ..Piece::default() };
         assert_eq!(p.label(), "Front\nCut 1 on fold");
+        // A design placed on the piece is a line on the cut list, and moves with the piece.
+        let rose = crate::Placement::new(crate::PlacementKind::Embroidery, "Rose", "rose.dst", 90.0, 60.0, Pt::new(10.0, 20.0));
+        p.add_placement(rose).unwrap();
+        assert_eq!(p.label(), "Front\nCut 1 on fold\nEmbroider \"Rose\" here, 90 x 60 mm");
+        p.transform(|q| q + Pt::new(1.0, 2.0));
+        assert_eq!(p.placements[0].at, Pt::new(11.0, 22.0));
+        assert!(p.add_placement(crate::Placement::new(crate::PlacementKind::Screen, "x", "", 0.0, 5.0, Pt::default())).is_err());
+        p.placements.clear();
         // The fold takes no allowance, and goes when its edge does.
         p.edges.insert(3, 15.0);
         assert_eq!((p.allowance_of(3), p.allowance_of(2)), (0.0, 10.0));

@@ -152,6 +152,9 @@ pub(crate) fn pieces(doc: &Document) -> Result<Vec<AamaPiece>> {
         for c in children.iter().filter(|c| mark_of(c).is_none()) {
             internal_lines(c, &mut internal);
         }
+        // Designs placed on the piece (PF-12): each one's outline, crosshair and hoop, true size,
+        // drawn on the piece and not cut.
+        internal.extend(piece.placements.iter().flat_map(pf_core::Placement::marks));
         let text_at = grain.map(|g| (g.from + g.to) * 0.5).unwrap_or_else(|| outline.points.first().copied().unwrap_or_default());
         let (right, left) = if piece.mirror { (piece.cut - piece.cut / 2, piece.cut / 2) } else { (piece.cut, 0) };
         // Points (y down) for now; `to_mm` turns everything at once.
@@ -176,6 +179,7 @@ pub(crate) fn pieces(doc: &Document) -> Result<Vec<AamaPiece>> {
             mirror,
             internal: internal.iter().map(|l| l.iter().map(|p| mm(*p)).collect()).collect(),
             drills: piece.drills.iter().map(|d| AamaDrill { at: mm(d.at), diameter: mm_to_pt(d.diameter) }).collect(),
+            notes: piece.placements.iter().map(pf_core::Placement::note).collect(),
             text_at: mm(text_at),
         });
     }

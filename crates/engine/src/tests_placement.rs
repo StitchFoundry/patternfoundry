@@ -153,6 +153,73 @@ fn the_hoop_is_drawn_round_the_design_and_checked_against_it_and_the_piece() {
     assert!(s.execute("piece.setPlacement", &json!({"hoop": [0, 100]})).is_err());
 }
 
+/// The size in mm of every path in `doc` that has a size.
+fn path_sizes(doc: &vectorcraft_doc::Document) -> Vec<(f64, f64)> {
+    let mut out = Vec::new();
+    doc.walk(|n| {
+        if let NodeKind::Path { .. } = &n.kind
+            && let Some(b) = n.geometric_bounds()
+        {
+            out.push((pf_core::pt_to_mm(b.width()), pf_core::pt_to_mm(b.height())));
+        }
+    });
+    out
+}
+
+fn has_size(sizes: &[(f64, f64)], w: f64, h: f64) -> bool {
+    sizes.iter().any(|(sw, sh)| (sw - w).abs() < 0.01 && (sh - h).abs() < 0.01)
+}
+
+#[test]
+fn the_cut_list_and_the_outlines_carry_the_design_at_true_size() {
+    let (mut s, g) = piece();
+    s.execute("piece.set", &json!({"name": "Front"})).unwrap();
+    place(&mut s, "rose.dst", &dst(450, 450, 300, 300), json!({"hoop": "100x100"})).unwrap();
+    // The label on the pattern is the cut list: how to cut, then the note.
+    let label = part(&s, g, Mark::Label).unwrap();
+    let NodeKind::Text(t) = &label.kind else { panic!("not text") };
+    assert!(t.plain_text().contains("Front\nCut 1\nEmbroider \"rose\" here, 90 x 60 mm"), "{}", t.plain_text());
+    // The projector view's data: the note under the label, and the design's outline and the hoop
+    // among the lines drawn inside, in mm.
+    let o = s.execute("piece.outlines", &json!({})).unwrap();
+    let p = &o["pieces"][0];
+    assert_eq!(p["text"], "Front\nCut 1\nEmbroider \"rose\" here, 90 x 60 mm");
+    let span = |line: &Value, k: usize| {
+        let v: Vec<f64> = line.as_array().unwrap().iter().map(|q| q[k].as_f64().unwrap()).collect();
+        v.iter().cloned().fold(f64::NEG_INFINITY, f64::max) - v.iter().cloned().fold(f64::INFINITY, f64::min)
+    };
+    let sized = |w: f64, h: f64| p["lines"].as_array().unwrap().iter().any(|l| (span(l, 0) - w).abs() < 0.01 && (span(l, 1) - h).abs() < 0.01);
+    assert!(sized(90.0, 60.0) && sized(100.0, 100.0), "{}", p["lines"]);
+    // A turned design is marked turned: its outline's bounds are those of the turned rectangle.
+    s.execute("piece.setPlacement", &json!({"rotation": 90})).unwrap();
+    let o = s.execute("piece.outlines", &json!({})).unwrap();
+    let p = &o["pieces"][0];
+    assert!(p["lines"].as_array().unwrap().iter().any(|l| (span(l, 0) - 60.0).abs() < 0.01 && (span(l, 1) - 90.0).abs() < 0.01));
+}
+
+#[test]
+fn the_projector_pdf_and_the_cutting_svg_mark_the_design_at_true_size() {
+    let (mut s, _) = piece();
+    s.execute("piece.set", &json!({"name": "Front"})).unwrap();
+    place(&mut s, "rose.dst", &dst(450, 450, 300, 300), json!({"hoop": "100x100"})).unwrap();
+    // Projector: the outline of the design is 90 x 60 mm on the page, the hoop 100 mm square.
+    let r = s.execute("document.export", &json!({"format": "projector"})).unwrap();
+    let pdf = vectorcraft_format::base64_decode(r["dataBase64"].as_str().unwrap()).unwrap();
+    let sizes = path_sizes(&vectorcraft_pdf::import(&pdf).unwrap());
+    assert!(has_size(&sizes, 90.0, 60.0), "{sizes:?}");
+    // The 10 cm test square is still there, 100 mm.
+    assert!(has_size(&sizes, 100.0, 100.0), "{sizes:?}");
+    // The cutting SVG draws them with the marks (not among the cuts) and names the design.
+    let r = s.execute("document.export", &json!({"format": "svgcut"})).unwrap();
+    let svg = String::from_utf8(vectorcraft_format::base64_decode(r["dataBase64"].as_str().unwrap()).unwrap()).unwrap();
+    assert!(has_size(&path_sizes(&vectorcraft_svg::import(&svg).unwrap()), 90.0, 60.0), "{svg}");
+    assert!(svg.contains("here, 90 x 60 mm"), "{svg}");
+    // Without marks only the cuts are written: no design.
+    let r = s.execute("document.export", &json!({"format": "svgcut", "marks": false})).unwrap();
+    let svg = String::from_utf8(vectorcraft_format::base64_decode(r["dataBase64"].as_str().unwrap()).unwrap()).unwrap();
+    assert!(!has_size(&path_sizes(&vectorcraft_svg::import(&svg).unwrap()), 90.0, 60.0), "{svg}");
+}
+
 #[test]
 fn screen_artwork_is_sized_from_its_pixels_or_its_svg_units() {
     let (mut s, _) = piece();

@@ -21,6 +21,7 @@ fn style(version: Version) -> Style {
         mirror: Some([[0.0, 50.0], [0.0, 170.0]]),
         internal: vec![vec![[20.0, 110.0], [100.0, 110.0]]],
         drills: vec![Drill { at: [40.0, 90.0], diameter: 3.0 }, Drill { at: [80.0, 90.0], diameter: 0.0 }],
+        notes: vec![],
         text_at: [20.0, 100.0],
     };
     Style {
