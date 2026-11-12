@@ -2255,6 +2255,8 @@ mod tests_perspgrid;
 #[cfg(test)]
 mod tests_piece;
 #[cfg(test)]
+mod tests_placement;
+#[cfg(test)]
 mod tests_place;
 #[cfg(test)]
 mod tests_placed_document;

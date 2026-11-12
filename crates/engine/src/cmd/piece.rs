@@ -26,7 +26,15 @@ pub(crate) const FLATTEN_PT: f64 = 0.05;
 /// The label's type size, in points.
 const LABEL_PT: f64 = 10.0;
 
+mod placements;
+
 pub fn specs() -> Vec<CommandSpec> {
+    let mut v = own_specs();
+    v.extend(placements::specs());
+    v
+}
+
+fn own_specs() -> Vec<CommandSpec> {
     vec![
         cmd!(
             "piece.make",
@@ -289,6 +297,7 @@ fn mark_node(id: NodeId, mark: Mark, kind: NodeKind, appearance: Appearance) -> 
             Mark::Grainline => "Grainline",
             Mark::Label => "Label",
             Mark::Drills => "Drill holes",
+            Mark::Placements => "Design placements",
         }
         .into(),
     );
@@ -371,6 +380,12 @@ pub(crate) fn rebuild(doc: &mut Document, id: NodeId) -> Result<()> {
         if !drills.is_empty() {
             let a = Appearance::basic(Paint::None, black(), 0.75);
             parts.push(Arc::new(mark_node(ids(Mark::Drills, doc), Mark::Drills, path_kind(drills), a)));
+        }
+        // Designs placed on the piece: each one's outline and crosshair, at its true size.
+        let placed: Vec<SubPath> = piece.placements.iter().flat_map(|pl| pl.marks()).map(|l| polyline(&l, false)).collect();
+        if !placed.is_empty() {
+            let a = Appearance::basic(Paint::None, black(), 0.75);
+            parts.push(Arc::new(mark_node(ids(Mark::Placements, doc), Mark::Placements, path_kind(placed), a)));
         }
         // The label, beside the grainline's middle, on the side of the piece with more room.
         let at = grain.map(|g| (g.from + g.to) * 0.5).unwrap_or_default();

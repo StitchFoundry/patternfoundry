@@ -134,6 +134,9 @@ pub struct Piece {
     /// sewn to has on that piece.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub sewn: Vec<Sewn>,
+    /// Embroidery and screen-print designs placed on the piece (PF-12), in the order placed.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub placements: Vec<crate::placement::Placement>,
 }
 
 /// A run of a piece's seam line sewn to a run of another (or the same) piece's: from anchor
@@ -169,6 +172,7 @@ impl Default for Piece {
             fold: None,
             drills: Vec::new(),
             sewn: Vec::new(),
+            placements: Vec::new(),
         }
     }
 }
@@ -190,6 +194,10 @@ pub enum PieceError {
     Drill(f64),
     /// More than [`MAX_NOTCHES`] drill holes.
     TooManyDrills,
+    /// A design that is not a usable size, scale or place.
+    Placement,
+    /// More than [`crate::placement::MAX_PLACEMENTS`] designs.
+    TooManyPlacements,
 }
 
 impl std::fmt::Display for PieceError {
@@ -204,6 +212,12 @@ impl std::fmt::Display for PieceError {
             PieceError::NameTooLong => write!(f, "names take at most {MAX_NAME} characters"),
             PieceError::Drill(v) => write!(f, "drill hole {v}: give a point and a diameter of 0 to {MAX_DRILL_MM} mm"),
             PieceError::TooManyDrills => write!(f, "a piece takes at most {MAX_NOTCHES} drill holes"),
+            PieceError::Placement => write!(
+                f,
+                "a design needs a size of 0 to {} mm, a scale of 0.01 to 100 and a place on the page",
+                crate::placement::MAX_DESIGN_MM
+            ),
+            PieceError::TooManyPlacements => write!(f, "a piece takes at most {} designs", crate::placement::MAX_PLACEMENTS),
         }
     }
 }
@@ -271,6 +285,18 @@ impl Piece {
         Ok(())
     }
 
+    /// Add a design placed on the piece.
+    pub fn add_placement(&mut self, p: crate::placement::Placement) -> Result<(), PieceError> {
+        if !p.is_valid() {
+            return Err(PieceError::Placement);
+        }
+        if self.placements.len() >= crate::placement::MAX_PLACEMENTS {
+            return Err(PieceError::TooManyPlacements);
+        }
+        self.placements.push(p);
+        Ok(())
+    }
+
     /// Forget what refers to edges a seam line of `edges` edges doesn't have (after points were
     /// deleted): their allowances, corners and notches.
     pub fn fit_edges(&mut self, edges: usize) {
@@ -308,6 +334,9 @@ impl Piece {
         for d in &mut self.drills {
             d.at = f(d.at);
         }
+        for p in &mut self.placements {
+            p.at = f(p.at);
+        }
     }
 }
 
@@ -327,6 +356,8 @@ pub enum Mark {
     Label,
     /// The drill holes, generated.
     Drills,
+    /// The outlines and crosshairs of the designs placed on the piece, generated.
+    Placements,
 }
 
 /// What the host keeps on a node of a pattern: the piece (on the group holding it) or which part

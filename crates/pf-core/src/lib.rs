@@ -17,6 +17,7 @@
 //! * [`design`] – design tools on an outline: pivot a dart elsewhere, split a piece in two.
 //! * [`grade`] – grade rules: how a piece's points move from size to size.
 //! * [`marker`] – marker making: every piece to cut laid on the fabric's width, closely.
+//! * [`placement`] – embroidery and screen-print designs placed on a piece, at their true size.
 //! * [`tiling`] – what a printed page of a tiled pattern carries: its name, overlap lines and the
 //!   10 cm and 1 in test squares.
 //!
@@ -38,12 +39,14 @@ pub mod marker;
 pub mod marks;
 pub mod measure;
 pub mod piece;
+pub mod placement;
 pub mod swatch;
 pub mod tiling;
 pub mod view3d;
 
 pub use allowance::{Outline, cutting_line};
 pub use piece::{Corner, Drill, FabricPhoto, Grainline, Mark, Notch, NotchKind, PatternTag, Piece, Sewn};
+pub use placement::{Placement, PlacementKind};
 
 /// Millimetres in one PostScript point (1 pt = 1/72 in, 1 in = 25.4 mm, exactly).
 pub const MM_PER_PT: f64 = 25.4 / 72.0;
