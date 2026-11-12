@@ -123,6 +123,37 @@ fn a_design_is_sized_to_a_true_width_turned_and_moved_with_its_piece() {
 }
 
 #[test]
+fn the_hoop_is_drawn_round_the_design_and_checked_against_it_and_the_piece() {
+    let (mut s, g) = piece();
+    // A 100 mm hoop round the 90 x 60 design, on a piece 100 mm across: it fits both.
+    let r = place(&mut s, "rose.dst", &dst(450, 450, 300, 300), json!({"hoop": "100x100"})).unwrap();
+    assert_eq!(r["placed"]["hoop"], json!([100.0, 100.0]));
+    assert_eq!(r["placed"]["fitsHoop"], true);
+    assert_eq!(r["placed"]["warnings"], json!([]));
+    // Four lines now: the design's outline, its crosshair and the hoop's ring, 100 mm square.
+    let marks = part(&s, g, Mark::Placements).unwrap();
+    let NodeKind::Path { path, .. } = &marks.kind else { panic!() };
+    assert_eq!(path.subpaths.len(), 4);
+    let xs: Vec<f64> = path.subpaths[3].anchors.iter().map(|a| a.p.x).collect();
+    let span = xs.iter().cloned().fold(f64::NEG_INFINITY, f64::max) - xs.iter().cloned().fold(f64::INFINITY, f64::min);
+    assert!(near(span, cm10()), "{span}");
+    // Scaled up past the hoop: the design no longer fits, and says so.
+    let r = s.execute("piece.setPlacement", &json!({"scale": 1.2})).unwrap();
+    assert_eq!(r["placed"]["fitsHoop"], false);
+    assert!(r["placed"]["warnings"].as_array().unwrap().iter().any(|w| w.as_str().unwrap().contains("larger than the hoop")));
+    // A bigger hoop than the piece can take reaches past its cutting line.
+    let r = s.execute("piece.setPlacement", &json!({"scale": 1, "hoop": [200, "8 in"]})).unwrap();
+    assert_eq!(r["placed"]["fitsHoop"], true);
+    assert_eq!(r["placed"]["warnings"], json!(["the hoop reaches past the piece's cutting line"]));
+    // No hoop; a hoop that is not a size is refused.
+    let r = s.execute("piece.setPlacement", &json!({"hoop": null})).unwrap();
+    assert_eq!(r["placed"]["hoop"], Value::Null);
+    assert!(s.execute("piece.setPlacement", &json!({"hoop": "round"})).is_err());
+    assert!(s.execute("piece.setPlacement", &json!({"hoop": [100]})).is_err());
+    assert!(s.execute("piece.setPlacement", &json!({"hoop": [0, 100]})).is_err());
+}
+
+#[test]
 fn screen_artwork_is_sized_from_its_pixels_or_its_svg_units() {
     let (mut s, _) = piece();
     // 720 x 360 px at the 72 ppi of a file that declares none: 10 x 5 in.

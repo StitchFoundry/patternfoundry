@@ -16,7 +16,7 @@ pub fn specs() -> Vec<CommandSpec> {
             "Place Design",
             [],
             None,
-            "{id?, path | name + dataBase64 (the design's file: an embroidery file (DST, PES…) or a ScreenFoundry artwork or separation, PNG or SVG), kind?: \"embroidery\" | \"screen\" (default: from the file's extension), title?, widthMm?/heightMm? (the design's own size, mm or with a unit; needed where the file doesn't say it, as PES; one of them keeps the file's proportions), point?: [x, y] (the design's centre in document points; default the middle of the piece), scale?: 1, rotation?: degrees clockwise 0, snap?: \"grain\" | \"fold\"} the design is laid on the piece at its true size, outlined with a crosshair at its centre on the pattern → piece.info with placed: {index, widthMm, heightMm, size, sizeIn, note}",
+            "{id?, path | name + dataBase64 (the design's file: an embroidery file (DST, PES…) or a ScreenFoundry artwork or separation, PNG or SVG), kind?: \"embroidery\" | \"screen\" (default: from the file's extension), title?, widthMm?/heightMm? (the design's own size, mm or with a unit; needed where the file doesn't say it, as PES; one of them keeps the file's proportions), point?: [x, y] (the design's centre in document points; default the middle of the piece), scale?: 1, rotation?: degrees clockwise 0, snap?: \"grain\" | \"fold\", hoop?: [width, height] mm | \"100x100\" | \"4x4 in\" (the embroidery hoop, drawn round the design and turned with it)} the design is laid on the piece at its true size, outlined with a crosshair at its centre on the pattern → piece.info with placed: {index, name, kind, app (StitchFoundry | ScreenFoundry), widthMm, heightMm, size, sizeIn, note, hoop, fitsHoop, warnings (a design larger than its hoop, or design or hoop past the cutting line)}",
             has_doc,
             add
         ),
@@ -25,7 +25,7 @@ pub fn specs() -> Vec<CommandSpec> {
             "Move or Size Design",
             [],
             None,
-            "{id?, index? (the design's place in piece.info's placements; default the last), point?: [x, y] (the centre, document points), moveMm?: [dx, dy] (move by mm), scale?, widthMm? | heightMm? (size to this true width or height, proportions kept), rotation?: degrees clockwise, snap?: \"grain\" (the centre onto the grainline) | \"fold\" (onto the fold line, the centre front or back of a piece cut on the fold), title?} → piece.info with placed",
+            "{id?, index? (the design's place in piece.info's placements; default the last), point?: [x, y] (the centre, document points), moveMm?: [dx, dy] (move by mm), scale?, widthMm? | heightMm? (size to this true width or height, proportions kept), rotation?: degrees clockwise, snap?: \"grain\" (the centre onto the grainline) | \"fold\" (onto the fold line, the centre front or back of a piece cut on the fold), hoop?: as piece.addPlacement (null: none), title?} → piece.info with placed",
             has_doc,
             set
         ),
@@ -77,12 +77,49 @@ fn placed_json(index: usize, pl: &Placement) -> Value {
     })
 }
 
-/// `info` with the placement `index` of `piece` as `placed`.
-fn with_placed(mut info: Value, index: usize, piece: Option<&Piece>) -> Value {
-    if let (Some(o), Some(pl)) = (info.as_object_mut(), piece.and_then(|pc| pc.placements.get(index))) {
-        o.insert("placed".into(), placed_json(index, pl));
+/// What is wrong with how `pl` sits on piece `id`, for the sewist.
+fn warnings(s: &Session, id: NodeId, pl: &Placement) -> Vec<&'static str> {
+    let on_piece = |c: [Pt; 4]| c.iter().all(|q| inside_cut(s, id, *q));
+    let mut w = Vec::new();
+    if pl.fits_hoop() == Some(false) {
+        w.push("the design is larger than the hoop");
+    }
+    if !on_piece(pl.corners()) {
+        w.push("the design reaches past the piece's cutting line");
+    }
+    if pl.hoop_corners().is_some_and(|c| !on_piece(c)) {
+        w.push("the hoop reaches past the piece's cutting line");
+    }
+    w
+}
+
+/// `info` with the placement `index` of piece `id` as `placed`.
+fn with_placed(s: &Session, id: NodeId, mut info: Value, index: usize) -> Value {
+    let piece = piece_of(s, id);
+    if let (Some(o), Some(pl)) = (info.as_object_mut(), piece.as_ref().and_then(|pc| pc.placements.get(index))) {
+        let mut placed = placed_json(index, pl);
+        placed["hoop"] = json!(pl.hoop);
+        placed["fitsHoop"] = json!(pl.fits_hoop());
+        placed["warnings"] = json!(warnings(s, id, pl));
+        o.insert("placed".into(), placed);
     }
     info
+}
+
+/// The `hoop` param: `[width, height]` (mm, or lengths with a unit) or text such as `"100x100"` or
+/// `"4x4 in"`; null for no hoop. `None` when the param is absent.
+fn hoop_param(p: &Value, cmd: &str) -> Result<Option<Option<[f64; 2]>>> {
+    let msg = "hoop: [width, height] in mm, or text such as \"100x100\" or \"4x4 in\" (null: no hoop)";
+    match p.get("hoop") {
+        None => Ok(None),
+        Some(Value::Null) => Ok(Some(None)),
+        Some(Value::String(t)) => pf_core::placement::parse_hoop(t).map(|h| Some(Some(h))).ok_or_else(|| bad(cmd, msg)),
+        Some(Value::Array(a)) if a.len() == 2 => match (mm_param(&a[0]), mm_param(&a[1])) {
+            (Some(w), Some(h)) => Ok(Some(Some([w, h]))),
+            _ => Err(bad(cmd, msg)),
+        },
+        Some(_) => Err(bad(cmd, msg)),
+    }
 }
 
 fn kind_of_extension(name: &str) -> Option<PlacementKind> {
@@ -274,9 +311,12 @@ fn add(s: &mut Session, p: &Value) -> Result<Value> {
         let (a, b) = snap_line(s, id, snap, CMD)?;
         pl.at = project(a, b, pl.at).unwrap_or(pl.at);
     }
+    if let Some(hoop) = hoop_param(p, CMD)? {
+        pl.hoop = hoop;
+    }
     let index = piece_of(s, id).map_or(0, |pc| pc.placements.len());
     let info = change(s, id, "Place Design", CMD, |piece| piece.add_placement(pl).map_err(|e| err(CMD, e)))?;
-    Ok(with_placed(info, index, piece_of(s, id).as_ref()))
+    Ok(with_placed(s, id, info, index))
 }
 
 fn set(s: &mut Session, p: &Value) -> Result<Value> {
@@ -298,6 +338,7 @@ fn set(s: &mut Session, p: &Value) -> Result<Value> {
         None => None,
     };
     let title = str_param(p, "title").map(|t| pf_core::piece::check_name(t).map_err(|e| err(CMD, e))).transpose()?;
+    let hoop = hoop_param(p, CMD)?;
     let info = change(s, id, "Move or Size Design", CMD, |piece| {
         let pl = piece.placements.get_mut(index).ok_or_else(|| bad(CMD, "no design with that index"))?;
         if let Some(t) = title {
@@ -321,12 +362,15 @@ fn set(s: &mut Session, p: &Value) -> Result<Value> {
         if let Some(r) = rotation {
             pl.rotation = r.rem_euclid(360.0);
         }
+        if let Some(h) = hoop {
+            pl.hoop = h;
+        }
         if let Some((a, b)) = line {
             pl.at = project(a, b, pl.at).unwrap_or(pl.at);
         }
         if pl.is_valid() { Ok(()) } else { Err(err(CMD, pf_core::piece::PieceError::Placement)) }
     })?;
-    Ok(with_placed(info, index, piece_of(s, id).as_ref()))
+    Ok(with_placed(s, id, info, index))
 }
 
 fn remove(s: &mut Session, p: &Value) -> Result<Value> {

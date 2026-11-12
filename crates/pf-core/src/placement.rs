@@ -72,15 +72,32 @@ pub struct Placement {
     /// Turned clockwise on the page, in degrees.
     #[serde(default)]
     pub rotation: f64,
+    /// The hoop the design is stitched in, width and height in mm along the design's own axes
+    /// (embroidery), centred on the design.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub hoop: Option<[f64; 2]>,
 }
 
 fn one() -> f64 {
     1.0
 }
 
+/// A hoop's size from text: `100x100` or `130 x 180 mm` (mm), `4x4 in` (inches); `x` or `×`.
+pub fn parse_hoop(s: &str) -> Option<[f64; 2]> {
+    let s = s.trim().to_ascii_lowercase();
+    let (body, per) = match s.strip_suffix("in") {
+        Some(b) => (b, MM_PER_IN),
+        None => (s.strip_suffix("mm").unwrap_or(&s), 1.0),
+    };
+    let (w, h) = body.split_once(['x', '×'])?;
+    let (w, h) = (w.trim().parse::<f64>().ok()? * per, h.trim().parse::<f64>().ok()? * per);
+    let ok = |v: f64| v.is_finite() && v > 0.0 && v <= MAX_DESIGN_MM;
+    (ok(w) && ok(h)).then_some([w, h])
+}
+
 impl Placement {
     pub fn new(kind: PlacementKind, name: &str, source: &str, width: f64, height: f64, at: Pt) -> Self {
-        Self { name: name.trim().to_string(), kind, source: source.to_string(), width, height, at, scale: 1.0, rotation: 0.0 }
+        Self { name: name.trim().to_string(), kind, source: source.to_string(), width, height, at, scale: 1.0, rotation: 0.0, hoop: None }
     }
 
     /// Whether every number is usable.
@@ -94,6 +111,21 @@ impl Placement {
             && self.rotation.is_finite()
             && size(self.width * self.scale)
             && size(self.height * self.scale)
+            && self.hoop.is_none_or(|[w, h]| size(w) && size(h))
+    }
+
+    /// Whether the design fits the hoop (`None` without one). The hoop is turned with the design.
+    pub fn fits_hoop(&self) -> Option<bool> {
+        let [hw, hh] = self.hoop?;
+        let (w, h) = self.size_mm();
+        Some(w <= hw + 1e-9 && h <= hh + 1e-9)
+    }
+
+    /// The hoop's outline: its four corners, clockwise from the top left, in document
+    /// coordinates; `None` without a hoop.
+    pub fn hoop_corners(&self) -> Option<[Pt; 4]> {
+        let [w, h] = self.hoop?;
+        Some(rectangle(self, (w, h)))
     }
 
     /// The size on the piece, in mm: the design's own size times the scale.
@@ -149,11 +181,12 @@ impl Placement {
     }
 
     /// What is drawn for the placement, as open polylines in document coordinates: the design's
-    /// outline (a ring, its first corner repeated at the end) and the crosshair.
+    /// outline (a ring, its first corner repeated at the end), the crosshair, and the hoop's ring.
     pub fn marks(&self) -> Vec<Vec<Pt>> {
-        let c = self.corners();
-        let mut out = vec![vec![c[0], c[1], c[2], c[3], c[0]]];
+        let ring = |c: [Pt; 4]| vec![c[0], c[1], c[2], c[3], c[0]];
+        let mut out = vec![ring(self.corners())];
         out.extend(self.crosshair().into_iter().map(|l| l.to_vec()));
+        out.extend(self.hoop_corners().map(ring));
         out
     }
 }
@@ -227,6 +260,31 @@ mod tests {
         let [across, down] = p.crosshair();
         assert!((across[0] - Pt::new(100.0 - mm_to_pt(50.0), 200.0)).len() < 1e-9);
         assert!((down[1] - Pt::new(100.0, 200.0 + mm_to_pt(35.0))).len() < 1e-9);
+    }
+
+    #[test]
+    fn a_hoop_is_read_from_text_and_the_design_is_checked_against_it() {
+        assert_eq!(parse_hoop("100x100"), Some([100.0, 100.0]));
+        assert_eq!(parse_hoop(" 130 x 180 mm "), Some([130.0, 180.0]));
+        assert_eq!(parse_hoop("4×4 in"), Some([101.6, 101.6]));
+        for bad in ["", "100", "0x10", "axb", "-5x5", "99999x5", "5x"] {
+            assert_eq!(parse_hoop(bad), None, "{bad}");
+        }
+        let mut p = rose();
+        assert_eq!((p.fits_hoop(), p.hoop_corners()), (None, None));
+        assert_eq!(p.marks().len(), 3);
+        p.hoop = Some([100.0, 100.0]);
+        assert_eq!(p.fits_hoop(), Some(true));
+        p.scale = 1.2;
+        assert_eq!(p.fits_hoop(), Some(false), "108 mm across does not fit a 100 mm hoop");
+        // The hoop is centred on the design, turned with it, and drawn as a fourth line.
+        p.scale = 1.0;
+        p.rotation = 90.0;
+        let c = p.hoop_corners().unwrap();
+        assert!(((c[1] - c[0]).len() - mm_to_pt(100.0)).abs() < 1e-9);
+        assert!((((c[0] + c[2]) * 0.5) - p.at).len() < 1e-9);
+        assert_eq!(p.marks().len(), 4);
+        assert!(!Placement { hoop: Some([0.0, 100.0]), ..rose() }.is_valid());
     }
 
     #[test]
