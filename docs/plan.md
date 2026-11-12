@@ -1401,8 +1401,8 @@ is built on, plus a pattern mode, the way StitchFoundry adds embroidery:
   its hoop or the design or hoop reaches past the cutting line. The same lines go to the projector
   PDF, the cutting SVG's marks and DXF-AAMA's internal lines (layer 8, drawn not cut); the piece's
   label, `piece.outlines`, the projector and the cutting SVG add a cut-list line per design
-  (`Embroider "Rose" here, 90 x 60 mm`; `pf_aama::Piece::notes`). Tests: 5 in `pf-core`
-  (`placement.rs`, the label), 7 in `tests_placement.rs` (true-size outline and hoop in the
+  (`Embroider "Rose" here, 90 x 60 mm`; `pf_aama::Piece::notes`). Tests: 6 in `pf-core`
+  (`placement.rs`; the label's test also covers it), 8 in `tests_placement.rs` (true-size outline and hoop in the
   document, outlines, projector PDF and cutting SVG measured in mm, sizes from DST/PNG/SVG, snapping,
   refusals, the link). Not yet: a button, drag handles and a context menu for placing and moving
   on the canvas and an "Open in …" menu item (each new label needs the 23 language catalogs), PES
