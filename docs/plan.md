@@ -1384,3 +1384,27 @@ is built on, plus a pattern mode, the way StitchFoundry adds embroidery:
   undo, without notches, a face on a knife pleat refused). Not yet: pleats from the Pattern menu
   (they need two points picked on the canvas), notches already on a piece kept on their edges
   when a design tool adds anchors to its seam line.
+- 2026-11-12, **PF-12** (#172): embroidery and screen-print designs placed on pattern pieces, at
+  true size, to see how big they are and where they go before cutting (owner's request; not
+  LaserFoundry designs). `pf_core::placement` keeps, per design on a `Piece`, its name, kind
+  (embroidery for StitchFoundry, screen for ScreenFoundry), source file, own size in mm, scale,
+  turn, centre (document points, so it moves with the piece) and an optional hoop. Commands:
+  `piece.addPlacement` (a file by `path` or `name` + `dataBase64`; the size comes from a DST's
+  header extents, a PNG's pixels and declared resolution (72 ppi when it declares none, as File ›
+  Place), an SVG's width/height or view box (CSS pixels); other files, such as PES, take
+  `widthMm`/`heightMm`), `piece.setPlacement` (move by point or mm, scale, size to a true width or
+  height, rotate, snap the centre onto the grainline or the fold, hoop), `piece.removePlacement`,
+  and `piece.placementLink` (the design's file and the Foundry app that edits it, for "Open in
+  StitchFoundry / ScreenFoundry"; only a real embroidery, PNG or SVG file is openable). The
+  design's outline, crosshair and hoop ring are a generated part of the piece (`Mark::Placements`),
+  so they print with the tiled pages like any art; the results warn when the design is larger than
+  its hoop or the design or hoop reaches past the cutting line. The same lines go to the projector
+  PDF, the cutting SVG's marks and DXF-AAMA's internal lines (layer 8, drawn not cut); the piece's
+  label, `piece.outlines`, the projector and the cutting SVG add a cut-list line per design
+  (`Embroider "Rose" here, 90 x 60 mm`; `pf_aama::Piece::notes`). Tests: 5 in `pf-core`
+  (`placement.rs`, the label), 7 in `tests_placement.rs` (true-size outline and hoop in the
+  document, outlines, projector PDF and cutting SVG measured in mm, sizes from DST/PNG/SVG, snapping,
+  refusals, the link). Not yet: a button, drag handles and a context menu for placing and moving
+  on the canvas and an "Open in …" menu item (each new label needs the 23 language catalogs), PES
+  sizes read from the file (PES extents are not read; give the size), picking from the Foundry
+  Account library, bitmap/embroidery previews drawn inside the outline.

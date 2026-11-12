@@ -253,3 +253,34 @@ fn a_file_that_does_not_say_its_size_needs_one_and_a_kind_must_be_known() {
     assert!(place(&mut s, "rose.dst", &dst(450, 450, 300, 300), json!({"scale": 500})).is_err());
     assert!(place(&mut s, "x.png", b"not a png", json!({"widthMm": 0, "heightMm": 10})).is_err());
 }
+
+#[test]
+fn a_placed_design_links_back_to_the_app_that_edits_it() {
+    let (mut s, _) = piece();
+    // Placed from bytes: there is no file on this computer to open.
+    place(&mut s, "rose.dst", &dst(450, 450, 300, 300), json!({})).unwrap();
+    let l = s.execute("piece.placementLink", &json!({})).unwrap();
+    assert_eq!((l["app"].as_str(), l["kind"].as_str(), l["openable"].as_bool()), (Some("StitchFoundry"), Some("embroidery"), Some(false)));
+    assert!(l["reason"].as_str().unwrap().contains("bytes"), "{l}");
+    // Placed from a file: ScreenFoundry for artwork, and the path to hand to the system.
+    let dir = std::env::temp_dir().join(format!("pf12-link-{}", std::process::id()));
+    std::fs::create_dir_all(&dir).unwrap();
+    let logo = dir.join("logo.png");
+    std::fs::write(&logo, png(720, 360)).unwrap();
+    let notes = dir.join("notes.txt");
+    std::fs::write(&notes, b"hello").unwrap();
+    s.execute("piece.addPlacement", &json!({"path": logo.to_str().unwrap()})).unwrap();
+    let l = s.execute("piece.placementLink", &json!({})).unwrap();
+    assert_eq!((l["app"].as_str(), l["openable"].as_bool(), l["reason"].is_null()), (Some("ScreenFoundry"), Some(true), true), "{l}");
+    assert!(l["path"].as_str().unwrap().ends_with("logo.png"));
+    assert_eq!(l["name"], "logo");
+    // A file that is not a design is never handed to another app.
+    s.execute("piece.addPlacement", &json!({"path": notes.to_str().unwrap(), "kind": "screen", "widthMm": 10, "heightMm": 10})).unwrap();
+    let l = s.execute("piece.placementLink", &json!({})).unwrap();
+    assert_eq!(l["openable"], false);
+    assert!(l["reason"].as_str().unwrap().contains("only embroidery"), "{l}");
+    // The first design by its index; an index past the end is refused.
+    assert_eq!(s.execute("piece.placementLink", &json!({"index": 0})).unwrap()["name"], "rose");
+    assert!(s.execute("piece.placementLink", &json!({"index": 9})).is_err());
+    std::fs::remove_dir_all(&dir).unwrap();
+}

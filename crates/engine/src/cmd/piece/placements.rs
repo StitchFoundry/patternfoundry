@@ -30,6 +30,15 @@ pub fn specs() -> Vec<CommandSpec> {
             set
         ),
         cmd!(
+            query "piece.placementLink",
+            "Design File",
+            [],
+            None,
+            "{id?, index? (default the last)} the placed design's own file and the Foundry app that edits it, for \"Open in StitchFoundry\" / \"Open in ScreenFoundry\" → {index, name, kind, app (StitchFoundry for embroidery, ScreenFoundry for screen-print artwork), path, openable: bool (a regular file on this computer, an embroidery or PNG/SVG file; false on the web and for a design placed from bytes), reason (why not)}; the host hands `path` to the system's default app for it",
+            has_doc,
+            link
+        ),
+        cmd!(
             "piece.removePlacement",
             "Remove Design",
             [],
@@ -371,6 +380,48 @@ fn set(s: &mut Session, p: &Value) -> Result<Value> {
         if pl.is_valid() { Ok(()) } else { Err(err(CMD, pf_core::piece::PieceError::Placement)) }
     })?;
     Ok(with_placed(s, id, info, index))
+}
+
+/// Whether the design file at `path` may be handed to the system's default app: an absolute path to
+/// a regular file (after following links) that is an embroidery or screen-artwork file by its
+/// extension and by the extension of the file it links to; never a folder, script or shortcut.
+#[cfg(not(target_arch = "wasm32"))]
+fn openable(path: &str) -> std::result::Result<(), String> {
+    if !std::path::Path::new(path).is_absolute() {
+        return Err("the design was placed from a file's bytes, so there is no file on this computer to open".into());
+    }
+    crate::file_access::check_read(path)?;
+    let real = std::fs::canonicalize(path).map_err(|e| format!("can't find the file: {e}"))?;
+    if !real.is_file() {
+        return Err("it is not a file".into());
+    }
+    if kind_of_extension(path).is_none() || kind_of_extension(&real.to_string_lossy()).is_none() {
+        return Err("only embroidery files and PNG or SVG artwork are opened".into());
+    }
+    Ok(())
+}
+
+#[cfg(target_arch = "wasm32")]
+fn openable(_: &str) -> std::result::Result<(), String> {
+    Err("the web version can't open files on your computer".into())
+}
+
+fn link(s: &mut Session, p: &Value) -> Result<Value> {
+    const CMD: &str = "piece.placementLink";
+    let id = one_piece(s, p, CMD)?;
+    let piece = piece_of(s, id);
+    let index = index_param(p, piece.as_ref(), CMD)?;
+    let pl = piece.as_ref().and_then(|pc| pc.placements.get(index)).ok_or_else(|| bad(CMD, "no design with that index"))?;
+    let check = openable(&pl.source);
+    Ok(json!({
+        "index": index,
+        "name": pl.name,
+        "kind": pl.kind,
+        "app": pl.kind.app(),
+        "path": pl.source,
+        "openable": check.is_ok(),
+        "reason": check.err(),
+    }))
 }
 
 fn remove(s: &mut Session, p: &Value) -> Result<Value> {
