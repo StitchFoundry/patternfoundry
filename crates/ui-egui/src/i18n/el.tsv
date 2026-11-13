@@ -5272,30 +5272,23 @@ file-filter	PDF for projector	PDF για προβολέα
 	A password needs at least 8 characters.	Ο κωδικός χρειάζεται τουλάχιστον 8 χαρακτήρες.
 	Account	Λογαριασμός
 	Allow	Να επιτρέπεται
-	Anthropic API key:	Κλειδί API της Anthropic:
 	Ask	Ερώτηση
 	Buy credits	Αγορά μονάδων
 	Buy…	Αγορά…
-	Change key	Αλλαγή κλειδιού
 	Create Free Account	Δημιουργία δωρεάν λογαριασμού
 	Create a free Foundry Account	Δημιουργήστε δωρεάν λογαριασμό Foundry
 	Don't Allow	Να μην επιτρέπεται
 	Edit › Undo takes each change back.	Η εντολή Επεξεργασία › Αναίρεση αναιρεί κάθε αλλαγή ξεχωριστά.
 	Email	Email
 	Foundry Account	Λογαριασμός Foundry
-	Foundry accounts aren't open yet. Until then, the AI features work with your own Anthropic API key.	Οι λογαριασμοί Foundry δεν έχουν ανοίξει ακόμα. Ως τότε, οι λειτουργίες ΤΝ δουλεύουν με το δικό σας κλειδί API της Anthropic.
-	Get a key	Λήψη κλειδιού
 	I have an account: Sign In	Έχω λογαριασμό: σύνδεση
 	New Conversation	Νέα συνομιλία
 	New here? Create a free account	Νέος εδώ; Δημιουργήστε δωρεάν λογαριασμό
-	No card needed, and no API key to set up	Χωρίς κάρτα και χωρίς κλειδί API για ρύθμιση
 	Paid with Foundry credits ({n} left).	Πληρωμή με μονάδες Foundry (απομένουν {n}).
 	Paid with Foundry credits.	Πληρωμή με μονάδες Foundry.
-	Pay for the AI features with my Foundry credits	Πληρωμή των λειτουργιών ΤΝ με τις μονάδες Foundry μου
 	Pay with Foundry credits instead	Πληρωμή με μονάδες Foundry αντί γι' αυτό
 	Payment is on Stripe's secure page, in your browser; your card never reaches PatternFoundry.	Η πληρωμή γίνεται στην ασφαλή σελίδα της Stripe, στο πρόγραμμα περιήγησής σας· η κάρτα σας δεν φτάνει ποτέ στο PatternFoundry.
 	Reading your credits…	Ανάγνωση των μονάδων σας…
-	Remember the key on this computer	Απομνημόνευση του κλειδιού σε αυτόν τον υπολογιστή
 	Server	Διακομιστής
 	Sign In	Σύνδεση
 	Sign Out	Αποσύνδεση
@@ -5307,7 +5300,7 @@ file-filter	PDF for projector	PDF για προβολέα
 	{n} credits for {price}	{n} μονάδες για {price}
 @msg	Anthropic refused the API key: {0}	Η Anthropic απέρριψε το κλειδί API: {0}
 @msg	Couldn't reach the AI service: {0}	Δεν ήταν δυνατή η σύνδεση με την υπηρεσία AI: {0}
-@msg	Enter your Anthropic API key first.	Εισαγάγετε πρώτα το κλειδί API της Anthropic.
+@msg	AI now uses your Foundry Account. Sign in to continue.	Η τεχνητή νοημοσύνη χρησιμοποιεί πλέον τον λογαριασμό σας Foundry. Συνδεθείτε για να συνεχίσετε.
 @msg	The AI declined to answer this: ask another way.	Η AI αρνήθηκε να απαντήσει: ρωτήστε με άλλο τρόπο.
 @msg	The AI service failed (error {0}): try again later.	Η υπηρεσία AI απέτυχε (σφάλμα {0}): δοκιμάστε ξανά αργότερα.
 @msg	The AI service is busy: try again in a minute.	Η υπηρεσία AI είναι απασχολημένη: δοκιμάστε ξανά σε ένα λεπτό.
@@ -5321,13 +5314,12 @@ file-filter	PDF for projector	PDF για προβολέα
 @msg	This conversation is long: start a New Conversation.	Αυτή η συνομιλία είναι μεγάλη: ξεκινήστε μια Νέα συνομιλία.
 @msg	Claude took too many steps: ask again, more simply.	Ο Claude έκανε υπερβολικά πολλά βήματα: ρωτήστε ξανά, πιο απλά.
 	Ask About Patterns…	Ερώτηση για πατρόν…
-	Answers come from Claude with your own Anthropic API key, billed to your Anthropic account. They can be wrong: sew a muslin before cutting good fabric.	Οι απαντήσεις προέρχονται από τον Claude με το δικό σας κλειδί API της Anthropic, με χρέωση στον λογαριασμό σας στην Anthropic. Μπορεί να είναι λανθασμένες: ράψτε ένα δοκιμαστικό ρούχο (τουάλ) πριν κόψετε καλό ύφασμα.
+	Answers come from Claude. They can be wrong: sew a muslin before cutting good fabric.	Οι απαντήσεις προέρχονται από το Claude. Μπορεί να είναι λανθασμένες: ράψτε ένα δοκιμαστικό ρούχο (τουάλ) πριν κόψετε καλό ύφασμα.
 	Ask About Patterns	Ερώτηση για πατρόν
 	Ask anything about sewing patterns or PatternFoundry: how much ease to add, how to move a dart, which block to start from, where a feature is. Claude can also draft and change your pattern when you ask, after you allow it.	Ρωτήστε οτιδήποτε για πατρόν ραπτικής ή για το PatternFoundry: πόση άνεση να προσθέσετε, πώς να μετακινήσετε μια πένσα, από ποιο βασικό πατρόν να ξεκινήσετε, πού βρίσκεται μια λειτουργία. Ο Claude μπορεί επίσης να σχεδιάσει και να αλλάξει το πατρόν σας όταν το ζητήσετε, αφού το επιτρέψετε.
 	Claude asks to:	Ο Claude ζητά να:
 	Couldn't do:	Δεν ήταν δυνατό:
 	Done:	Έγινε:
-	Free credits for the AI features, no API key needed	Δωρεάν μονάδες για τις λειτουργίες AI, χωρίς κλειδί API
 	Free credits to try the AI features: Ask About Patterns drafts and changes patterns with you	Δωρεάν μονάδες για να δοκιμάσετε τις λειτουργίες AI: η Ερώτηση για πατρόν σχεδιάζει και αλλάζει πατρόν μαζί σας
 	Include my pattern	Συμπερίληψη του πατρόν μου
 	Its pieces and sizes, and which measurements are set: never their values	Τα κομμάτια και τα μεγέθη του, και ποια μέτρα έχουν οριστεί: ποτέ οι τιμές τους
@@ -5353,7 +5345,7 @@ file-filter	PDF for projector	PDF για προβολέα
 	About the fit	Σχετικά με την εφαρμογή
 	Anything else? For example: folds below the back neck	Κάτι άλλο; Για παράδειγμα: πτυχές κάτω από τη λαιμόκοψη της πλάτης
 	Check My Muslin	Έλεγχος του δοκιμαστικού μου
-	Claude looks at the photos with your own Anthropic API key, billed to your Anthropic account. It can be wrong: sew the altered part again in muslin before cutting good fabric.	Ο Claude βλέπει τις φωτογραφίες με το δικό σας κλειδί API της Anthropic, με χρέωση στον λογαριασμό σας στην Anthropic. Μπορεί να κάνει λάθος: ράψτε ξανά το τροποποιημένο μέρος σε δοκιμαστικό ρούχο (τουάλ) πριν κόψετε καλό ύφασμα.
+	Claude looks at the photos. It can be wrong: sew the altered part again in muslin before cutting good fabric.	Το Claude εξετάζει τις φωτογραφίες. Μπορεί να κάνει λάθος: ράψτε ξανά το τροποποιημένο μέρος σε δοκιμαστικό ρούχο (τουάλ) πριν κόψετε καλό ύφασμα.
 	Final fabric	Τελικό ύφασμα
 	Hard to raise my arms	Δυσκολεύομαι να σηκώσω τα χέρια
 	How it feels:	Πώς το νιώθω:

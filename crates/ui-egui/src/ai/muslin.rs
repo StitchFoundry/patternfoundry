@@ -73,7 +73,6 @@ pub fn open(app: &mut VectorcraftApp, p: &Value) -> Result<Value, String> {
     if !super::available(app) {
         return Err("Check My Muslin needs a build that can reach the AI service".into());
     }
-    super::load_key(app);
     let st = &mut app.ai.muslin;
     if !st.open && st.photos.is_empty() {
         st.include_pattern = true;
@@ -279,9 +278,7 @@ pub fn window(app: &mut VectorcraftApp, ctx: &egui::Context) {
                 ui.checkbox(&mut st.include_pattern, tl!("Include the pattern it was cut from (open now), so it can be altered"));
             });
             ui.label(
-                RichText::new(tl!("The photos go to Claude for this check only; PatternFoundry doesn't keep them."))
-                    .size(11.0)
-                    .color(t.text_dim),
+                RichText::new(tl!("The photos go to Claude for this check only; PatternFoundry doesn't keep them.")).size(11.0).color(t.text_dim),
             );
             if let Some(e) = &st.error {
                 ui.label(RichText::new(crate::i18n::msg(e)).color(t.error));
@@ -291,13 +288,12 @@ pub fn window(app: &mut VectorcraftApp, ctx: &egui::Context) {
             if ui.add_enabled_ui(ready, |ui| crate::widgets::primary_button(ui, tl!("Check My Muslin"))).inner.clicked() {
                 go = true;
             }
-            if !super::account::paid_line(app, ui, &t) {
-                ui.label(
-                    RichText::new(tl!("Claude looks at the photos with your own Anthropic API key, billed to your Anthropic account. It can be wrong: sew the altered part again in muslin before cutting good fabric."))
-                        .size(11.0)
-                        .color(t.text_dim),
-                );
-            }
+            super::account::paid_line(app, ui, &t);
+            ui.label(
+                RichText::new(tl!("Claude looks at the photos. It can be wrong: sew the altered part again in muslin before cutting good fabric."))
+                    .size(11.0)
+                    .color(t.text_dim),
+            );
         });
     if let Some(i) = remove
         && i < app.ai.muslin.photos.len()
