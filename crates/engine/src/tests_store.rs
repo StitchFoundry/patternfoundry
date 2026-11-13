@@ -248,3 +248,25 @@ fn saved_measurement_sets_load_into_any_pattern_and_bad_files_are_skipped() {
     assert_eq!(r["sets"].as_array().unwrap().len(), 1);
     let _ = std::fs::remove_dir_all(&dir);
 }
+
+#[test]
+fn a_set_saved_again_under_another_case_replaces_the_old_one() {
+    let dir = fresh_dir("measurements-case").join("Measurements");
+    let mut s = Session::new();
+    s.attach_measurement_store(dir.clone());
+    s.execute("file.new", &json!({})).unwrap();
+    s.execute("measure.set", &json!({"name": "Me", "values": {"bust": 880}})).unwrap();
+    s.execute("measure.saveSet", &json!({})).unwrap();
+    s.execute("measure.set", &json!({"name": "me", "values": {"bust": 900}})).unwrap();
+    s.execute("measure.saveSet", &json!({})).unwrap();
+    assert_eq!(file_names(&dir).len(), 1, "one set, one file");
+    let mut other = Session::new();
+    other.attach_measurement_store(dir.clone());
+    other.execute("file.new", &json!({})).unwrap();
+    let info = other.execute("measure.loadSet", &json!({"name": "Me"})).unwrap();
+    assert_eq!(info["values"]["bust"].as_f64(), Some(900.0), "the newer values load");
+    other.execute("measure.deleteSet", &json!({"name": "Me"})).unwrap();
+    assert!(file_names(&dir).is_empty(), "deleting leaves nothing to come back");
+    assert!(other.execute("measure.sets", &json!({})).unwrap()["sets"].as_array().unwrap().is_empty());
+    let _ = std::fs::remove_dir_all(&dir);
+}

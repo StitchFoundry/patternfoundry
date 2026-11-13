@@ -153,6 +153,33 @@ fn take(dir: &Path, file: &str) {
     }
 }
 
+/// The files of `dir` whose names are `file` in some other case (what an earlier save of the same
+/// name under another capitalisation left), leaving out the file itself even when the file system
+/// ignores case and lists it under the old capitalisation.
+fn other_case_files(dir: &Path, file: &str) -> Vec<PathBuf> {
+    let Ok(entries) = std::fs::read_dir(dir) else { return vec![] };
+    let own = std::fs::canonicalize(dir.join(file)).ok();
+    entries
+        .filter_map(Result::ok)
+        .map(|e| e.path())
+        .filter(|p| {
+            p.file_name().is_some_and(|n| n.to_string_lossy() != file && n.to_string_lossy().to_lowercase() == file.to_lowercase())
+                && (own.is_none() || std::fs::canonicalize(p).ok() != own)
+        })
+        .collect()
+}
+
+/// Remove every file of `dir` that is `file` in another case.
+fn take_other_cases(dir: &Path, file: &str) {
+    for path in other_case_files(dir, file) {
+        if let Err(e) = std::fs::remove_file(&path)
+            && e.kind() != std::io::ErrorKind::NotFound
+        {
+            log::warn!("can't remove {}: {e}", path.display());
+        }
+    }
+}
+
 impl Session {
     /// Keep the measurement sets this session saves in `dir` (made when the first is saved).
     pub fn attach_measurement_store(&mut self, dir: PathBuf) {
@@ -196,13 +223,20 @@ impl Session {
         set.share = false;
         let file = MeasurementsFile { format: MEASUREMENTS_FORMAT.into(), set };
         let Ok(bytes) = serde_json::to_vec_pretty(&file) else { return false };
-        put(dir, &format!("{}.{MEASUREMENTS_EXT}", file_stem(&m.name)), &bytes)
+        let name = format!("{}.{MEASUREMENTS_EXT}", file_stem(&m.name));
+        let written = put(dir, &name, &bytes);
+        if written {
+            take_other_cases(dir, &name);
+        }
+        written
     }
 
     /// Delete the saved measurement set `name`.
     pub(crate) fn remove_measurement_set(&self, name: &str) {
         if let Some(dir) = &self.measurement_dir {
-            take(dir, &format!("{}.{MEASUREMENTS_EXT}", file_stem(name)));
+            let file = format!("{}.{MEASUREMENTS_EXT}", file_stem(name));
+            take(dir, &file);
+            take_other_cases(dir, &file);
         }
     }
 
