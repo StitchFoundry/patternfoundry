@@ -248,3 +248,24 @@ fn saved_measurement_sets_load_into_any_pattern_and_bad_files_are_skipped() {
     assert_eq!(r["sets"].as_array().unwrap().len(), 1);
     let _ = std::fs::remove_dir_all(&dir);
 }
+
+#[test]
+fn a_set_saved_again_under_another_case_replaces_the_old_one() {
+    // Made-up measurements, not anyone's. Set names match without regard to case (`loadSet`,
+    // `deleteSet`), so saving "me" over "Me" must replace it, not leave the old file behind.
+    let dir = fresh_dir("measurements-case").join("Measurements");
+    let mut a = Session::new();
+    a.attach_measurement_store(dir.clone());
+    a.execute("file.new", &json!({})).unwrap();
+    a.execute("measure.set", &json!({"name": "Me", "values": {"bust": 880}})).unwrap();
+    a.execute("measure.saveSet", &json!({})).unwrap();
+    a.execute("measure.set", &json!({"values": {"bust": 900}})).unwrap();
+    let r = a.execute("measure.saveSet", &json!({"name": "me"})).unwrap();
+    assert_eq!(r["sets"].as_array().unwrap().len(), 1);
+    assert_eq!(std::fs::read_dir(&dir).unwrap().count(), 1, "one file per set");
+    let info = a.execute("measure.loadSet", &json!({"name": "ME"})).unwrap();
+    assert_eq!((info["name"].as_str(), info["values"]["bust"].as_f64()), (Some("me"), Some(900.0)), "the newer values");
+    a.execute("measure.deleteSet", &json!({"name": "Me"})).unwrap();
+    assert_eq!(a.execute("measure.sets", &json!({})).unwrap()["sets"], json!([]), "deleted, nothing comes back");
+    let _ = std::fs::remove_dir_all(&dir);
+}
