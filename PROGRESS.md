@@ -11,3 +11,4 @@
 - 2026-11-12 (issue 169): opening a DXF-AAMA piece digitised as many short edges matched each seam edge against every cutting edge (80 000 points: 46 s); the cutting edges now sit in a grid, so it opens in under a second with the same allowances.
 - 2026-11-13 (nightly sweep): no reported bugs awaited triage; `cargo audit` has no vulnerabilities (unmaintained notices only); fmt and workspace clippy clean; pf-* tests pass apart from the new #175 repro. Filed #175.
 - 2026-11-13 (issue 175): long measurement formulas chained through many names overflowed the stack; `expr::eval_with` now walks a `+ - * /` chain in a loop, so recursion follows only the nesting the parser caps.
+- 2026-11-13 (issue 162): README now has a Download section (links `/releases/latest`) and says "Early release"; web app head gets a description and an inline favicon. Docs/HTML only; checked by diff (full `cargo xtask ci` not run: session disk, CI runs it).
