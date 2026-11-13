@@ -669,6 +669,6 @@ fn pastes_beside_a_compound_member_keep_the_compound_to_paths() {
         s.execute(cmd, &json!({})).unwrap();
         let NodeKind::Compound { children, .. } = &node(&s, comp).kind else { panic!() };
         assert!(children.iter().all(|c| matches!(c.kind, NodeKind::Path { .. })), "{cmd}");
-        assert_eq!(doc(&s).layers[0].children().unwrap().len(), 2, "{cmd}: the group sits beside the compound");
+        assert_eq!(doc(&s).layers[0].children().unwrap().len(), 3, "{cmd}: the pasted group sits beside the compound");
     }
 }
