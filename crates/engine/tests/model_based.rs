@@ -201,3 +201,23 @@ fn serialize_all_formats_on_rich_doc() {
     invariants::check_document(&back).unwrap();
     assert!(back.node_count() >= 5);
 }
+
+/// Regression for #126: the six ops proptest shrank to. Paste in Front of a copied compound must
+/// leave compounds with path children only.
+#[test]
+fn paste_in_front_keeps_compound_children_paths() {
+    let mut s = fixtures::session();
+    let ops = [
+        Op::Rect(0.0, 0.0, 1.0, 1.0),
+        Op::Rect(0.0, 0.0, 1.0, 1.0),
+        Op::SelectSet(vec![6]),
+        Op::Batch(vec![Op::Compound, Op::SelectSet(vec![12])]),
+        Op::Copy,
+        Op::Paste(1),
+    ];
+    for (i, op) in ops.iter().enumerate() {
+        let (id, params) = op.command(&s);
+        let _ = s.execute(&id, &params);
+        check_session(&s).unwrap_or_else(|e| panic!("after step {i} `{id}` {params}: {e}"));
+    }
+}

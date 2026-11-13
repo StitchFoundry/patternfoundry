@@ -66,6 +66,7 @@ pub fn start() {
         return;
     };
     detect_language();
+    crate::makerfoundry::choose_services();
     // Read and taken out of the page address before anything else can see it.
     let link = crate::makerfoundry::take_link();
     wasm_bindgen_futures::spawn_local(async move {
@@ -489,10 +490,8 @@ fn services(inbox: Inbox, place_inbox: PlaceInbox, ctx: egui::Context, locks: Op
     }
 }
 
-/// HTTPS POSTs (Ask About Patterns, Foundry Account) with the browser's fetch; to Anthropic
-/// with the user's own key, Anthropic answers a web page only when it says it means to
-/// (`anthropic-dangerous-direct-browser-access`), as a page holding its user's own key does.
-/// From StitchFoundry's web build.
+/// HTTPS POSTs (Ask About Patterns, Foundry Account) with the browser's fetch, to the Foundry
+/// service. From StitchFoundry's web build.
 fn http_post_async(ctx: egui::Context) -> vectorcraft_ui_egui::HttpPostAsyncFn {
     Rc::new(move |request, done| {
         let ctx = ctx.clone();
