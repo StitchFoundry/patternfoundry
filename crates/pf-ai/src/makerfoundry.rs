@@ -1,6 +1,6 @@
 //! MakerFoundry (PF-11): publishing the document to MakerFoundry, the Foundry marketplace, as
 //! a private draft the person finishes on MakerFoundry's own page. The contract is MakerFoundry's
-//! `docs/api.md` ("How publishing from an app works", github.com/SiteSentrix/makerfoundry):
+//! `docs/api.md` ("How publishing from an app works", github.com/StitchFoundry/makerfoundry):
 //!
 //! - `POST https://makerfoundry.app/api/v1/designs`, `Authorization: Bearer <the person's Foundry
 //!   session, sfs_…>` (never any other key), JSON `{file_name, file (base64), app}`;

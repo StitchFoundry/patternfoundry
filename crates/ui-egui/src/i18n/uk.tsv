@@ -5374,3 +5374,28 @@ menu	Pattern	Викрійка
 @msg	The design is too large to open: at most 32 MB.	Дизайн завеликий для відкриття: не більше 32 МБ.
 @msg	PatternFoundry opens SVG and DXF designs from MakerFoundry; that file is neither.	PatternFoundry відкриває з MakerFoundry дизайни SVG і DXF; цей файл не є жодним із них.
 @msg	The design couldn't be downloaded from MakerFoundry: {0}	Не вдалося завантажити дизайн з MakerFoundry: {0}
+	Select a drafted block first	Спочатку виберіть побудовану базову викрійку
+	This block needs these measurements: {names}	Для цієї базової викрійки потрібні мірки: {names}
+	Enter them in the Measurements panel, or pick a size there, then draft the block again	Введіть їх на панелі «Мірки» або виберіть там розмір, а потім побудуйте базову викрійку знову
+	1. What are you making?	1. What are you making?
+	2. Whose measurements?	2. Whose measurements?
+	Blank page	Blank page
+	Bodice	Bodice
+	Choose a saved set of measurements	Choose a saved set of measurements
+	Enter a number for: {names}	Enter a number for: {names}
+	Your measurements were not kept: {why}	Your measurements were not kept: {why}
+	I'll enter my measurements	I'll enter my measurements
+	Keep these measurements on this computer (My Measurements)	Keep these measurements on this computer (My Measurements)
+	Nothing saved yet. Enter your measurements once and tick “Keep these measurements”.	Nothing saved yet. Enter your measurements once and tick “Keep these measurements”.
+	Pick a sample size	Pick a sample size
+	Round sample sizes to start from. Change any measurement afterwards in the Measurements panel.	Round sample sizes to start from. Change any measurement afterwards in the Measurements panel.
+	Skirt	Skirt
+	Sleeve	Sleeve
+	Start a Pattern	Start a Pattern
+	Start a pattern	Start a pattern
+	Trousers	Trousers
+	Use my saved measurements	Use my saved measurements
+	centimetres	centimetres
+	inches	inches
+	Start a Pattern…	Start a Pattern…
+	Create Pattern	Create Pattern
