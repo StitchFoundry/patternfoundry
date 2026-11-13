@@ -649,3 +649,26 @@ fn paste_remembers_layers_survives_save_and_old_files_load_without_it() {
     assert!(v.get("paste_remembers_layers").is_none(), "off is not written");
     assert!(!vectorcraft_format::load(v.to_string().as_bytes()).unwrap().paste_remembers_layers);
 }
+
+/// Pasting beside a compound's member never puts a non-path inside the compound (#126).
+#[test]
+fn pastes_beside_a_compound_member_keep_the_compound_to_paths() {
+    for cmd in ["edit.pasteInFront", "edit.pasteInBack"] {
+        let mut s = session();
+        let a = rect(&mut s, 0.0, 0.0, 10.0, 10.0);
+        let b = rect(&mut s, 2.0, 2.0, 5.0, 5.0);
+        let c = rect(&mut s, 50.0, 0.0, 10.0, 10.0);
+        let d = rect(&mut s, 70.0, 0.0, 10.0, 10.0);
+        sel(&mut s, &[c, d]);
+        s.execute("object.group", &json!({})).unwrap();
+        let group = doc(&s).layers[0].children().unwrap().last().unwrap().id;
+        copy(&mut s, &[group]);
+        sel(&mut s, &[a, b]);
+        let comp = id_of(&s.execute("object.compoundPath.make", &json!({})).unwrap());
+        sel(&mut s, &[a]);
+        s.execute(cmd, &json!({})).unwrap();
+        let NodeKind::Compound { children, .. } = &node(&s, comp).kind else { panic!() };
+        assert!(children.iter().all(|c| matches!(c.kind, NodeKind::Path { .. })), "{cmd}");
+        assert_eq!(doc(&s).layers[0].children().unwrap().len(), 2, "{cmd}: the group sits beside the compound");
+    }
+}

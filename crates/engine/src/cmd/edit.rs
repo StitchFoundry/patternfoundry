@@ -695,6 +695,15 @@ fn paste_clip(s: &mut Session, p: &Value, mode: PasteMode, clip: &Clipboard, cho
                         (par, if mode == PasteMode::Back { placed.get(&par).copied().unwrap_or(0) } else { usize::MAX })
                     }
                 };
+                // A compound holds only paths: anything else goes beside the compound instead.
+                let in_compound = par.and_then(|id| d.node(id)).is_some_and(|n| matches!(n.kind, vectorcraft_doc::NodeKind::Compound { .. }));
+                let (par, idx) = match par.and_then(|id| d.position(id)) {
+                    Some((up, ci, _)) if in_compound && !matches!(c.kind, vectorcraft_doc::NodeKind::Path { .. }) => {
+                        let k = placed.get(&up).copied().unwrap_or(0);
+                        (up, if mode == PasteMode::Back { ci + k } else { ci + 1 + k })
+                    }
+                    _ => (par, idx),
+                };
                 *placed.entry(par).or_default() += 1;
                 new_ids.push(d.insert(par, idx, c)?);
             }
