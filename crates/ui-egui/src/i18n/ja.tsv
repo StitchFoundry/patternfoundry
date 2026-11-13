@@ -4975,30 +4975,23 @@ file-filter	PDF for projector	プロジェクター用 PDF
 	A password needs at least 8 characters.	パスワードは 8 文字以上必要です。
 	Account	アカウント
 	Allow	許可
-	Anthropic API key:	Anthropic API キー:
 	Ask	質問する
 	Buy credits	クレジットを購入
 	Buy…	購入…
-	Change key	キーを変更
 	Create Free Account	無料アカウントを作成
 	Create a free Foundry Account	無料の Foundry アカウントを作成
 	Don't Allow	許可しない
 	Edit › Undo takes each change back.	編集 › 取り消しで各変更を元に戻せます。
 	Email	メール
 	Foundry Account	Foundry アカウント
-	Foundry accounts aren't open yet. Until then, the AI features work with your own Anthropic API key.	Foundry アカウントはまだ始まっていません。それまでは、AI 機能はご自分の Anthropic API キーで使えます。
-	Get a key	キーを取得
 	I have an account: Sign In	アカウントをお持ちの方:サインイン
 	New Conversation	新しい会話
 	New here? Create a free account	はじめての方は無料アカウントを作成
-	No card needed, and no API key to set up	カード不要、API キーの設定も不要
 	Paid with Foundry credits ({n} left).	Foundry クレジットで支払い（残り {n}）。
 	Paid with Foundry credits.	Foundry クレジットで支払い。
-	Pay for the AI features with my Foundry credits	AI 機能を Foundry クレジットで支払う
 	Pay with Foundry credits instead	代わりに Foundry クレジットで支払う
 	Payment is on Stripe's secure page, in your browser; your card never reaches PatternFoundry.	支払いはブラウザーで開く Stripe の安全なページで行います。カード情報が PatternFoundry に届くことはありません。
 	Reading your credits…	クレジットを読み込み中…
-	Remember the key on this computer	このコンピューターにキーを保存
 	Server	サーバー
 	Sign In	サインイン
 	Sign Out	サインアウト
@@ -5011,7 +5004,7 @@ file-filter	PDF for projector	プロジェクター用 PDF
 @msg	An account with that email already exists: sign in instead.	そのメールのアカウントはすでにあります。サインインしてください。
 @msg	Anthropic refused the API key: {0}	Anthropic が API キーを拒否しました: {0}
 @msg	Couldn't reach the AI service: {0}	AI サービスに接続できませんでした: {0}
-@msg	Enter your Anthropic API key first.	先に Anthropic API キーを入力してください。
+@msg	AI now uses your Foundry Account. Sign in to continue.	AI は Foundry アカウントを使うようになりました。続けるにはサインインしてください。
 @msg	Foundry accounts aren't open yet.	Foundry アカウントはまだ始まっていません。
 @msg	Not enough Foundry credits: buy more in Foundry Account.	Foundry クレジットが足りません。Foundry アカウントで購入してください。
 @msg	The AI declined to answer this: ask another way.	AI がこの質問への回答を断りました：別の聞き方をしてください。
@@ -5033,13 +5026,12 @@ file-filter	PDF for projector	プロジェクター用 PDF
 @msg	Type your email address.	メールアドレスを入力してください。
 @msg	Pay on the page that opened in your browser, then press Refresh.	ブラウザーで開いたページで支払い、それから「更新」を押してください。
 	Ask About Patterns…	型紙について質問…
-	Answers come from Claude with your own Anthropic API key, billed to your Anthropic account. They can be wrong: sew a muslin before cutting good fabric.	回答はお客様自身の Anthropic API キーを使って Claude が作成し、Anthropic アカウントに請求されます。回答は誤っている場合があります。良い生地を裁つ前に、シーチングで仮縫い（トワル）をしてください。
+	Answers come from Claude. They can be wrong: sew a muslin before cutting good fabric.	回答は Claude が作成します。回答は誤っている場合があります。良い生地を裁つ前に、シーチングで仮縫い（トワル）をしてください。
 	Ask About Patterns	型紙について質問
 	Ask anything about sewing patterns or PatternFoundry: how much ease to add, how to move a dart, which block to start from, where a feature is. Claude can also draft and change your pattern when you ask, after you allow it.	型紙や PatternFoundry について何でも質問できます。ゆとりをどれだけ加えるか、ダーツの移動方法、どの原型から始めるか、機能の場所など。許可すれば、依頼に応じて Claude が型紙を製図・変更することもできます。
 	Claude asks to:	Claude からの依頼：
 	Couldn't do:	実行できませんでした：
 	Done:	完了：
-	Free credits for the AI features, no API key needed	AI 機能用の無料クレジット、API キー不要
 	Free credits to try the AI features: Ask About Patterns drafts and changes patterns with you	AI 機能を試せる無料クレジット：「型紙について質問」で型紙を一緒に製図・変更できます
 	Include my pattern	型紙を含める
 	Its pieces and sizes, and which measurements are set: never their values	パーツとサイズ、設定済みの寸法の項目：寸法の値は含めません
@@ -5058,7 +5050,7 @@ file-filter	PDF for projector	プロジェクター用 PDF
 	About the fit	フィットについて
 	Anything else? For example: folds below the back neck	ほかに何か？ 例：後ろ衿ぐりの下にしわが出る
 	Check My Muslin	仮縫いをチェック
-	Claude looks at the photos with your own Anthropic API key, billed to your Anthropic account. It can be wrong: sew the altered part again in muslin before cutting good fabric.	Claude はお使いの Anthropic API キーで写真を見ます。料金はお使いの Anthropic アカウントに請求されます。間違えることもあるので、良い生地を裁つ前に、補正した部分をもう一度シーチングで仮縫いしてください。
+	Claude looks at the photos. It can be wrong: sew the altered part again in muslin before cutting good fabric.	Claude が写真を確認します。間違えることもあるので、良い生地を裁つ前に、補正した部分をもう一度シーチングで仮縫いしてください。
 	Final fabric	本番の生地
 	Hard to raise my arms	腕が上げにくい
 	How it feels:	着心地：
@@ -5434,3 +5426,28 @@ menu	Pattern	型紙
 @msg	The design is too large to open: at most 32 MB.	デザインが大きすぎて開けません: 最大 32 MB です。
 @msg	PatternFoundry opens SVG and DXF designs from MakerFoundry; that file is neither.	PatternFoundry は MakerFoundry の SVG と DXF のデザインを開きます。このファイルはどちらでもありません。
 @msg	The design couldn't be downloaded from MakerFoundry: {0}	MakerFoundry からデザインをダウンロードできませんでした: {0}
+	Select a drafted block first	先に製図した原型を選択してください
+	This block needs these measurements: {names}	この原型には次の寸法が必要です: {names}
+	Enter them in the Measurements panel, or pick a size there, then draft the block again	寸法パネルで入力するか、そこでサイズを選んでから、もう一度原型を製図してください
+	1. What are you making?	1. What are you making?
+	2. Whose measurements?	2. Whose measurements?
+	Blank page	Blank page
+	Bodice	Bodice
+	Choose a saved set of measurements	Choose a saved set of measurements
+	Enter a number for: {names}	Enter a number for: {names}
+	Your measurements were not kept: {why}	Your measurements were not kept: {why}
+	I'll enter my measurements	I'll enter my measurements
+	Keep these measurements on this computer (My Measurements)	Keep these measurements on this computer (My Measurements)
+	Nothing saved yet. Enter your measurements once and tick “Keep these measurements”.	Nothing saved yet. Enter your measurements once and tick “Keep these measurements”.
+	Pick a sample size	Pick a sample size
+	Round sample sizes to start from. Change any measurement afterwards in the Measurements panel.	Round sample sizes to start from. Change any measurement afterwards in the Measurements panel.
+	Skirt	Skirt
+	Sleeve	Sleeve
+	Start a Pattern	Start a Pattern
+	Start a pattern	Start a pattern
+	Trousers	Trousers
+	Use my saved measurements	Use my saved measurements
+	centimetres	centimetres
+	inches	inches
+	Start a Pattern…	Start a Pattern…
+	Create Pattern	Create Pattern

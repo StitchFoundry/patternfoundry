@@ -166,7 +166,7 @@ impl Session {
 
     /// The saved measurement sets, by name; files that can't be read are skipped (logged by file
     /// name, never by content).
-    pub(crate) fn measurement_sets(&self) -> Vec<pf_core::measure::Measurements> {
+    pub fn measurement_sets(&self) -> Vec<pf_core::measure::Measurements> {
         let mut out: Vec<pf_core::measure::Measurements> = Vec::new();
         for (_, m) in self.measurement_files() {
             if !out.iter().any(|o| o.name.eq_ignore_ascii_case(&m.name)) {

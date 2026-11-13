@@ -5238,30 +5238,23 @@ file-filter	PDF for projector	PDF para projetor
 	A password needs at least 8 characters.	A senha precisa ter pelo menos 8 caracteres.
 	Account	Conta
 	Allow	Permitir
-	Anthropic API key:	Chave de API da Anthropic:
 	Ask	Perguntar
 	Buy credits	Comprar créditos
 	Buy…	Comprar…
-	Change key	Alterar chave
 	Create Free Account	Criar conta grátis
 	Create a free Foundry Account	Crie uma conta Foundry grátis
 	Don't Allow	Não permitir
 	Edit › Undo takes each change back.	Editar › Desfazer reverte cada alteração.
 	Email	E-mail
 	Foundry Account	Conta Foundry
-	Foundry accounts aren't open yet. Until then, the AI features work with your own Anthropic API key.	As contas do Foundry ainda não estão abertas. Até lá, os recursos de IA funcionam com a sua própria chave de API da Anthropic.
-	Get a key	Obter uma chave
 	I have an account: Sign In	Já tenho conta: entrar
 	New Conversation	Nova conversa
 	New here? Create a free account	Novo aqui? Crie uma conta grátis
-	No card needed, and no API key to set up	Sem cartão e sem chave de API para configurar
 	Paid with Foundry credits ({n} left).	Pago com créditos do Foundry (restam {n}).
 	Paid with Foundry credits.	Pago com créditos do Foundry.
-	Pay for the AI features with my Foundry credits	Pagar os recursos de IA com meus créditos do Foundry
 	Pay with Foundry credits instead	Pagar com créditos do Foundry
 	Payment is on Stripe's secure page, in your browser; your card never reaches PatternFoundry.	O pagamento é feito na página segura da Stripe, no seu navegador; o seu cartão nunca chega ao PatternFoundry.
 	Reading your credits…	Lendo seus créditos…
-	Remember the key on this computer	Lembrar a chave neste computador
 	Server	Servidor
 	Sign In	Entrar
 	Sign Out	Sair
@@ -5273,20 +5266,19 @@ file-filter	PDF for projector	PDF para projetor
 	{n} credits for {price}	{n} créditos por {price}
 @msg	Anthropic refused the API key: {0}	A Anthropic recusou a chave de API: {0}
 @msg	Couldn't reach the AI service: {0}	Não foi possível conectar ao serviço de IA: {0}
-@msg	Enter your Anthropic API key first.	Primeiro, informe sua chave de API da Anthropic.
+@msg	AI now uses your Foundry Account. Sign in to continue.	A IA agora usa sua conta Foundry. Entre para continuar.
 @msg	The AI service failed (error {0}): try again later.	O serviço de IA falhou (erro {0}): tente novamente mais tarde.
 @msg	The AI service is busy: try again in a minute.	O serviço de IA está ocupado: tente novamente em um minuto.
 @msg	The API key isn't valid: paste it again from the Anthropic Console.	A chave de API não é válida: cole-a novamente a partir do Anthropic Console.
 @msg	The request failed (error {0}): {1}	A solicitação falhou (erro {0}): {1}
 @msg	Your Anthropic account can't pay for this: {0}	Não foi possível cobrar isto na sua conta Anthropic: {0}
 	Ask About Patterns…	Perguntar sobre moldes…
-	Answers come from Claude with your own Anthropic API key, billed to your Anthropic account. They can be wrong: sew a muslin before cutting good fabric.	As respostas vêm do Claude com a sua própria chave de API da Anthropic, cobrada na sua conta Anthropic. Elas podem estar erradas: costure uma peça-piloto em morim antes de cortar um tecido bom.
+	Answers come from Claude. They can be wrong: sew a muslin before cutting good fabric.	As respostas vêm do Claude. Elas podem estar erradas: costure uma peça-piloto em morim antes de cortar um tecido bom.
 	Ask About Patterns	Perguntar sobre moldes
 	Ask anything about sewing patterns or PatternFoundry: how much ease to add, how to move a dart, which block to start from, where a feature is. Claude can also draft and change your pattern when you ask, after you allow it.	Pergunte qualquer coisa sobre moldes de costura ou o PatternFoundry: quanta folga acrescentar, como transferir uma pence, de qual molde base partir, onde fica um recurso. O Claude também pode traçar e alterar o seu molde quando você pedir, depois que você permitir.
 	Claude asks to:	O Claude pede para:
 	Couldn't do:	Não foi possível:
 	Done:	Feito:
-	Free credits for the AI features, no API key needed	Créditos grátis para os recursos de IA, sem chave de API
 	Free credits to try the AI features: Ask About Patterns drafts and changes patterns with you	Créditos grátis para experimentar os recursos de IA: Perguntar sobre moldes traça e altera moldes com você
 	Include my pattern	Incluir meu molde
 	Its pieces and sizes, and which measurements are set: never their values	As peças e os tamanhos, e quais medidas estão definidas: nunca os valores delas
@@ -5319,7 +5311,7 @@ file-filter	PDF for projector	PDF para projetor
 	About the fit	Sobre o caimento
 	Anything else? For example: folds below the back neck	Mais alguma coisa? Por exemplo: dobras abaixo do decote das costas
 	Check My Muslin	Verificar minha peça-piloto
-	Claude looks at the photos with your own Anthropic API key, billed to your Anthropic account. It can be wrong: sew the altered part again in muslin before cutting good fabric.	O Claude analisa as fotos com a sua própria chave de API da Anthropic, cobrada na sua conta Anthropic. Ele pode errar: costure de novo a parte alterada em morim antes de cortar um tecido bom.
+	Claude looks at the photos. It can be wrong: sew the altered part again in muslin before cutting good fabric.	O Claude olha as fotos. Ele pode errar: costure de novo a parte alterada em morim antes de cortar um tecido bom.
 	Final fabric	Tecido definitivo
 	Hard to raise my arms	Difícil levantar os braços
 	How it feels:	Como fica no corpo:
@@ -5697,3 +5689,28 @@ menu	Pattern	Molde
 @msg	The design is too large to open: at most 32 MB.	O design é grande demais para abrir: no máximo 32 MB.
 @msg	PatternFoundry opens SVG and DXF designs from MakerFoundry; that file is neither.	O PatternFoundry abre designs SVG e DXF do MakerFoundry; esse arquivo não é nenhum dos dois.
 @msg	The design couldn't be downloaded from MakerFoundry: {0}	Não foi possível baixar o design do MakerFoundry: {0}
+	Select a drafted block first	Selecione primeiro um molde base traçado
+	This block needs these measurements: {names}	Este molde base precisa destas medidas: {names}
+	Enter them in the Measurements panel, or pick a size there, then draft the block again	Digite-as no painel Medidas ou escolha um tamanho lá e trace o molde base de novo
+	1. What are you making?	1. What are you making?
+	2. Whose measurements?	2. Whose measurements?
+	Blank page	Blank page
+	Bodice	Bodice
+	Choose a saved set of measurements	Choose a saved set of measurements
+	Enter a number for: {names}	Enter a number for: {names}
+	Your measurements were not kept: {why}	Your measurements were not kept: {why}
+	I'll enter my measurements	I'll enter my measurements
+	Keep these measurements on this computer (My Measurements)	Keep these measurements on this computer (My Measurements)
+	Nothing saved yet. Enter your measurements once and tick “Keep these measurements”.	Nothing saved yet. Enter your measurements once and tick “Keep these measurements”.
+	Pick a sample size	Pick a sample size
+	Round sample sizes to start from. Change any measurement afterwards in the Measurements panel.	Round sample sizes to start from. Change any measurement afterwards in the Measurements panel.
+	Skirt	Skirt
+	Sleeve	Sleeve
+	Start a Pattern	Start a Pattern
+	Start a pattern	Start a pattern
+	Trousers	Trousers
+	Use my saved measurements	Use my saved measurements
+	centimetres	centimetres
+	inches	inches
+	Start a Pattern…	Start a Pattern…
+	Create Pattern	Create Pattern

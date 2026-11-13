@@ -4952,30 +4952,23 @@ file-filter	PDF for projector	用於投影機的 PDF
 	A password needs at least 8 characters.	密碼至少需要 8 個字元。
 	Account	帳戶
 	Allow	允許
-	Anthropic API key:	Anthropic API 金鑰：
 	Ask	提問
 	Buy credits	購買點數
 	Buy…	購買…
-	Change key	更換金鑰
 	Create Free Account	建立免費帳戶
 	Create a free Foundry Account	建立免費 Foundry 帳戶
 	Don't Allow	不允許
 	Edit › Undo takes each change back.	編輯 › 還原可復原每項修改。
 	Email	電子郵件
 	Foundry Account	Foundry 帳戶
-	Foundry accounts aren't open yet. Until then, the AI features work with your own Anthropic API key.	Foundry 帳戶尚未開放。在此之前，AI 功能使用您自己的 Anthropic API 金鑰。
-	Get a key	取得金鑰
 	I have an account: Sign In	已有帳戶:登入
 	New Conversation	新對話
 	New here? Create a free account	新使用者?建立免費帳戶
-	No card needed, and no API key to set up	無需信用卡,也無需設定 API 金鑰
 	Paid with Foundry credits ({n} left).	以 Foundry 點數支付（剩餘 {n}）。
 	Paid with Foundry credits.	以 Foundry 點數支付。
-	Pay for the AI features with my Foundry credits	用我的 Foundry 點數支付 AI 功能
 	Pay with Foundry credits instead	改用 Foundry 點數支付
 	Payment is on Stripe's secure page, in your browser; your card never reaches PatternFoundry.	在瀏覽器中的 Stripe 安全頁面付款；您的信用卡資料絕不會到達 PatternFoundry。
 	Reading your credits…	正在讀取點數…
-	Remember the key on this computer	在此電腦上記住金鑰
 	Server	伺服器
 	Sign In	登入
 	Sign Out	登出
@@ -4987,7 +4980,7 @@ file-filter	PDF for projector	用於投影機的 PDF
 	{n} credits for {price}	{n} 點數，{price}
 @msg	Anthropic refused the API key: {0}	Anthropic 拒絕了此 API 金鑰：{0}
 @msg	Couldn't reach the AI service: {0}	無法連線到 AI 服務：{0}
-@msg	Enter your Anthropic API key first.	請先輸入您的 Anthropic API 金鑰。
+@msg	AI now uses your Foundry Account. Sign in to continue.	AI 現在使用您的 Foundry 帳戶。請登入後繼續。
 @msg	The AI declined to answer this: ask another way.	AI 拒絕回答此問題：請換一種問法。
 @msg	The AI service failed (error {0}): try again later.	AI 服務發生錯誤 (錯誤 {0})：請稍後再試一次。
 @msg	The AI service is busy: try again in a minute.	AI 服務忙碌中：請一分鐘後再試一次。
@@ -5001,13 +4994,12 @@ file-filter	PDF for projector	用於投影機的 PDF
 @msg	This conversation is long: start a New Conversation.	此對話已很長：請開始新對話。
 @msg	Claude took too many steps: ask again, more simply.	Claude 用了太多步驟：請更簡單地再問一次。
 	Ask About Patterns…	詢問紙樣問題…
-	Answers come from Claude with your own Anthropic API key, billed to your Anthropic account. They can be wrong: sew a muslin before cutting good fabric.	回答由 Claude 使用您自己的 Anthropic API 金鑰產生，費用計入您的 Anthropic 帳戶。回答可能有誤：裁剪好布料前請先用胚布縫製樣衣。
+	Answers come from Claude. They can be wrong: sew a muslin before cutting good fabric.	回答由 Claude 提供。回答可能有誤：裁剪好布料前請先用胚布縫製樣衣。
 	Ask About Patterns	詢問紙樣問題
 	Ask anything about sewing patterns or PatternFoundry: how much ease to add, how to move a dart, which block to start from, where a feature is. Claude can also draft and change your pattern when you ask, after you allow it.	關於紙樣或 PatternFoundry 的任何問題都可以問：該加多少鬆份、如何轉移褶子、從哪個原型開始、某項功能在哪裡。在您允許後，Claude 也可以依您的要求繪製和修改紙樣。
 	Claude asks to:	Claude 請求：
 	Couldn't do:	無法完成：
 	Done:	已完成：
-	Free credits for the AI features, no API key needed	AI 功能免費點數，無需 API 金鑰
 	Free credits to try the AI features: Ask About Patterns drafts and changes patterns with you	免費點數試用 AI 功能：「詢問紙樣問題」與您一起繪製和修改紙樣
 	Include my pattern	附上我的紙樣
 	Its pieces and sizes, and which measurements are set: never their values	其裁片和尺碼，以及設定了哪些尺寸：絕不包括具體數值
@@ -5033,7 +5025,7 @@ file-filter	PDF for projector	用於投影機的 PDF
 	About the fit	關於合身度
 	Anything else? For example: folds below the back neck	還有別的嗎？例如：後領口下方有皺褶
 	Check My Muslin	檢查我的樣衣
-	Claude looks at the photos with your own Anthropic API key, billed to your Anthropic account. It can be wrong: sew the altered part again in muslin before cutting good fabric.	Claude 使用您自己的 Anthropic API 金鑰查看照片，費用計入您的 Anthropic 帳戶。它可能出錯：裁剪好布料前，請先用胚布把修改過的部分重新縫製一次樣衣。
+	Claude looks at the photos. It can be wrong: sew the altered part again in muslin before cutting good fabric.	Claude 會查看照片。它可能出錯：裁剪好布料前，請先用胚布把修改過的部分重新縫製一次樣衣。
 	Final fabric	正式布料
 	Hard to raise my arms	手臂難以抬起
 	How it feels:	穿著感受：
@@ -5411,3 +5403,28 @@ menu	Pattern	紙型
 @msg	The design is too large to open: at most 32 MB.	設計太大，無法開啟：最多 32 MB。
 @msg	PatternFoundry opens SVG and DXF designs from MakerFoundry; that file is neither.	PatternFoundry 可開啟 MakerFoundry 上的 SVG 和 DXF 設計；該檔案兩者皆非。
 @msg	The design couldn't be downloaded from MakerFoundry: {0}	無法從 MakerFoundry 下載設計：{0}
+	Select a drafted block first	請先選擇一個已繪製的原型
+	This block needs these measurements: {names}	此原型需要以下尺寸: {names}
+	Enter them in the Measurements panel, or pick a size there, then draft the block again	請在尺寸面板中輸入，或在該處選擇尺碼，然後重新繪製原型
+	1. What are you making?	1. What are you making?
+	2. Whose measurements?	2. Whose measurements?
+	Blank page	Blank page
+	Bodice	Bodice
+	Choose a saved set of measurements	Choose a saved set of measurements
+	Enter a number for: {names}	Enter a number for: {names}
+	Your measurements were not kept: {why}	Your measurements were not kept: {why}
+	I'll enter my measurements	I'll enter my measurements
+	Keep these measurements on this computer (My Measurements)	Keep these measurements on this computer (My Measurements)
+	Nothing saved yet. Enter your measurements once and tick “Keep these measurements”.	Nothing saved yet. Enter your measurements once and tick “Keep these measurements”.
+	Pick a sample size	Pick a sample size
+	Round sample sizes to start from. Change any measurement afterwards in the Measurements panel.	Round sample sizes to start from. Change any measurement afterwards in the Measurements panel.
+	Skirt	Skirt
+	Sleeve	Sleeve
+	Start a Pattern	Start a Pattern
+	Start a pattern	Start a pattern
+	Trousers	Trousers
+	Use my saved measurements	Use my saved measurements
+	centimetres	centimetres
+	inches	inches
+	Start a Pattern…	Start a Pattern…
+	Create Pattern	Create Pattern

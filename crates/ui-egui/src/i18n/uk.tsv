@@ -4915,30 +4915,23 @@ file-filter	PDF for projector	PDF для проєктора
 	A password needs at least 8 characters.	Пароль має містити щонайменше 8 символів.
 	Account	Обліковий запис
 	Allow	Дозволити
-	Anthropic API key:	Ключ API Anthropic:
 	Ask	Запитати
 	Buy credits	Купити кредити
 	Buy…	Купити…
-	Change key	Змінити ключ
 	Create Free Account	Створити безкоштовний обліковий запис
 	Create a free Foundry Account	Створіть безкоштовний обліковий запис Foundry
 	Don't Allow	Не дозволяти
 	Edit › Undo takes each change back.	Редагування › Скасувати скасовує кожну зміну.
 	Email	Ел. пошта
 	Foundry Account	Обліковий запис Foundry
-	Foundry accounts aren't open yet. Until then, the AI features work with your own Anthropic API key.	Облікові записи Foundry ще не відкриті. Доти функції ШІ працюють з вашим власним ключем API Anthropic.
-	Get a key	Отримати ключ
 	I have an account: Sign In	Маю обліковий запис: увійти
 	New Conversation	Нова розмова
 	New here? Create a free account	Вперше тут? Створіть безкоштовний обліковий запис
-	No card needed, and no API key to set up	Без картки й без налаштування ключа API
 	Paid with Foundry credits ({n} left).	Оплачено кредитами Foundry (лишилося {n}).
 	Paid with Foundry credits.	Оплачено кредитами Foundry.
-	Pay for the AI features with my Foundry credits	Оплачувати функції ШІ моїми кредитами Foundry
 	Pay with Foundry credits instead	Платити кредитами Foundry
 	Payment is on Stripe's secure page, in your browser; your card never reaches PatternFoundry.	Оплата відбувається на захищеній сторінці Stripe у вашому браузері; ваша картка ніколи не потрапляє до PatternFoundry.
 	Reading your credits…	Читаємо ваші кредити…
-	Remember the key on this computer	Запам’ятати ключ на цьому комп’ютері
 	Server	Сервер
 	Sign In	Увійти
 	Sign Out	Вийти
@@ -4951,7 +4944,7 @@ file-filter	PDF for projector	PDF для проєктора
 @msg	An account with that email already exists: sign in instead.	Обліковий запис із цією поштою вже існує: увійдіть до нього.
 @msg	Anthropic refused the API key: {0}	Сервіс Anthropic відхилив ключ API: {0}
 @msg	Couldn't reach the AI service: {0}	Не вдалося зв’язатися із сервісом ШІ: {0}
-@msg	Enter your Anthropic API key first.	Спочатку введіть свій ключ API Anthropic.
+@msg	AI now uses your Foundry Account. Sign in to continue.	ШІ тепер працює через ваш обліковий запис Foundry. Увійдіть, щоб продовжити.
 @msg	Foundry accounts aren't open yet.	Облікові записи Foundry ще не відкриті.
 @msg	Not enough Foundry credits: buy more in Foundry Account.	Недостатньо кредитів Foundry: купіть ще в обліковому записі Foundry.
 @msg	The AI declined to answer this: ask another way.	ШІ відмовився відповідати: запитайте інакше.
@@ -4973,13 +4966,12 @@ file-filter	PDF for projector	PDF для проєктора
 @msg	Type your email address.	Введіть адресу ел. пошти.
 @msg	Pay on the page that opened in your browser, then press Refresh.	Оплатіть на сторінці, що відкрилася в браузері, потім натисніть «Оновити».
 	Ask About Patterns…	Запитати про викрійки…
-	Answers come from Claude with your own Anthropic API key, billed to your Anthropic account. They can be wrong: sew a muslin before cutting good fabric.	Відповіді надає Claude з вашим власним ключем API Anthropic, оплата з вашого облікового запису Anthropic. Вони можуть бути помилковими: перш ніж кроїти добру тканину, пошийте макет із бязі.
+	Answers come from Claude. They can be wrong: sew a muslin before cutting good fabric.	Відповіді дає Claude. Вони можуть бути помилковими: перш ніж кроїти добру тканину, пошийте макет із бязі.
 	Ask About Patterns	Запитати про викрійки
 	Ask anything about sewing patterns or PatternFoundry: how much ease to add, how to move a dart, which block to start from, where a feature is. Claude can also draft and change your pattern when you ask, after you allow it.	Запитуйте будь-що про викрійки або PatternFoundry: скільки додати на вільне облягання, як перевести виточку, з якої базової викрійки почати, де знайти функцію. Claude також може побудувати й змінити вашу викрійку на ваше прохання, після того як ви це дозволите.
 	Claude asks to:	Claude просить:
 	Couldn't do:	Не вдалося виконати:
 	Done:	Виконано:
-	Free credits for the AI features, no API key needed	Безкоштовні кредити на функції ШІ, без ключа API
 	Free credits to try the AI features: Ask About Patterns drafts and changes patterns with you	Безкоштовні кредити, щоб спробувати функції ШІ: «Запитати про викрійки» будує й змінює викрійки разом з вами
 	Include my pattern	Додати мою викрійку
 	Its pieces and sizes, and which measurements are set: never their values	Її деталі та розміри, а також які мірки задано, але ніколи не їхні значення
@@ -4998,7 +4990,7 @@ file-filter	PDF for projector	PDF для проєктора
 	About the fit	Про посадку
 	Anything else? For example: folds below the back neck	Ще щось? Наприклад: заломи під горловиною спинки
 	Check My Muslin	Перевірити макет
-	Claude looks at the photos with your own Anthropic API key, billed to your Anthropic account. It can be wrong: sew the altered part again in muslin before cutting good fabric.	Claude дивиться фото з вашим власним ключем API Anthropic, оплата з вашого облікового запису Anthropic. Він може помилятися: перш ніж кроїти добру тканину, пошийте змінену частину ще раз із бязі.
+	Claude looks at the photos. It can be wrong: sew the altered part again in muslin before cutting good fabric.	Claude переглядає фото. Він може помилятися: перш ніж кроїти добру тканину, пошийте змінену частину ще раз із бязі.
 	Final fabric	Основна тканина
 	Hard to raise my arms	Важко підняти руки
 	How it feels:	Як сидить:
@@ -5374,3 +5366,28 @@ menu	Pattern	Викрійка
 @msg	The design is too large to open: at most 32 MB.	Дизайн завеликий для відкриття: не більше 32 МБ.
 @msg	PatternFoundry opens SVG and DXF designs from MakerFoundry; that file is neither.	PatternFoundry відкриває з MakerFoundry дизайни SVG і DXF; цей файл не є жодним із них.
 @msg	The design couldn't be downloaded from MakerFoundry: {0}	Не вдалося завантажити дизайн з MakerFoundry: {0}
+	Select a drafted block first	Спочатку виберіть побудовану базову викрійку
+	This block needs these measurements: {names}	Для цієї базової викрійки потрібні мірки: {names}
+	Enter them in the Measurements panel, or pick a size there, then draft the block again	Введіть їх на панелі «Мірки» або виберіть там розмір, а потім побудуйте базову викрійку знову
+	1. What are you making?	1. What are you making?
+	2. Whose measurements?	2. Whose measurements?
+	Blank page	Blank page
+	Bodice	Bodice
+	Choose a saved set of measurements	Choose a saved set of measurements
+	Enter a number for: {names}	Enter a number for: {names}
+	Your measurements were not kept: {why}	Your measurements were not kept: {why}
+	I'll enter my measurements	I'll enter my measurements
+	Keep these measurements on this computer (My Measurements)	Keep these measurements on this computer (My Measurements)
+	Nothing saved yet. Enter your measurements once and tick “Keep these measurements”.	Nothing saved yet. Enter your measurements once and tick “Keep these measurements”.
+	Pick a sample size	Pick a sample size
+	Round sample sizes to start from. Change any measurement afterwards in the Measurements panel.	Round sample sizes to start from. Change any measurement afterwards in the Measurements panel.
+	Skirt	Skirt
+	Sleeve	Sleeve
+	Start a Pattern	Start a Pattern
+	Start a pattern	Start a pattern
+	Trousers	Trousers
+	Use my saved measurements	Use my saved measurements
+	centimetres	centimetres
+	inches	inches
+	Start a Pattern…	Start a Pattern…
+	Create Pattern	Create Pattern

@@ -1,8 +1,8 @@
 //! # PatternFoundry AI
 //!
 //! What PatternFoundry asks an AI model for, and how its replies are read. The model is Claude,
-//! reached through the Messages API with the user's own API key, or through the Foundry cloud
-//! service paid in Foundry credits ([`cloud`]). No network code lives here: the app sends the
+//! reached through the Foundry cloud service, paid in Foundry credits ([`cloud`]): the Foundry
+//! Account is the only way to sign in and pay for AI in the app. No network code lives here: the app sends the
 //! [`HttpRequest`]s built here with its own client and hands the answers back to be read.
 //!
 //! * [`ask`] – Ask About Patterns: questions about sewing patterns and PatternFoundry, answered
@@ -61,7 +61,7 @@ pub struct HttpRequest {
 /// Why no answer came back. The messages are for the user; the UI shows them translated.
 #[derive(Clone, Debug, PartialEq, thiserror::Error)]
 pub enum AiError {
-    #[error("Enter your Anthropic API key first.")]
+    #[error("AI now uses your Foundry Account. Sign in to continue.")]
     NoKey,
     #[error("The API key isn't valid: paste it again from the Anthropic Console.")]
     BadKey,

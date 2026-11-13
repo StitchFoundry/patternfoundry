@@ -4901,30 +4901,23 @@ file-filter	PDF for projector	PDF für Projektor
 	A password needs at least 8 characters.	Ein Passwort braucht mindestens 8 Zeichen.
 	Account	Konto
 	Allow	Erlauben
-	Anthropic API key:	Anthropic-API-Schlüssel:
 	Ask	Fragen
 	Buy credits	Credits kaufen
 	Buy…	Kaufen…
-	Change key	Schlüssel ändern
 	Create Free Account	Kostenloses Konto erstellen
 	Create a free Foundry Account	Kostenloses Foundry-Konto erstellen
 	Don't Allow	Nicht erlauben
 	Edit › Undo takes each change back.	Bearbeiten › Rückgängig nimmt jede Änderung zurück.
 	Email	E-Mail
 	Foundry Account	Foundry-Konto
-	Foundry accounts aren't open yet. Until then, the AI features work with your own Anthropic API key.	Foundry-Konten gibt es noch nicht. Bis dahin funktionieren die KI-Funktionen mit Ihrem eigenen Anthropic-API-Schlüssel.
-	Get a key	Schlüssel anfordern
 	I have an account: Sign In	Ich habe ein Konto: Anmelden
 	New Conversation	Neues Gespräch
 	New here? Create a free account	Neu hier? Kostenloses Konto erstellen
-	No card needed, and no API key to set up	Keine Karte nötig, kein API-Schlüssel einzurichten
 	Paid with Foundry credits ({n} left).	Bezahlt mit Foundry-Credits (noch {n}).
 	Paid with Foundry credits.	Bezahlt mit Foundry-Credits.
-	Pay for the AI features with my Foundry credits	Die KI-Funktionen mit meinen Foundry-Credits bezahlen
 	Pay with Foundry credits instead	Stattdessen mit Foundry-Credits bezahlen
 	Payment is on Stripe's secure page, in your browser; your card never reaches PatternFoundry.	Bezahlt wird auf der sicheren Seite von Stripe in Ihrem Browser; Ihre Karte erreicht PatternFoundry nie.
 	Reading your credits…	Credits werden gelesen…
-	Remember the key on this computer	Schlüssel auf diesem Computer speichern
 	Server	Server
 	Sign In	Anmelden
 	Sign Out	Abmelden
@@ -4937,7 +4930,7 @@ file-filter	PDF for projector	PDF für Projektor
 @msg	An account with that email already exists: sign in instead.	Es gibt bereits ein Konto mit dieser E-Mail: Melden Sie sich stattdessen an.
 @msg	Anthropic refused the API key: {0}	Anthropic hat den API-Schlüssel abgelehnt: {0}
 @msg	Couldn't reach the AI service: {0}	Der KI-Dienst konnte nicht erreicht werden: {0}
-@msg	Enter your Anthropic API key first.	Geben Sie zuerst Ihren Anthropic-API-Schlüssel ein.
+@msg	AI now uses your Foundry Account. Sign in to continue.	KI nutzt jetzt Ihr Foundry-Konto. Melden Sie sich an, um fortzufahren.
 @msg	Foundry accounts aren't open yet.	Foundry-Konten gibt es noch nicht.
 @msg	Not enough Foundry credits: buy more in Foundry Account.	Nicht genug Foundry-Credits: Kaufen Sie mehr im Foundry-Konto.
 @msg	The AI declined to answer this: ask another way.	Die KI hat es abgelehnt, darauf zu antworten: Fragen Sie anders.
@@ -4959,13 +4952,12 @@ file-filter	PDF for projector	PDF für Projektor
 @msg	Type your email address.	Geben Sie Ihre E-Mail-Adresse ein.
 @msg	Pay on the page that opened in your browser, then press Refresh.	Bezahlen Sie auf der Seite, die sich in Ihrem Browser geöffnet hat, und drücken Sie dann „Aktualisieren“.
 	Ask About Patterns…	Fragen zu Schnittmustern…
-	Answers come from Claude with your own Anthropic API key, billed to your Anthropic account. They can be wrong: sew a muslin before cutting good fabric.	Die Antworten kommen von Claude mit Ihrem eigenen Anthropic-API-Schlüssel, abgerechnet über Ihr Anthropic-Konto. Sie können falsch sein: Nähen Sie ein Probemodell aus Nessel, bevor Sie guten Stoff zuschneiden.
+	Answers come from Claude. They can be wrong: sew a muslin before cutting good fabric.	Die Antworten kommen von Claude. Sie können falsch sein: Nähen Sie ein Probemodell aus Nessel, bevor Sie guten Stoff zuschneiden.
 	Ask About Patterns	Fragen zu Schnittmustern
 	Ask anything about sewing patterns or PatternFoundry: how much ease to add, how to move a dart, which block to start from, where a feature is. Claude can also draft and change your pattern when you ask, after you allow it.	Fragen Sie alles über Schnittmuster oder PatternFoundry: wie viel Bewegungszugabe nötig ist, wie man einen Abnäher verlegt, von welchem Grundschnitt man ausgeht, wo eine Funktion zu finden ist. Claude kann Ihr Schnittmuster auf Wunsch auch konstruieren und ändern, nachdem Sie es erlaubt haben.
 	Claude asks to:	Claude möchte:
 	Couldn't do:	Nicht möglich:
 	Done:	Erledigt:
-	Free credits for the AI features, no API key needed	Kostenlose Credits für die KI-Funktionen, kein API-Schlüssel nötig
 	Free credits to try the AI features: Ask About Patterns drafts and changes patterns with you	Kostenlose Credits zum Ausprobieren der KI: „Fragen zu Schnittmustern“ konstruiert und ändert Schnittmuster mit Ihnen
 	Include my pattern	Mein Schnittmuster mitsenden
 	Its pieces and sizes, and which measurements are set: never their values	Seine Schnittteile und Größen und welche Maße festgelegt sind: nie deren Werte
@@ -4984,7 +4976,7 @@ file-filter	PDF for projector	PDF für Projektor
 	About the fit	Zur Passform
 	Anything else? For example: folds below the back neck	Sonst noch etwas? Zum Beispiel: Falten unterhalb des hinteren Halsausschnitts
 	Check My Muslin	Probemodell prüfen
-	Claude looks at the photos with your own Anthropic API key, billed to your Anthropic account. It can be wrong: sew the altered part again in muslin before cutting good fabric.	Claude sieht sich die Fotos mit Ihrem eigenen Anthropic-API-Schlüssel an, abgerechnet über Ihr Anthropic-Konto. Es kann sich irren: Nähen Sie den geänderten Teil noch einmal als Probemodell aus Nessel, bevor Sie guten Stoff zuschneiden.
+	Claude looks at the photos. It can be wrong: sew the altered part again in muslin before cutting good fabric.	Claude sieht sich die Fotos an. Es kann sich irren: Nähen Sie den geänderten Teil noch einmal als Probemodell aus Nessel, bevor Sie guten Stoff zuschneiden.
 	Final fabric	Endgültiger Stoff
 	Hard to raise my arms	Ich kann die Arme kaum heben
 	How it feels:	Wie es sich anfühlt:
@@ -5361,3 +5353,28 @@ menu	Pattern	Schnitt
 @msg	The design is too large to open: at most 32 MB.	Das Design ist zu groß zum Öffnen: höchstens 32 MB.
 @msg	PatternFoundry opens SVG and DXF designs from MakerFoundry; that file is neither.	PatternFoundry öffnet SVG- und DXF-Designs von MakerFoundry; diese Datei ist keins von beiden.
 @msg	The design couldn't be downloaded from MakerFoundry: {0}	Das Design konnte nicht von MakerFoundry geladen werden: {0}
+	Select a drafted block first	Wählen Sie zuerst einen gezeichneten Grundschnitt aus
+	This block needs these measurements: {names}	Für diesen Grundschnitt fehlen diese Maße: {names}
+	Enter them in the Measurements panel, or pick a size there, then draft the block again	Geben Sie sie im Bedienfeld Maße ein oder wählen Sie dort eine Größe, und konstruieren Sie den Grundschnitt dann erneut
+	1. What are you making?	1. What are you making?
+	2. Whose measurements?	2. Whose measurements?
+	Blank page	Blank page
+	Bodice	Bodice
+	Choose a saved set of measurements	Choose a saved set of measurements
+	Enter a number for: {names}	Enter a number for: {names}
+	Your measurements were not kept: {why}	Your measurements were not kept: {why}
+	I'll enter my measurements	I'll enter my measurements
+	Keep these measurements on this computer (My Measurements)	Keep these measurements on this computer (My Measurements)
+	Nothing saved yet. Enter your measurements once and tick “Keep these measurements”.	Nothing saved yet. Enter your measurements once and tick “Keep these measurements”.
+	Pick a sample size	Pick a sample size
+	Round sample sizes to start from. Change any measurement afterwards in the Measurements panel.	Round sample sizes to start from. Change any measurement afterwards in the Measurements panel.
+	Skirt	Skirt
+	Sleeve	Sleeve
+	Start a Pattern	Start a Pattern
+	Start a pattern	Start a pattern
+	Trousers	Trousers
+	Use my saved measurements	Use my saved measurements
+	centimetres	centimetres
+	inches	inches
+	Start a Pattern…	Start a Pattern…
+	Create Pattern	Create Pattern

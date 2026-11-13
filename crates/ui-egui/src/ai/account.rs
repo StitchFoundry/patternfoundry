@@ -1,6 +1,6 @@
 //! Foundry Account (Help menu): sign in to the Foundry cloud service (shared by the Foundry
 //! apps) or make an account, see the credits, buy more (Stripe's checkout page opens in the
-//! browser) and choose to pay for the AI features with them instead of one's own Anthropic API key.
+//! browser) and pay for the AI features with them: the Foundry Account is the only way.
 //! With that on, Ask About Patterns sends its requests through the service ([`super::post_ai`]
 //! reroutes them: [`cloud::through_cloud`]).
 //!
@@ -21,7 +21,6 @@ use crate::theme::Tokens;
 
 /// The secrets the choices are kept as.
 const SERVER_NAME: &str = "foundry-server";
-const CREDITS_NAME: &str = "foundry-pay-with-credits";
 
 /// What a request on its way was for.
 #[derive(Clone, Debug, PartialEq)]
@@ -42,8 +41,8 @@ pub struct AccountState {
     pub server: String,
     /// The session token; empty while signed out.
     pub token: String,
-    /// Pay for the AI features with Foundry credits.
-    pub use_credits: bool,
+    /// An Anthropic API key kept by an older version was found and deleted on load.
+    pub legacy_key_removed: bool,
     pub email: String,
     pub password: String,
     /// The account as last read (`{email, credits, packs, payments, history}`).
@@ -81,8 +80,15 @@ pub(crate) fn load(app: &mut VectorcraftApp) {
         if let Some(server) = s.load(SERVER_NAME) {
             st.server = server;
         }
-        // signed in and never chosen: paying with credits, as signing in chooses
-        st.use_credits = s.load(CREDITS_NAME).map_or(!st.token.is_empty(), |v| v == "1");
+        // An older version's own-key choice: the key is deleted, never used (the account is the
+        // only way to pay for AI), and so is its "pay with credits" switch.
+        if s.load(super::LEGACY_KEY_NAME).is_some() {
+            st.legacy_key_removed = true;
+            if let Err(e) = s.save(super::LEGACY_KEY_NAME, None) {
+                log::warn!("Foundry Account: can't delete the old API key: {e}");
+            }
+        }
+        let _ = s.save(super::LEGACY_CREDITS_NAME, None);
     }
     st.stale = !st.token.is_empty();
 }
@@ -96,14 +102,31 @@ pub(crate) fn keep(app: &VectorcraftApp, name: &str, value: Option<&str>) {
 
 /// The service's address in use (`None`: accounts aren't open).
 pub fn server(app: &VectorcraftApp) -> Option<String> {
+    // The web app's staging switch: the compiled-in staging service, whatever the Server row says.
+    if pf_ai::makerfoundry::staging() {
+        return cloud::clean_server(pf_ai::makerfoundry::STAGING_CLOUD);
+    }
     let typed = app.ai.account.server.trim();
     if typed.is_empty() { cloud::clean_server(&default_server()) } else { cloud::clean_server(typed) }
 }
 
-/// Whether AI requests go through the service, paid in credits.
+/// Whether AI requests can go through the service, paid in credits: signed in, with a service.
 pub fn paying_with_credits(app: &VectorcraftApp) -> bool {
-    let st = &app.ai.account;
-    st.use_credits && !st.token.is_empty() && server(app).is_some()
+    !app.ai.account.token.is_empty() && server(app).is_some()
+}
+
+/// The words shown while signed out (and once after an older version's API key was deleted).
+pub const SIGN_IN_NOTE: &str = "AI now uses your Foundry Account. Sign in to continue.";
+
+/// Whether the AI features can be used now; else why not, in words for the user.
+pub fn require_account(app: &VectorcraftApp) -> Result<(), String> {
+    if server(app).is_none() {
+        Err(AiError::NoServer.to_string())
+    } else if app.ai.account.token.is_empty() {
+        Err(SIGN_IN_NOTE.to_string())
+    } else {
+        Ok(())
+    }
 }
 
 /// The credits left, as last read.
@@ -111,11 +134,17 @@ pub fn credits(app: &VectorcraftApp) -> Option<u64> {
     app.ai.account.info.as_ref().and_then(|i| i["credits"].as_u64())
 }
 
-/// What the AI features send in the API key's place: the session token when paying with
-/// credits, else the user's own Anthropic key.
+/// What the AI features send in the API key's place: the session token (empty while signed out).
 pub fn key_to_send(app: &mut VectorcraftApp) -> String {
     load(app);
-    if paying_with_credits(app) { app.ai.account.token.clone() } else { app.ai.key.clone() }
+    app.ai.account.token.clone()
+}
+
+/// Opens the Foundry Account window when the AI features can't be used for want of an account.
+pub fn show_if_needed(app: &mut VectorcraftApp) {
+    if require_account(app).is_err() && server(app).is_some() {
+        app.ai.account.open = true;
+    }
 }
 
 /// `ui.account`: opens the window and reads the account.
@@ -132,7 +161,9 @@ pub fn open(app: &mut VectorcraftApp, p: &Value) -> Result<Value, String> {
         app.ai.account.stale = true;
     }
     let st = &app.ai.account;
-    Ok(json!({ "open": true, "signedIn": !st.token.is_empty(), "server": server(app), "credits": credits(app), "payWithCredits": st.use_credits }))
+    Ok(
+        json!({ "open": true, "signedIn": !st.token.is_empty(), "server": server(app), "credits": credits(app), "payWithCredits": paying_with_credits(app) }),
+    )
 }
 
 fn send(app: &mut VectorcraftApp, http: Result<HttpRequest, AiError>, action: Action) {
@@ -244,12 +275,9 @@ fn answered(app: &mut VectorcraftApp, action: Action, r: Result<Value, AiError>)
             let st = &mut app.ai.account;
             st.token = token;
             st.password.clear();
-            // signing in is choosing to pay with credits
-            st.use_credits = true;
             st.info = Some(v["account"].clone());
             st.stale = true;
             st.note = Some(if action == Action::SignUp { "Account made: welcome to PatternFoundry.".into() } else { "Signed in.".into() });
-            keep(app, CREDITS_NAME, Some("1"));
         }
         Action::Refresh => app.ai.account.info = Some(v),
         Action::Buy => match v["url"].as_str().filter(|u| u.starts_with("https://")) {
@@ -275,7 +303,7 @@ pub fn show(app: &mut VectorcraftApp, create: bool) {
 }
 
 /// A line for the AI windows saying how they are paid for, with the Account window a click away;
-/// `true` when paying with credits (then no API key is asked for).
+/// `true` when paying with credits.
 pub fn paid_line(app: &mut VectorcraftApp, ui: &mut egui::Ui, t: &Tokens) -> bool {
     load(app);
     let credits_on = paying_with_credits(app);
@@ -291,10 +319,8 @@ pub fn paid_line(app: &mut VectorcraftApp, ui: &mut egui::Ui, t: &Tokens) -> boo
                 app.ai.account.stale = true;
             }
         } else if server(app).is_some() && app.ai.account.token.is_empty() {
-            if crate::widgets::primary_button(ui, tl!("Create Free Account"))
-                .on_hover_text(tl!("Free credits for the AI features, no API key needed"))
-                .clicked()
-            {
+            ui.label(RichText::new(crate::i18n::msg(SIGN_IN_NOTE)).size(11.0).color(t.text_dim));
+            if crate::widgets::primary_button(ui, tl!("Create Free Account")).clicked() {
                 show(app, true);
             }
             if ui.link(RichText::new(tl!("Sign In")).size(11.0)).clicked() {
@@ -331,7 +357,7 @@ pub fn window(app: &mut VectorcraftApp, ctx: &egui::Context) {
             let busy = app.ai.account.pending.is_some();
             let st = &mut app.ai.account;
             if srv.is_none() {
-                ui.label(tl!("Foundry accounts aren't open yet. Until then, the AI features work with your own Anthropic API key."));
+                ui.label(crate::i18n::msg("Foundry accounts aren't open yet."));
             } else if st.token.is_empty() {
                 let create = !st.sign_in_shown;
                 if create {
@@ -339,7 +365,6 @@ pub fn window(app: &mut VectorcraftApp, ctx: &egui::Context) {
                     for line in [
                         tl!("Free credits to try the AI features: Ask About Patterns drafts and changes patterns with you"),
                         tl!("One account for every Foundry app"),
-                        tl!("No card needed, and no API key to set up"),
                     ] {
                         ui.label(RichText::new(format!("•  {line}")).color(t.text_dim));
                     }
@@ -385,13 +410,6 @@ pub fn window(app: &mut VectorcraftApp, ctx: &egui::Context) {
                     .size(20.0)
                     .strong(),
                 );
-                let mut on = st.use_credits;
-                if ui.checkbox(&mut on, tl!("Pay for the AI features with my Foundry credits")).changed() {
-                    todo = Some(Box::new(move |app| {
-                        app.ai.account.use_credits = on;
-                        keep(app, CREDITS_NAME, Some(if on { "1" } else { "0" }));
-                    }));
-                }
                 ui.add_space(6.0);
                 let packs = info["packs"].as_array().cloned().unwrap_or_default();
                 if info["payments"].as_bool() == Some(true) && !packs.is_empty() {

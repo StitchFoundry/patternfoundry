@@ -33,9 +33,9 @@
 
     <Icon Id="VectorcraftIcon.ico" SourceFile="$(var.IconPath)" />
     <Property Id="ARPPRODUCTICON" Value="VectorcraftIcon.ico" />
-    <Property Id="ARPURLINFOABOUT" Value="https://github.com/SiteSentrix/patternfoundry" />
-    <Property Id="ARPURLUPDATEINFO" Value="https://github.com/SiteSentrix/patternfoundry/releases" />
-    <Property Id="ARPHELPLINK" Value="https://github.com/SiteSentrix/patternfoundry/issues" />
+    <Property Id="ARPURLINFOABOUT" Value="https://github.com/StitchFoundry/patternfoundry" />
+    <Property Id="ARPURLUPDATEINFO" Value="https://github.com/StitchFoundry/patternfoundry/releases" />
+    <Property Id="ARPHELPLINK" Value="https://github.com/StitchFoundry/patternfoundry/issues" />
 
     <StandardDirectory Id="ProgramFiles6432Folder">
       <Directory Id="INSTALLFOLDER" Name="PatternFoundry" />

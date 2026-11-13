@@ -5320,30 +5320,23 @@ file-filter	PDF for projector	PDF pro projektor
 	A password needs at least 8 characters.	Heslo musí mít alespoň 8 znaků.
 	Account	Účet
 	Allow	Povolit
-	Anthropic API key:	Klíč API Anthropic:
 	Ask	Zeptat se
 	Buy credits	Koupit kredity
 	Buy…	Koupit…
-	Change key	Změnit klíč
 	Create Free Account	Vytvořit účet zdarma
 	Create a free Foundry Account	Vytvořte si účet Foundry zdarma
 	Don't Allow	Nepovolit
 	Edit › Undo takes each change back.	Úpravy › Zpět vrátí každou změnu.
 	Email	E-mail
 	Foundry Account	Účet Foundry
-	Foundry accounts aren't open yet. Until then, the AI features work with your own Anthropic API key.	Účty Foundry zatím nejsou otevřené. Do té doby funkce AI fungují s vaším vlastním klíčem API Anthropic.
-	Get a key	Získat klíč
 	I have an account: Sign In	Mám účet: přihlásit se
 	New Conversation	Nová konverzace
 	New here? Create a free account	Jste tu nově? Vytvořte si účet zdarma
-	No card needed, and no API key to set up	Bez karty a bez nastavování klíče API
 	Paid with Foundry credits ({n} left).	Placeno kredity Foundry (zbývá {n}).
 	Paid with Foundry credits.	Placeno kredity Foundry.
-	Pay for the AI features with my Foundry credits	Platit funkce AI mými kredity Foundry
 	Pay with Foundry credits instead	Platit raději kredity Foundry
 	Payment is on Stripe's secure page, in your browser; your card never reaches PatternFoundry.	Platí se na zabezpečené stránce Stripe ve vašem prohlížeči; vaše karta se do PatternFoundry nikdy nedostane.
 	Reading your credits…	Načítají se kredity…
-	Remember the key on this computer	Zapamatovat si klíč v tomto počítači
 	Server	Server
 	Sign In	Přihlásit se
 	Sign Out	Odhlásit se
@@ -5356,7 +5349,7 @@ file-filter	PDF for projector	PDF pro projektor
 @msg	An account with that email already exists: sign in instead.	Účet s tímto e-mailem už existuje: raději se přihlaste.
 @msg	Anthropic refused the API key: {0}	Anthropic odmítl klíč API: {0}
 @msg	Couldn't reach the AI service: {0}	Ke službě AI se nelze připojit: {0}
-@msg	Enter your Anthropic API key first.	Nejprve zadejte svůj klíč API Anthropic.
+@msg	AI now uses your Foundry Account. Sign in to continue.	AI teď používá váš účet Foundry. Přihlaste se a pokračujte.
 @msg	Foundry accounts aren't open yet.	Účty Foundry zatím nejsou otevřené.
 @msg	Not enough Foundry credits: buy more in Foundry Account.	Málo kreditů Foundry: kupte další v Účtu Foundry.
 @msg	The AI declined to answer this: ask another way.	AI odmítla odpovědět: zeptejte se jinak.
@@ -5378,13 +5371,12 @@ file-filter	PDF for projector	PDF pro projektor
 @msg	Type your email address.	Napište svou e-mailovou adresu.
 @msg	Pay on the page that opened in your browser, then press Refresh.	Zaplaťte na stránce otevřené v prohlížeči a pak stiskněte Obnovit.
 	Ask About Patterns…	Zeptat se na střihy…
-	Answers come from Claude with your own Anthropic API key, billed to your Anthropic account. They can be wrong: sew a muslin before cutting good fabric.	Odpovědi přicházejí od Clauda s vaším vlastním klíčem API Anthropic, účtovaným na váš účet Anthropic. Mohou být chybné: než nastříháte dobrou látku, ušijte zkušební model z nebělené bavlny.
+	Answers come from Claude. They can be wrong: sew a muslin before cutting good fabric.	Odpovědi poskytuje Claude. Mohou být chybné: než nastříháte dobrou látku, ušijte zkušební model z nebělené bavlny.
 	Ask About Patterns	Zeptat se na střihy
 	Ask anything about sewing patterns or PatternFoundry: how much ease to add, how to move a dart, which block to start from, where a feature is. Claude can also draft and change your pattern when you ask, after you allow it.	Zeptejte se na cokoli o střizích nebo PatternFoundry: kolik volnosti přidat, jak přesunout záševek, ze kterého základního střihu vyjít, kde je nějaká funkce. Claude může na vaši žádost také konstruovat a měnit váš střih, jakmile to povolíte.
 	Claude asks to:	Claude žádá:
 	Couldn't do:	Nelze provést:
 	Done:	Hotovo:
-	Free credits for the AI features, no API key needed	Kredity zdarma na funkce AI, bez klíče API
 	Free credits to try the AI features: Ask About Patterns drafts and changes patterns with you	Kredity zdarma na vyzkoušení funkcí AI: Zeptat se na střihy s vámi konstruuje a mění střihy
 	Include my pattern	Přiložit můj střih
 	Its pieces and sizes, and which measurements are set: never their values	Jeho díly a velikosti a které míry jsou nastavené: nikdy jejich hodnoty
@@ -5403,7 +5395,7 @@ file-filter	PDF for projector	PDF pro projektor
 	About the fit	O padnutí
 	Anything else? For example: folds below the back neck	Ještě něco? Například: záhyby pod zadním výstřihem
 	Check My Muslin	Zkontrolovat zkušební model
-	Claude looks at the photos with your own Anthropic API key, billed to your Anthropic account. It can be wrong: sew the altered part again in muslin before cutting good fabric.	Claude se na fotky podívá s vaším vlastním klíčem API Anthropic, účtovaným na váš účet Anthropic. Může se mýlit: než nastříháte dobrou látku, ušijte upravenou část znovu jako zkušební model z nebělené bavlny.
+	Claude looks at the photos. It can be wrong: sew the altered part again in muslin before cutting good fabric.	Claude si prohlíží fotografie. Může se mýlit: než nastříháte dobrou látku, ušijte upravenou část znovu jako zkušební model z nebělené bavlny.
 	Final fabric	Konečná látka
 	Hard to raise my arms	Těžko zvedám ruce
 	How it feels:	Jak sedí:
@@ -5779,3 +5771,28 @@ menu	Pattern	Střih
 @msg	The design is too large to open: at most 32 MB.	Návrh je příliš velký na otevření: nejvýše 32 MB.
 @msg	PatternFoundry opens SVG and DXF designs from MakerFoundry; that file is neither.	PatternFoundry otevírá návrhy SVG a DXF z MakerFoundry; tento soubor není ani jedno.
 @msg	The design couldn't be downloaded from MakerFoundry: {0}	Návrh se nepodařilo stáhnout z MakerFoundry: {0}
+	Select a drafted block first	Nejprve vyberte sestrojený základní střih
+	This block needs these measurements: {names}	Tento základní střih potřebuje tyto míry: {names}
+	Enter them in the Measurements panel, or pick a size there, then draft the block again	Zadejte je v panelu Míry nebo tam vyberte velikost a základní střih pak sestrojte znovu
+	1. What are you making?	1. What are you making?
+	2. Whose measurements?	2. Whose measurements?
+	Blank page	Blank page
+	Bodice	Bodice
+	Choose a saved set of measurements	Choose a saved set of measurements
+	Enter a number for: {names}	Enter a number for: {names}
+	Your measurements were not kept: {why}	Your measurements were not kept: {why}
+	I'll enter my measurements	I'll enter my measurements
+	Keep these measurements on this computer (My Measurements)	Keep these measurements on this computer (My Measurements)
+	Nothing saved yet. Enter your measurements once and tick “Keep these measurements”.	Nothing saved yet. Enter your measurements once and tick “Keep these measurements”.
+	Pick a sample size	Pick a sample size
+	Round sample sizes to start from. Change any measurement afterwards in the Measurements panel.	Round sample sizes to start from. Change any measurement afterwards in the Measurements panel.
+	Skirt	Skirt
+	Sleeve	Sleeve
+	Start a Pattern	Start a Pattern
+	Start a pattern	Start a pattern
+	Trousers	Trousers
+	Use my saved measurements	Use my saved measurements
+	centimetres	centimetres
+	inches	inches
+	Start a Pattern…	Start a Pattern…
+	Create Pattern	Create Pattern

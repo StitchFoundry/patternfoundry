@@ -5228,30 +5228,23 @@ file-filter	PDF for projector	PDF პროექტორისთვის
 	A password needs at least 8 characters.	პაროლს სჭირდება მინიმუმ 8 სიმბოლო.
 	Account	ანგარიში
 	Allow	ნების დართვა
-	Anthropic API key:	Anthropic API გასაღები:
 	Ask	კითხვა
 	Buy credits	კრედიტების ყიდვა
 	Buy…	ყიდვა…
-	Change key	გასაღების შეცვლა
 	Create Free Account	უფასო ანგარიშის შექმნა
 	Create a free Foundry Account	შექმენით უფასო Foundry-ის ანგარიში
 	Don't Allow	არ დაირთოს ნება
 	Edit › Undo takes each change back.	რედაქტირება › დაბრუნება ყოველ ცვლილებას აუქმებს.
 	Email	ელფოსტა
 	Foundry Account	Foundry-ის ანგარიში
-	Foundry accounts aren't open yet. Until then, the AI features work with your own Anthropic API key.	Foundry-ის ანგარიშები ჯერ არ გახსნილა. მანამდე AI ფუნქციები თქვენი საკუთარი Anthropic API გასაღებით მუშაობს.
-	Get a key	გასაღების მიღება
 	I have an account: Sign In	ანგარიში მაქვს: შესვლა
 	New Conversation	ახალი საუბარი
 	New here? Create a free account	ახალი ხართ? შექმენით უფასო ანგარიში
-	No card needed, and no API key to set up	ბარათი არ არის საჭირო და არც API გასაღების დაყენება
 	Paid with Foundry credits ({n} left).	გადახდილია Foundry-ის კრედიტებით (დარჩა {n}).
 	Paid with Foundry credits.	გადახდილია Foundry-ის კრედიტებით.
-	Pay for the AI features with my Foundry credits	AI ფუნქციების გადახდა ჩემი Foundry-ის კრედიტებით
 	Pay with Foundry credits instead	ამის ნაცვლად Foundry-ის კრედიტებით გადახდა
 	Payment is on Stripe's secure page, in your browser; your card never reaches PatternFoundry.	გადახდა ხდება Stripe-ის დაცულ გვერდზე, თქვენს ბრაუზერში; თქვენი ბარათი PatternFoundry-მდე არასოდეს აღწევს.
 	Reading your credits…	თქვენი კრედიტები იკითხება…
-	Remember the key on this computer	გასაღების დამახსოვრება ამ კომპიუტერზე
 	Server	სერვერი
 	Sign In	შესვლა
 	Sign Out	გასვლა
@@ -5262,13 +5255,12 @@ file-filter	PDF for projector	PDF პროექტორისთვის
 	{n} credits	{n} კრედიტი
 	{n} credits for {price}	{n} კრედიტი {price}-ად
 	Ask About Patterns…	კითხვა თარგების შესახებ…
-	Answers come from Claude with your own Anthropic API key, billed to your Anthropic account. They can be wrong: sew a muslin before cutting good fabric.	პასუხებს Claude იძლევა თქვენი საკუთარი Anthropic API გასაღებით, ღირებულება თქვენს Anthropic ანგარიშს ერიცხება. პასუხი შეიძლება მცდარი იყოს: კარგი ქსოვილის გამოჭრამდე შეკერეთ საცდელი მოდელი იაფი ქსოვილისგან.
+	Answers come from Claude. They can be wrong: sew a muslin before cutting good fabric.	პასუხებს Claude გაძლევთ. პასუხი შეიძლება მცდარი იყოს: კარგი ქსოვილის გამოჭრამდე შეკერეთ საცდელი მოდელი იაფი ქსოვილისგან.
 	Ask About Patterns	კითხვა თარგების შესახებ
 	Ask anything about sewing patterns or PatternFoundry: how much ease to add, how to move a dart, which block to start from, where a feature is. Claude can also draft and change your pattern when you ask, after you allow it.	იკითხეთ ნებისმიერი რამ საკერავი თარგების ან PatternFoundry-ის შესახებ: რამდენი თავისუფლება დაუმატოთ, როგორ გადაიტანოთ გამონაჭერი, რომელი საბაზისო თარგიდან დაიწყოთ, სად არის ესა თუ ის ფუნქცია. Claude-ს ასევე შეუძლია თქვენი თარგის აგება და შეცვლა, როცა სთხოვთ, მას შემდეგ, რაც ნებას დართავთ.
 	Claude asks to:	Claude ითხოვს:
 	Couldn't do:	ვერ შესრულდა:
 	Done:	შესრულდა:
-	Free credits for the AI features, no API key needed	უფასო კრედიტები AI ფუნქციებისთვის, API გასაღების გარეშე
 	Free credits to try the AI features: Ask About Patterns drafts and changes patterns with you	უფასო კრედიტები AI ფუნქციების გამოსაცდელად: „კითხვა თარგების შესახებ“ თქვენთან ერთად აგებს და ცვლის თარგებს
 	Include my pattern	ჩემი თარგის დართვა
 	Its pieces and sizes, and which measurements are set: never their values	მისი დეტალები და ზომები და რომელი ზომებია დაყენებული: მათი მნიშვნელობები არასდროს
@@ -5291,7 +5283,7 @@ file-filter	PDF for projector	PDF პროექტორისთვის
 @msg	Pay on the page that opened in your browser, then press Refresh.	გადაიხადეთ ბრაუზერში გახსნილ გვერდზე, შემდეგ დააჭირეთ „განახლებას“.
 @msg	Anthropic refused the API key: {0}	Anthropic-მა API გასაღები უარყო: {0}
 @msg	Couldn't reach the AI service: {0}	AI სერვისთან დაკავშირება ვერ მოხერხდა: {0}
-@msg	Enter your Anthropic API key first.	ჯერ შეიყვანეთ თქვენი Anthropic API გასაღები.
+@msg	AI now uses your Foundry Account. Sign in to continue.	ხელოვნური ინტელექტი ახლა თქვენს Foundry ანგარიშს იყენებს. გასაგრძელებლად შედით სისტემაში.
 @msg	The AI declined to answer this: ask another way.	AI-მ ამაზე პასუხის გაცემაზე უარი თქვა: იკითხეთ სხვაგვარად.
 @msg	The AI service failed (error {0}): try again later.	AI სერვისმა ვერ იმუშავა (შეცდომა {0}): სცადეთ მოგვიანებით.
 @msg	The AI service is busy: try again in a minute.	AI სერვისი დაკავებულია: სცადეთ ერთ წუთში.
@@ -5309,7 +5301,7 @@ file-filter	PDF for projector	PDF პროექტორისთვის
 	About the fit	მორგების შესახებ
 	Anything else? For example: folds below the back neck	კიდევ რამე? მაგალითად: ნაოჭები უკანა საყელოს ქვემოთ
 	Check My Muslin	ჩემი საცდელი მოდელის შემოწმება
-	Claude looks at the photos with your own Anthropic API key, billed to your Anthropic account. It can be wrong: sew the altered part again in muslin before cutting good fabric.	Claude ფოტოებს თქვენი საკუთარი Anthropic API გასაღებით ათვალიერებს, ღირებულება თქვენს Anthropic ანგარიშს ერიცხება. შეიძლება შეცდეს: კარგი ქსოვილის გამოჭრამდე შეცვლილი ნაწილი ხელახლა შეკერეთ საცდელ მოდელად იაფი ქსოვილისგან.
+	Claude looks at the photos. It can be wrong: sew the altered part again in muslin before cutting good fabric.	Claude ფოტოებს ათვალიერებს. შეიძლება შეცდეს: კარგი ქსოვილის გამოჭრამდე შეცვლილი ნაწილი ხელახლა შეკერეთ საცდელ მოდელად იაფი ქსოვილისგან.
 	Final fabric	საბოლოო ქსოვილი
 	Hard to raise my arms	ხელების აწევა მიჭირს
 	How it feels:	როგორ ზის:
@@ -5687,3 +5679,28 @@ menu	Pattern	თარგი
 @msg	The design is too large to open: at most 32 MB.	დიზაინი გასახსნელად ზედმეტად დიდია: მაქსიმუმ 32 MB.
 @msg	PatternFoundry opens SVG and DXF designs from MakerFoundry; that file is neither.	PatternFoundry ხსნის MakerFoundry-ის SVG და DXF დიზაინებს; ეს ფაილი არც ერთია.
 @msg	The design couldn't be downloaded from MakerFoundry: {0}	დიზაინი MakerFoundry-დან ვერ ჩამოიტვირთა: {0}
+	Select a drafted block first	ჯერ აირჩიეთ აგებული საბაზისო თარგი
+	This block needs these measurements: {names}	ამ საბაზისო თარგს ესაჭიროება ეს ზომები: {names}
+	Enter them in the Measurements panel, or pick a size there, then draft the block again	შეიყვანეთ ისინი ზომების პანელში ან აირჩიეთ იქ ზომა და ხელახლა ააგეთ საბაზისო თარგი
+	1. What are you making?	1. What are you making?
+	2. Whose measurements?	2. Whose measurements?
+	Blank page	Blank page
+	Bodice	Bodice
+	Choose a saved set of measurements	Choose a saved set of measurements
+	Enter a number for: {names}	Enter a number for: {names}
+	Your measurements were not kept: {why}	Your measurements were not kept: {why}
+	I'll enter my measurements	I'll enter my measurements
+	Keep these measurements on this computer (My Measurements)	Keep these measurements on this computer (My Measurements)
+	Nothing saved yet. Enter your measurements once and tick “Keep these measurements”.	Nothing saved yet. Enter your measurements once and tick “Keep these measurements”.
+	Pick a sample size	Pick a sample size
+	Round sample sizes to start from. Change any measurement afterwards in the Measurements panel.	Round sample sizes to start from. Change any measurement afterwards in the Measurements panel.
+	Skirt	Skirt
+	Sleeve	Sleeve
+	Start a Pattern	Start a Pattern
+	Start a pattern	Start a pattern
+	Trousers	Trousers
+	Use my saved measurements	Use my saved measurements
+	centimetres	centimetres
+	inches	inches
+	Start a Pattern…	Start a Pattern…
+	Create Pattern	Create Pattern
