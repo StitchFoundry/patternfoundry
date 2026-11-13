@@ -197,10 +197,14 @@ fn make(app: &mut VectorcraftApp, d: &Dialog, command: &str, source: &str, value
         }
         _ => {
             app.run("measure.set", json!({"values": values.unwrap_or_default()}))?;
-            let name = d.str("saveName");
-            if d.bool("save") && !name.trim().is_empty() {
-                // Opt-in; a missing folder (the web) is not a reason to lose the pattern.
-                app.run("measure.saveSet", json!({"name": name.trim()})).ok();
+            if d.bool("save") {
+                // Opt-in; blank means the name the field suggests. A missing folder (the web) is
+                // not a reason to lose the pattern, but the user is told the set was not kept.
+                let name = d.str("saveName");
+                let name = if name.trim().is_empty() { "Me" } else { name.trim() };
+                if let Err(e) = app.run("measure.saveSet", json!({"name": name})) {
+                    app.ui.status = crate::i18n::fmt(tl!("Your measurements were not kept: {why}"), &[("why", &e)]);
+                }
             }
         }
     }
@@ -261,6 +265,37 @@ mod tests {
         assert!((m.values["waist"] - 28.0 * 25.4).abs() < 1e-6, "inches became mm");
         assert_eq!(app.session.measurement_sets().len(), 1, "kept, because the box was ticked");
         let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    #[test]
+    fn keeping_measurements_with_no_name_keeps_them_as_me_and_a_failed_save_is_not_silent() {
+        let mut app = VectorcraftApp::new(Session::new(), Default::default());
+        let dir = vectorcraft_testkit::temp_dir("start-pattern-keep-unnamed").join("Measurements");
+        let _ = std::fs::remove_dir_all(&dir);
+        app.session.attach_measurement_store(dir.clone());
+        app.run("ui.startPattern", json!({})).unwrap();
+        set(&mut app, "block", json!("skirt"));
+        for (k, v) in [("waist", "70"), ("hip", "96"), ("waist_to_hip", "20"), ("skirt_length", "60")] {
+            set(&mut app, &format!("m.{k}"), json!(v));
+        }
+        set(&mut app, "save", json!(true));
+        crate::dialogs::confirm(&mut app).unwrap();
+        let sets = app.session.measurement_sets();
+        assert_eq!(sets.iter().map(|m| m.name.as_str()).collect::<Vec<_>>(), ["Me"], "ticked, so kept, under the name the field suggests");
+        let _ = std::fs::remove_dir_all(&dir);
+
+        // Nowhere to keep them (the web): the pattern is made and the user hears the set was not kept.
+        let mut app = VectorcraftApp::new(Session::new(), Default::default());
+        app.run("ui.startPattern", json!({})).unwrap();
+        set(&mut app, "block", json!("skirt"));
+        for (k, v) in [("waist", "70"), ("hip", "96"), ("waist_to_hip", "20"), ("skirt_length", "60")] {
+            set(&mut app, &format!("m.{k}"), json!(v));
+        }
+        set(&mut app, "save", json!(true));
+        set(&mut app, "saveName", json!("Me"));
+        crate::dialogs::confirm(&mut app).unwrap();
+        assert_eq!(pieces(&app), 2, "the pattern is still made");
+        assert!(app.ui.status.contains("not kept"), "and the user is told: {}", app.ui.status);
     }
 
     #[test]
