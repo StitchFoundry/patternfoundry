@@ -645,7 +645,20 @@ fn paste_clip(s: &mut Session, p: &Value, mode: PasteMode, clip: &Clipboard, cho
         PasteMode::Front | PasteMode::Back => {
             let order = st.selection.in_paint_order(&st.doc);
             let a = if mode == PasteMode::Front { order.last() } else { order.first() };
-            a.and_then(|id| st.doc.position(*id))
+            // A selected child of a compound path stands for the compound: pasted art goes next
+            // to it, never inside it (compounds hold paths only).
+            a.map(|id| {
+                let mut id = *id;
+                while let Some(par) = st.doc.parent_of(id) {
+                    if st.doc.node(par).is_some_and(|n| matches!(n.kind, vectorcraft_doc::NodeKind::Compound { .. })) {
+                        id = par;
+                    } else {
+                        break;
+                    }
+                }
+                id
+            })
+            .and_then(|id| st.doc.position(id))
         }
         _ => None,
     };
