@@ -37,9 +37,8 @@ fn a_design_is_placed_at_its_true_size() {
 fn it_moves_scales_to_a_true_width_turns_and_loses_its_hoop() {
     let (mut s, id) = piece();
     s.execute("piece.addPlacement", &rose(id)).unwrap();
-    let info = s
-        .execute("piece.setPlacement", &json!({"id": id.0, "index": 0, "at": [10, 20], "width": "45 mm", "rotation": -90, "hoop": null}))
-        .unwrap();
+    let info =
+        s.execute("piece.setPlacement", &json!({"id": id.0, "index": 0, "at": [10, 20], "width": "45 mm", "rotation": -90, "hoop": null})).unwrap();
     let d = &info["placements"][0];
     assert_eq!(d["at"], json!([10.0, 20.0]));
     assert!((d["scale"].as_f64().unwrap() - 0.5).abs() < 1e-12);
@@ -50,8 +49,7 @@ fn it_moves_scales_to_a_true_width_turns_and_loses_its_hoop() {
 #[test]
 fn removing_and_undoing_a_placement() {
     let (mut s, id) = piece();
-    s.execute("piece.addPlacement", &json!({"id": id.0, "name": "Logo", "widthMm": 40, "heightMm": 40, "at": [0, 0], "kind": "screen"}))
-        .unwrap();
+    s.execute("piece.addPlacement", &json!({"id": id.0, "name": "Logo", "widthMm": 40, "heightMm": 40, "at": [0, 0], "kind": "screen"})).unwrap();
     let info = s.execute("piece.removePlacement", &json!({"id": id.0, "index": 0})).unwrap();
     assert!(info.get("placements").is_none());
     s.execute("edit.undo", &json!({})).unwrap();
