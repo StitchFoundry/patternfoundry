@@ -173,8 +173,7 @@ impl Placement {
     fn corners_of(&self, w: f64, h: f64) -> [Pt; 4] {
         let (s, c) = self.rotation.to_radians().sin_cos();
         let (hw, hh) = (w / 2.0 / MM_PER_PT, h / 2.0 / MM_PER_PT);
-        [(-hw, -hh), (hw, -hh), (hw, hh), (-hw, hh)]
-            .map(|(x, y)| Pt::new(self.at.x + x * c - y * s, self.at.y + x * s + y * c))
+        [(-hw, -hh), (hw, -hh), (hw, hh), (-hw, hh)].map(|(x, y)| Pt::new(self.at.x + x * c - y * s, self.at.y + x * s + y * c))
     }
 
     /// The outline of the design as placed: its true size, turned about its centre.
