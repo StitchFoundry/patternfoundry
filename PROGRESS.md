@@ -17,3 +17,5 @@
 - 2026-11-13 (nightly sweep): no reported bugs awaited triage; `cargo audit` has no vulnerabilities (unmaintained notices only); fmt and workspace clippy clean; pf-* tests pass apart from the new #175 repro. Filed #175.
 - 2026-11-13 (issue 175): long measurement formulas chained through many names overflowed the stack; `expr::eval_with` now walks a `+ - * /` chain in a loop, so recursion follows only the nesting the parser caps.
 - 2026-11-13 (issue 162): README now has a Download section (links `/releases/latest`) and says "Early release"; web app head gets a description and an inline favicon. Docs/HTML only; checked by diff (full `cargo xtask ci` not run: session disk, CI runs it).
+- 2026-11-14 (nightly sweep): no reported bugs awaited triage; fmt clean, pf-core tests pass; filed #178 (S4).
+- 2026-11-14 (issue 178): a size chart's "not a number" error now names the line it is on in the text, counting comment and blank lines.
