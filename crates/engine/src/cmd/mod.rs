@@ -220,6 +220,7 @@ pub fn command_specs() -> &'static [CommandSpec] {
         v.extend(create::specs());
         v.extend(dimension::specs());
         v.extend(piece::specs());
+        v.extend(piece::placements::specs());
         v.extend(measure::specs());
         v.extend(block::specs());
         v.extend(design::specs());
