@@ -6,6 +6,7 @@
 //! * [`piece`] – the data a piece carries ([`Piece`]): name, cut count, fabric, seam allowance per
 //!   edge, corner styles, notches, grainline; and [`PatternTag`], how the host marks the parts of a
 //!   piece it draws.
+//! * [`placement`] – embroidery and screen-print designs placed on a piece at true size.
 //! * [`allowance`] – the cutting line: the seam line pushed out by each edge's allowance, with
 //!   mitred or squared corners.
 //! * [`marks`] – notches, the grainline arrow and the label text.
@@ -38,6 +39,7 @@ pub mod marker;
 pub mod marks;
 pub mod measure;
 pub mod piece;
+pub mod placement;
 pub mod swatch;
 pub mod tiling;
 pub mod view3d;

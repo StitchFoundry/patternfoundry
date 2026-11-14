@@ -134,6 +134,9 @@ pub struct Piece {
     /// sewn to has on that piece.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub sewn: Vec<Sewn>,
+    /// Embroidery and screen-print designs placed on the piece (PF-12.1).
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub placements: Vec<crate::placement::Placement>,
 }
 
 /// A run of a piece's seam line sewn to a run of another (or the same) piece's: from anchor
@@ -169,6 +172,7 @@ impl Default for Piece {
             fold: None,
             drills: Vec::new(),
             sewn: Vec::new(),
+            placements: Vec::new(),
         }
     }
 }
@@ -268,6 +272,15 @@ impl Piece {
             return Err(PieceError::TooManyDrills);
         }
         self.drills.push(d);
+        Ok(())
+    }
+
+    /// Add a placed design.
+    pub fn add_placement(&mut self, p: crate::placement::Placement) -> Result<(), crate::placement::PlacementError> {
+        if self.placements.len() >= crate::placement::MAX_PLACEMENTS {
+            return Err(crate::placement::PlacementError::TooMany);
+        }
+        self.placements.push(p);
         Ok(())
     }
 
