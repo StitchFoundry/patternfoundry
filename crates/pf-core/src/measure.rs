@@ -177,8 +177,9 @@ impl SizeChart {
         if !(mm_per_unit.is_finite() && mm_per_unit > 0.0) {
             return Err(MeasureError::Chart("the unit isn't a length".into()));
         }
-        let mut lines = text.lines().map(str::trim).filter(|l| !l.is_empty() && !l.starts_with('#'));
-        let header = lines.next().ok_or_else(|| MeasureError::Chart("it is empty".into()))?;
+        // Each line with its number in the text (from 1), so an error names the line it is on.
+        let mut lines = text.lines().map(str::trim).enumerate().filter(|(_, l)| !l.is_empty() && !l.starts_with('#'));
+        let (_, header) = lines.next().ok_or_else(|| MeasureError::Chart("it is empty".into()))?;
         let sep = [',', ';', '\t'].into_iter().max_by_key(|c| header.matches(*c).count()).unwrap_or(',');
         let cells = |l: &str| l.split(sep).map(|c| c.trim().trim_matches('"').trim().to_string()).collect::<Vec<_>>();
         let head = cells(header);
@@ -194,7 +195,7 @@ impl SizeChart {
             return Err(MeasureError::TooMany);
         }
         let mut sizes = Vec::new();
-        for (i, line) in lines.enumerate() {
+        for (i, line) in lines {
             if sizes.len() >= MAX_ENTRIES {
                 return Err(MeasureError::TooMany);
             }
@@ -207,7 +208,7 @@ impl SizeChart {
                     out.push(None);
                     continue;
                 }
-                let v: f64 = cell.replace(',', ".").parse().map_err(|_| MeasureError::Chart(format!("row {}: `{cell}` is not a number", i + 2)))?;
+                let v: f64 = cell.replace(',', ".").parse().map_err(|_| MeasureError::Chart(format!("row {}: `{cell}` is not a number", i + 1)))?;
                 out.push(Some(check_mm(c, v * mm_per_unit)?));
             }
             sizes.push((size.clone(), out));
@@ -309,5 +310,13 @@ mod tests {
         assert!(SizeChart::from_text("", "size,bust\nS,big\n", 1.0).is_err());
         assert!(SizeChart::from_text("", "size,2x\nS,1\n", 1.0).is_err());
         assert!(SizeChart::from_text("", "size,bust\nS,1\n", 0.0).is_err());
+    }
+
+    #[test]
+    fn a_size_chart_error_names_the_line_it_is_on() {
+        // Line 5 of the text, after a comment and a blank line.
+        let text = "# Example chart (made up for the test)\nsize,bust\n\nS,86\nM,big\n";
+        let e = SizeChart::from_text("", text, 10.0).unwrap_err().to_string();
+        assert!(e.contains("row 5:"), "{e}");
     }
 }
