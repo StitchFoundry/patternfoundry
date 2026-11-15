@@ -19,3 +19,4 @@
 - 2026-11-13 (issue 162): README now has a Download section (links `/releases/latest`) and says "Early release"; web app head gets a description and an inline favicon. Docs/HTML only; checked by diff (full `cargo xtask ci` not run: session disk, CI runs it).
 - 2026-11-14 (nightly sweep): no reported bugs awaited triage; fmt clean, pf-core tests pass; filed #178 (S4).
 - 2026-11-14 (issue 178): a size chart's "not a number" error now names the line it is on in the text, counting comment and blank lines.
+- 2026-11-15 (issue 164): version bumped to 0.1.2 (`cargo xtask version set`: Cargo.toml + Cargo.lock) and release notes added in `docs/release-notes/v0.1.2.md`. No other changes; checked with fmt and `cargo xtask version`; the full `cargo xtask ci` filled the session disk, so CI runs the gate.
