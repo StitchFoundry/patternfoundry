@@ -8,7 +8,10 @@
 //! * the `description` of every `Cargo.toml`;
 //! * the cursor manifest `crates/tools/src/cursors.toml` (designers read it);
 //! * every text file under `packaging/`, and under `docs/` except Markdown pages: Markdown docs
-//!   (like `README.md` and `ROADMAP.md`) may name the reference app and compare against it.
+//!   (like `README.md` and `ROADMAP.md`) may name the reference app and compare against it;
+//! * every Markdown page (the public docs), for the pattern-software names in [`PATTERN_CAD`] only.
+//!   Skipped: the agent instructions (`AGENTS.md`, `CLAUDE.md`), whose clean-room rules have to name
+//!   the software they forbid copying, and `vendor/`.
 //!
 //! A line that has to keep an old name (an alias that old files or preferences still use) says
 //! `brand-ok` in a comment on that line.
@@ -36,6 +39,34 @@ const DENY: &[&str] = &[
     "artcraft",
     "getartcraft",
 ];
+
+/// Pattern-making software and its makers, lowercase, matched like [`DENY`]. Checked everywhere
+/// [`DENY`] is, and also in Markdown docs: PatternFoundry describes what it does, never what it
+/// resembles.
+const PATTERN_CAD: &[&str] = &[
+    "accumark",
+    "accunest",
+    "lectra",
+    "modaris",
+    "optitex",
+    "tukatech",
+    "tukacad",
+    "polypattern",
+    "wild ginger",
+    "cochenille",
+    "marvelous designer",
+    "clo 3d",
+    "clo virtual fashion",
+    "seamly2d",
+    "valentina",
+    "freesewing",
+];
+
+/// Every denied list, for the text users and agents read in the app and its packages.
+const ALL: &[&[&str]] = &[DENY, PATTERN_CAD];
+
+/// Agent instructions: their clean-room rules name the software they forbid copying.
+const AGENT_DOCS: &[&str] = &["AGENTS.md", "CLAUDE.md", "docs/vectorcraft-CLAUDE.md"];
 
 /// Marks a line that keeps a legacy name on purpose.
 const ALLOW: &str = "brand-ok";
@@ -81,8 +112,9 @@ pub fn scan(root: &Path, files: &[String]) -> Vec<Hit> {
         let Ok(text) = std::fs::read_to_string(root.join(path)) else { continue };
         let found = match kind {
             Kind::Rust => scan_rust(&text),
-            Kind::Manifest => scan_lines(&text, |l| l.trim_start().starts_with("description")),
-            Kind::Text => scan_lines(&text, |_| true),
+            Kind::Manifest => scan_lines(&text, ALL, |l| l.trim_start().starts_with("description")),
+            Kind::Text => scan_lines(&text, ALL, |_| true),
+            Kind::Markdown => scan_lines(&text, &[PATTERN_CAD], |_| true),
         };
         hits.extend(found.into_iter().map(|(line, term, context)| Hit { path: path.clone(), line, term, context }));
     }
@@ -94,6 +126,7 @@ enum Kind {
     Rust,
     Manifest,
     Text,
+    Markdown,
 }
 
 fn kind_of(path: &str) -> Option<Kind> {
@@ -103,6 +136,8 @@ fn kind_of(path: &str) -> Option<Kind> {
         Some(Kind::Manifest)
     } else if path.ends_with(".rs") && ["crates/", "apps/", "xtask/"].iter().any(|d| path.starts_with(d)) && path != SELF && !is_test_path(path) {
         Some(Kind::Rust)
+    } else if path.ends_with(".md") && !path.starts_with("vendor/") && !AGENT_DOCS.contains(&path) {
+        Some(Kind::Markdown)
     } else {
         None
     }
@@ -114,12 +149,12 @@ fn is_test_path(path: &str) -> bool {
     file == "tests.rs" || file.starts_with("tests_") || file.ends_with("_tests.rs") || parts.any(|d| d == "tests" || d == "benches")
 }
 
-/// (line, term, line text) for each denied name on the lines `keep` selects.
-fn scan_lines(text: &str, keep: impl Fn(&str) -> bool) -> Vec<(usize, &'static str, String)> {
+/// (line, term, line text) for each name in `lists` on the lines `keep` selects.
+fn scan_lines(text: &str, lists: &[&[&'static str]], keep: impl Fn(&str) -> bool) -> Vec<(usize, &'static str, String)> {
     text.lines()
         .enumerate()
         .filter(|(_, l)| keep(l) && !l.contains(ALLOW))
-        .flat_map(|(i, l)| terms_in(l, DENY).into_iter().map(move |t| (i + 1, t, l.trim().to_string())))
+        .flat_map(|(i, l)| lists.iter().flat_map(move |terms| terms_in(l, terms)).map(move |t| (i + 1, t, l.trim().to_string())))
         .collect()
 }
 
@@ -132,7 +167,7 @@ fn scan_rust(src: &str) -> Vec<(usize, &'static str, String)> {
         if lines.get(lit.first - 1..lit.last.min(lines.len())).is_some_and(|ls| ls.iter().any(|l| l.contains(ALLOW))) {
             continue;
         }
-        for t in terms_in(&lit.text, DENY) {
+        for t in ALL.iter().flat_map(|terms| terms_in(&lit.text, terms)) {
             out.push((lit.first, t, lit.text.clone()));
         }
     }
@@ -340,12 +375,23 @@ line Pantone"; }
     #[test]
     fn docs_packaging_and_manifests() {
         let lines = |text: &str, keep: fn(&str) -> bool| -> Vec<(usize, &'static str)> {
-            scan_lines(text, keep).into_iter().map(|(l, t, _)| (l, t)).collect()
+            scan_lines(text, ALL, keep).into_iter().map(|(l, t, _)| (l, t)).collect()
         };
         assert_eq!(lines("Keywords=vector;illustrator;\n", |_| true), [(1, "illustrator")]);
         assert_eq!(lines("Like Adobe apps\nnot here: Adobe # brand-ok\n", |_| true), [(1, "adobe")]);
         let manifest = "name = \"adobe-thing\"\ndescription = \"Illustrator-style UI\"\n";
         assert_eq!(lines(manifest, |l| l.trim_start().starts_with("description")), [(2, "illustrator")]);
+        assert_eq!(lines("Drafts like Optitex\n", |_| true), [(1, "optitex")]);
+    }
+
+    #[test]
+    fn markdown_checks_pattern_software_only() {
+        fn md(text: &str) -> Vec<(usize, &'static str)> {
+            scan_lines(text, &[PATTERN_CAD], |_| true).into_iter().map(|(l, t, _)| (l, t)).collect()
+        }
+        let text = "Like Adobe apps\nA Marvelous Designer workflow\nSeamly2D docs <!-- brand-ok -->\nwild ginger\n";
+        assert_eq!(md(text), [(2, "marvelous designer"), (4, "wild ginger")]);
+        assert!(md("clothing 3D preview, sewists, a pattern maker\n").is_empty());
     }
 
     #[test]
@@ -360,8 +406,11 @@ line Pantone"; }
         assert_eq!(kind_of("docs/brand/LICENSE-brand.txt"), Some(Kind::Text));
         assert_eq!(kind_of("packaging/linux/nfpm.yaml"), Some(Kind::Text));
         assert_eq!(kind_of(CURSOR_MANIFEST), Some(Kind::Text));
-        for skipped in ["README.md", "ROADMAP.md", "CLAUDE.md", "AGENTS.md", ".github/workflows/release.yml", "ASSETS.md", "docs/mcp.md"] {
+        for skipped in ["CLAUDE.md", "AGENTS.md", "docs/vectorcraft-CLAUDE.md", "vendor/x/README.md", ".github/workflows/release.yml"] {
             assert_eq!(kind_of(skipped), None, "{skipped}");
+        }
+        for markdown in ["README.md", "ROADMAP.md", "ASSETS.md", "docs/mcp.md", "docs/market.md"] {
+            assert_eq!(kind_of(markdown), Some(Kind::Markdown), "{markdown}");
         }
     }
 
@@ -378,11 +427,22 @@ line Pantone"; }
         file("docs/x.txt", "Works like Photoshop.\n");
         file("packaging/x.desktop", "Keywords=vector;illustrator;\n");
         file("README.md", "Adobe trademark notice\n");
-        let files: Vec<String> = ["crates/x/src/lib.rs", "docs/x.md", "docs/x.txt", "packaging/x.desktop", "README.md"].map(String::from).to_vec();
+        file("docs/y.md", "Grades like Lectra Modaris.\n");
+        let paths = ["crates/x/src/lib.rs", "docs/x.md", "docs/x.txt", "packaging/x.desktop", "README.md", "docs/y.md"];
+        let files: Vec<String> = paths.map(String::from).to_vec();
         let hits = scan(&dir, &files);
         let _ = std::fs::remove_dir_all(&dir);
         let found: Vec<(&str, usize, &str)> = hits.iter().map(|h| (h.path.as_str(), h.line, h.term)).collect();
-        assert_eq!(found, [("crates/x/src/lib.rs", 1, "illustrator"), ("docs/x.txt", 1, "photoshop"), ("packaging/x.desktop", 1, "illustrator")]);
+        assert_eq!(
+            found,
+            [
+                ("crates/x/src/lib.rs", 1, "illustrator"),
+                ("docs/x.txt", 1, "photoshop"),
+                ("packaging/x.desktop", 1, "illustrator"),
+                ("docs/y.md", 1, "lectra"),
+                ("docs/y.md", 1, "modaris"),
+            ]
+        );
     }
 
     #[test]

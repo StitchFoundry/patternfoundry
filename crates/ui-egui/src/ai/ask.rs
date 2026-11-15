@@ -1,5 +1,5 @@
 //! Ask About Patterns (Help and Pattern menus): a window where the user asks Claude about sewing
-//! patterns or about PatternFoundry, with their own Anthropic API key or paid with Foundry credits.
+//! patterns or about PatternFoundry, paid with Foundry credits (the Foundry Account).
 //! Unless the user turns it off, a summary of the pattern open now goes with each question
 //! ([`pattern_summary`]: its pieces and sizes, and the names, never the values, of the
 //! measurements), and Claude can look at the pattern and change it through PatternFoundry's
@@ -61,10 +61,6 @@ pub struct AskState {
     messages: Vec<Value>,
     /// Send a summary of the pattern open now with each question.
     pub include_pattern: bool,
-    /// Keep the API key once Anthropic takes it.
-    pub remember: bool,
-    /// Show the API key row (it shows by itself while there is no key).
-    pub show_key: bool,
     /// The question being answered.
     current: Option<Current>,
     /// The request on its way.
@@ -84,8 +80,6 @@ impl Default for AskState {
             entries: Vec::new(),
             messages: Vec::new(),
             include_pattern: true,
-            remember: true,
-            show_key: false,
             current: None,
             pending: None,
             approval: None,
@@ -100,8 +94,6 @@ struct Current {
     start: usize,
     /// The requests sent for it so far.
     rounds: usize,
-    /// The key sent, kept once Anthropic takes it.
-    keep: Option<String>,
 }
 
 struct Pending {
@@ -239,7 +231,6 @@ pub fn open(app: &mut VectorcraftApp, p: &Value) -> Result<Value, String> {
     if !super::available(app) {
         return Err("Ask About Patterns needs a build that can reach the AI service".into());
     }
-    super::load_key(app);
     app.ai.ask.open = true;
     let mut asking = false;
     if let Some(q) = p.get("question").and_then(Value::as_str).filter(|q| !q.trim().is_empty()) {
@@ -384,7 +375,6 @@ pub fn send(app: &mut VectorcraftApp) -> Result<(), String> {
     }
     let fail = |app: &mut VectorcraftApp, e: AiError| {
         let m = e.to_string();
-        app.ai.ask.show_key |= matches!(e, AiError::NoKey | AiError::BadKey);
         app.ai.ask.error = Some(m.clone());
         Err(m)
     };
@@ -394,22 +384,20 @@ pub fn send(app: &mut VectorcraftApp) -> Result<(), String> {
         app.ai.ask.error = Some(m.clone());
         return Err(m);
     }
-    if let Err(e) = pf_ai::clean_key(&super::account::key_to_send(app)) {
-        return fail(app, e);
+    super::account::key_to_send(app); // (reads the account once)
+    if let Err(m) = super::account::require_account(app) {
+        super::account::show_if_needed(app);
+        app.ai.ask.error = Some(m.clone());
+        return Err(m);
     }
     let pattern = if app.ai.ask.include_pattern { pattern_summary(app) } else { None };
     let message = match ask::question(&app.ai.ask.input, pattern.as_deref()) {
         Ok(m) => m,
         Err(e) => return fail(app, e),
     };
-    let credits = super::account::paying_with_credits(app);
-    let keep = (app.ai.ask.remember && !credits).then(|| app.ai.key.trim().to_string());
-    if keep.is_none() && !credits {
-        super::keep_key(app.services.secrets.as_deref(), None);
-    }
     let st = &mut app.ai.ask;
     let question = st.input.trim().to_string();
-    st.current = Some(Current { question: question.clone(), start: st.messages.len(), rounds: 0, keep });
+    st.current = Some(Current { question: question.clone(), start: st.messages.len(), rounds: 0 });
     st.messages.push(message);
     st.entries.push(Entry::Question(question));
     st.error = None;
@@ -460,20 +448,17 @@ pub fn begin_check(app: &mut VectorcraftApp, message: Value, shown: String) -> R
         return Err("already asking: wait for the answer".into());
     }
     clear(app);
-    let key = super::account::key_to_send(app);
-    let credits = super::account::paying_with_credits(app);
+    super::account::key_to_send(app); // (reads the account once)
     let st = &mut app.ai.ask;
     st.open = true;
     st.mode = Mode::Muslin;
-    if let Err(e) = pf_ai::clean_key(&key) {
-        st.show_key = true;
-        let m = e.to_string();
-        st.error = Some(m.clone());
+    if let Err(m) = super::account::require_account(app) {
+        super::account::show_if_needed(app);
+        app.ai.ask.error = Some(m.clone());
         return Err(m);
     }
-    let keep = (st.remember && !credits).then(|| app.ai.key.trim().to_string());
     let st = &mut app.ai.ask;
-    st.current = Some(Current { question: String::new(), start: 0, rounds: 0, keep });
+    st.current = Some(Current { question: String::new(), start: 0, rounds: 0 });
     st.messages.push(message);
     st.entries.push(Entry::Question(shown));
     st.error = None;
@@ -512,15 +497,9 @@ pub fn poll(app: &mut VectorcraftApp, ctx: &egui::Context) {
     app.ai.ask.pending = None;
     // the credits it cost show next time the account is read
     app.ai.account.stale |= super::account::paying_with_credits(app);
-    // Anthropic took the key unless it said otherwise.
-    let keep = app.ai.ask.current.as_ref().and_then(|c| c.keep.clone());
-    if let Some(key) = keep.filter(|_| !matches!(r, Err(AiError::Key(_)))) {
-        super::keep_key(app.services.secrets.as_deref(), Some(&key));
-    }
     let reply = match r {
         Ok(reply) => reply,
         Err(e) => {
-            app.ai.ask.show_key |= matches!(e, AiError::Key(_));
             let _ = give_up(app, e.to_string()); // (shown in the window)
             return;
         }
@@ -655,8 +634,7 @@ pub fn window(app: &mut VectorcraftApp, ctx: &egui::Context) {
         .show(ctx, |ui| {
             let st = &app.ai.ask;
             // room under the conversation for the question box, its buttons, the key and the note
-            let credits = super::account::paying_with_credits(app);
-            let footer = if (st.show_key || app.ai.key.trim().is_empty()) && !credits { 270.0 } else { 210.0 };
+            let footer = 210.0;
             egui::ScrollArea::vertical()
                 .id_salt("ask-conversation")
                 .max_height((ui.available_height() - footer).max(120.0))
@@ -732,28 +710,8 @@ pub fn window(app: &mut VectorcraftApp, ctx: &egui::Context) {
             });
             ui.checkbox(&mut st.include_pattern, tl!("Include my pattern"))
                 .on_hover_text(tl!("Its pieces and sizes, and which measurements are set: never their values"));
-            // paid with Foundry credits: no key asked for
-            if super::account::paid_line(app, ui, &t) {
-                return;
-            }
-            let show_key = app.ai.ask.show_key || app.ai.key.trim().is_empty();
-            if show_key {
-                ui.horizontal(|ui| {
-                    ui.label(RichText::new(tl!("Anthropic API key:")).color(t.text_dim));
-                    ui.add(egui::TextEdit::singleline(&mut app.ai.key).password(true).desired_width(220.0).hint_text("sk-ant-…"));
-                });
-                ui.checkbox(&mut app.ai.ask.remember, tl!("Remember the key on this computer"));
-            }
-            ui.horizontal_wrapped(|ui| {
-                ui.label(RichText::new(tl!("Answers come from Claude with your own Anthropic API key, billed to your Anthropic account. They can be wrong: sew a muslin before cutting good fabric.")).size(11.0).color(t.text_dim));
-                if show_key {
-                    if ui.link(RichText::new(tl!("Get a key")).size(11.0)).clicked() {
-                        app.open_url(super::KEY_URL);
-                    }
-                } else if ui.link(RichText::new(tl!("Change key")).size(11.0)).clicked() {
-                    app.ai.ask.show_key = true;
-                }
-            });
+            super::account::paid_line(app, ui, &t);
+            ui.label(RichText::new(tl!("Answers come from Claude. They can be wrong: sew a muslin before cutting good fabric.")).size(11.0).color(t.text_dim));
         });
     if let Some(allow) = decision {
         decide(app, allow);

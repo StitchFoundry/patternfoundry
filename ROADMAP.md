@@ -11,7 +11,8 @@
 
 > **Last reviewed:** 2026-10-10 · **Last updated:** 2026-10-18 · **Change:** minor (Background Export progress dialog with Cancel, #2564; about 85 community PRs of 2026-10-18: Justification…, Word .docx placed as area type, CCITT Group 3 TIFF, Roman Hanging Punctuation, blend spines edited with the Anchor Point tool, shadows and glows in stack order, coloured 3D lights, a Dutch catalog completed; 3D lighting: one to ten colored lights, smooth colored Inflate, legacy white-light appearance preserved; surface batching and restored seam minimum; scores and estimates unchanged; about 145 community PRs of 2026-10-17: image-decode overflow guards, opaque floating panels, MCP export cancel and progress, editable Illustrator EPS import, scoped `doc_inspect`, Dutch, Danish and Indonesian, Simplified Chinese messages, screen-reader names; headline numbers unchanged; about 160 community PRs of 2026-10-15/16: PDF import crash fixes, Dimension tool, legacy `.ai` save, Intertwine, web pen input, Image Trace fixes, `.ai`/EPS/PDF import fidelity, Bulgarian, Greek, Swedish and Finnish catalogs; headline numbers unchanged) · **Target:** Adobe Illustrator 2026 (30.x)
 
-VectorCraft is a clean-room, open-source, pure-Rust reimplementation of the Adobe Illustrator workflow. It runs
+VectorCraft is a clean-room, open-source, pure-Rust vector editor: drawing and path editing, Pathfinder, paint and
+appearance, type, layers and artboards, SVG/PDF/EPS import and export, print and export. It runs
 on macOS, Windows, Linux, FreeBSD and the web (WASM), and agents can drive all of it over MCP, the CLI and a JSON
 control channel. This page is the summary; the evidence is in [`docs/target-app-parity.md`](docs/target-app-parity.md)
 and the work list in [`docs/gaps.md`](docs/gaps.md).

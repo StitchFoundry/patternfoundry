@@ -142,6 +142,9 @@ pub struct Piece {
     pub drills: Vec<Drill>,
     /// Where the piece system text starts (inside the piece).
     pub text_at: Mm,
+    /// Cut-list notes shown beside the piece's label by the SVG and projector exports (not
+    /// written to the DXF-AAMA file): "Embroider \"Rose\" here, 90 x 60 mm".
+    pub notes: Vec<String>,
 }
 
 /// A pattern style: the pieces and what the style system text says about them.

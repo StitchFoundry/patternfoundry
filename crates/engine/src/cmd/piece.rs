@@ -10,6 +10,8 @@
 //!
 //! Lengths come and go in millimetres (a number; or a string with a unit, `"5/8 in"`); the
 //! document is in points.
+pub(crate) mod placements;
+
 use super::*;
 use pf_core::{Corner, Mark, Notch, NotchKind, Outline, PatternTag, Piece, Pt, mm_to_pt, pt_to_mm};
 use serde_json::{Value, json};

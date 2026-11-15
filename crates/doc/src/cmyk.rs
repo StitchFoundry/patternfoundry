@@ -395,7 +395,7 @@ pub fn group3_tiff_rgba(bytes: &[u8]) -> Option<Result<image::RgbaImage, Group3E
     let lsb_first = d.find_tag_unsigned::<u16>(Tag::FillOrder).ok().flatten() == Some(2);
     let encoding = if compression == 3 && t4_options & 1 != 0 {
         // Each row's tag bit says how it is coded.
-        EncodingMode::Group3_2D { k: 2 }
+        EncodingMode::Group3_2D
     } else {
         EncodingMode::Group3_1D
     };
@@ -440,9 +440,10 @@ pub fn group3_tiff_rgba(bytes: &[u8]) -> Option<Result<image::RgbaImage, Group3E
             end_of_line: compression == 3,
             rows_are_byte_aligned: compression == 2,
             encoding,
-            invert_black: false,
+            // Refuse damaged or cut-short data, as hayro-ccitt 0.4 did (0.5 can patch it over).
+            strict: true,
         };
-        let mut rows = Rows { out: &mut gray, width: w, height: h, x0, y0, x: 0, y: 0, zero };
+        let mut rows = Rows { out: &mut gray, width: w, height: h, x0, y0, columns: cw, x: 0, y: 0, zero };
         if let Err(e) = hayro_ccitt::decode(&data, &mut rows, &mut DecoderContext::new(settings)) {
             return damaged(e);
         }
@@ -464,6 +465,8 @@ struct Rows<'a> {
     height: u32,
     x0: u32,
     y0: u32,
+    /// The strip's or tile's width: where each decoded row ends.
+    columns: u32,
     /// The next pixel in the strip or tile.
     x: u64,
     y: u32,
@@ -491,11 +494,19 @@ impl Rows<'_> {
 }
 
 impl hayro_ccitt::Decoder for Rows<'_> {
-    fn push_pixels(&mut self, white: bool, count: u32) {
-        self.run(white, u64::from(count));
-    }
-
-    fn next_line(&mut self) {
+    /// One decoded row: it starts white and the colour flips at each position in `changes`.
+    fn push_row(&mut self, changes: &[u32]) {
+        let columns = self.columns;
+        let mut at = 0u32;
+        let mut white = true;
+        for &c in changes.iter().chain(std::iter::once(&columns)) {
+            let c = c.min(columns);
+            if c > at {
+                self.run(white, u64::from(c - at));
+                at = c;
+            }
+            white = !white;
+        }
         self.y = self.y.saturating_add(1);
         self.x = 0;
     }

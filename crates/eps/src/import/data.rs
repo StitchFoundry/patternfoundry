@@ -171,7 +171,7 @@ fn dct(raw: &[u8]) -> Res<(Vec<u8>, usize, u8)> {
 /// `Rows`; without it they end after `Rows` rows, or at the end of the data when `Rows` is 0.
 /// Damaged data ends the rows: those decoded before it are kept, and damage in the first row is an
 /// `ioerror`. Rows that would take more than `MAX_DATA` bytes are refused.
-fn fax(raw: &[u8], settings: DecodeSettings) -> Res<(Vec<u8>, usize)> {
+fn fax(raw: &[u8], Fax { settings, black_is_1 }: Fax) -> Res<(Vec<u8>, usize)> {
     let row = (settings.columns as usize).div_ceil(8).max(1);
     let most = u32::try_from(MAX_DATA / row).unwrap_or(u32::MAX);
     if !settings.end_of_block && settings.rows > most {
@@ -181,11 +181,11 @@ fn fax(raw: &[u8], settings: DecodeSettings) -> Res<(Vec<u8>, usize)> {
     let rows = if settings.end_of_block || settings.rows == 0 { most.saturating_add(1) } else { settings.rows };
     // The decoder reads the RTC of Group 3 two-dimensional data as rows: it gets the data before it.
     let rtc = match settings.encoding {
-        EncodingMode::Group3_2D { .. } if settings.end_of_block => rtc(raw),
+        EncodingMode::Group3_2D if settings.end_of_block => rtc(raw),
         _ => None,
     };
     let data = rtc.and_then(|(cut, _)| raw.get(..cut)).unwrap_or(raw);
-    let mut out = FaxRows::default();
+    let mut out = FaxRows { columns: settings.columns, black_is_1, ..FaxRows::default() };
     let read = hayro_ccitt::decode(data, &mut out, &mut DecoderContext::new(DecodeSettings { rows, ..settings }));
     if out.rows > most {
         return Err(PsError::Limit("decoded data is too large"));
@@ -238,14 +238,19 @@ fn rtc(raw: &[u8]) -> Option<(usize, usize)> {
 #[derive(Default)]
 struct FaxRows {
     data: Vec<u8>,
+    /// Samples in each row.
+    columns: u32,
+    /// `BlackIs1`: black samples are 1 and white ones 0.
+    black_is_1: bool,
     /// Samples in the row being decoded.
     x: u32,
     /// Whole rows decoded.
     rows: u32,
 }
 
-impl Decoder for FaxRows {
-    fn push_pixels(&mut self, white: bool, count: u32) {
+impl FaxRows {
+    /// The next `count` samples of the row, white or black.
+    fn run(&mut self, white: bool, count: u32) {
         let mut left = count;
         while left > 0 {
             // Whole bytes at once where the row is at a byte's start.
@@ -266,8 +271,22 @@ impl Decoder for FaxRows {
             left -= 1;
         }
     }
+}
 
-    fn next_line(&mut self) {
+impl Decoder for FaxRows {
+    /// One decoded row: it starts white and the colour flips at each position in `changes`.
+    fn push_row(&mut self, changes: &[u32]) {
+        let (columns, black_is_1) = (self.columns, self.black_is_1);
+        let mut at = 0u32;
+        let mut white = true;
+        for &c in changes.iter().chain(std::iter::once(&columns)) {
+            let c = c.min(columns);
+            if c > at {
+                self.run(white ^ black_is_1, c - at);
+                at = c;
+            }
+            white = !white;
+        }
         self.x = 0;
         self.rows = self.rows.saturating_add(1);
     }
@@ -277,9 +296,7 @@ impl Decoder for FaxRows {
 struct Dropped;
 
 impl Decoder for Dropped {
-    fn push_pixels(&mut self, _: bool, _: u32) {}
-
-    fn next_line(&mut self) {}
+    fn push_row(&mut self, _: &[u32]) {}
 }
 
 /// A decoding filter and its parameters.
@@ -291,7 +308,7 @@ pub(crate) struct Filter {
     /// `FlateDecode`'s and `LZWDecode`'s `Predictor`: what it undoes.
     predictor: Option<Predictor>,
     /// `CCITTFaxDecode`'s parameters.
-    fax: Option<DecodeSettings>,
+    fax: Option<Fax>,
 }
 
 /// A `Predictor` (2: TIFF, 10–15: PNG) with its `Colors`, `BitsPerComponent` and `Columns`.
@@ -420,7 +437,7 @@ fn paeth(a: u8, b: u8, c: u8) -> u8 {
 /// §7.4.6): `K` (below 0 Group 4, 0 Group 3 one-dimensional, above 0 Group 3 mixed), `Columns`,
 /// `Rows`, `EndOfBlock`, `EndOfLine`, `EncodedByteAlign` and `BlackIs1`, with their defaults where
 /// `d` leaves them out. `Columns` outside 1 to 65,535 and `Rows` below 0 are a `rangecheck`.
-fn fax_settings(d: Option<&DictRef>) -> Res<DecodeSettings> {
+fn fax_settings(d: Option<&DictRef>) -> Res<Fax> {
     let get = |k: &str| d.and_then(|d| d.borrow().get(&Key::name(k)).cloned());
     let num = |k: &str, default: f64| get(k).and_then(|o| o.as_num()).unwrap_or(default);
     let flag = |k: &str, default: bool| match get(k) {
@@ -436,17 +453,30 @@ fn fax_settings(d: Option<&DictRef>) -> Res<DecodeSettings> {
     } else if k == 0.0 {
         EncodingMode::Group3_1D
     } else {
-        EncodingMode::Group3_2D { k: k.min(f64::from(u32::MAX)) as u32 }
+        // Each row's tag bit says how it is coded, so K's value past this sign isn't needed.
+        EncodingMode::Group3_2D
     };
-    Ok(DecodeSettings {
-        columns: columns as u32,
-        rows: rows as u32,
-        end_of_block: flag("EndOfBlock", true),
-        end_of_line: flag("EndOfLine", false),
-        rows_are_byte_aligned: flag("EncodedByteAlign", false),
-        encoding,
-        invert_black: flag("BlackIs1", false),
+    Ok(Fax {
+        settings: DecodeSettings {
+            columns: columns as u32,
+            rows: rows as u32,
+            end_of_block: flag("EndOfBlock", true),
+            end_of_line: flag("EndOfLine", false),
+            rows_are_byte_aligned: flag("EncodedByteAlign", false),
+            encoding,
+            // Damaged data ends the rows (see `fax`), as hayro-ccitt 0.4 did, instead of being patched over.
+            strict: true,
+        },
+        black_is_1: flag("BlackIs1", false),
     })
+}
+
+/// `CCITTFaxDecode`'s decoder settings, and `BlackIs1` (applied to the decoded rows: the decoder
+/// no longer inverts them itself).
+#[derive(Clone, Copy, Debug)]
+struct Fax {
+    settings: DecodeSettings,
+    black_is_1: bool,
 }
 
 /// The bytes `f` decodes from `raw`, how many it read, and the channels of a decoded JPEG.

@@ -171,16 +171,20 @@ pub(super) fn encode(doc: &Document, p: &Value) -> Result<Encoded> {
             if !piece.material.is_empty() {
                 second.push_str(&format!(" · {}", piece.material));
             }
+            // The label's lines: the name, how to cut it, then a note for each placed design.
+            let lines = [piece.name.as_str(), second.as_str()].into_iter().chain(piece.notes.iter().map(String::as_str));
+            let tspans: String = lines
+                .enumerate()
+                .map(|(i, l)| {
+                    let dy = if i == 0 { String::new() } else { format!(" dy=\"{}\"", n(TEXT_MM * 1.3)) };
+                    format!("<tspan x=\"{}\"{dy}>{}</tspan>", n(t[0] + 3.0), escape(l))
+                })
+                .collect();
             out.push_str(&format!(
-                "    <text x=\"{}\" y=\"{}\" font-family=\"sans-serif\" font-size=\"{}\" fill=\"#000000\" stroke=\"none\"><tspan x=\"{}\">{}</tspan><tspan x=\"{}\" dy=\"{}\">{}</tspan></text>\n",
+                "    <text x=\"{}\" y=\"{}\" font-family=\"sans-serif\" font-size=\"{}\" fill=\"#000000\" stroke=\"none\">{tspans}</text>\n",
                 n(t[0] + 3.0),
                 n(t[1]),
                 n(TEXT_MM),
-                n(t[0] + 3.0),
-                escape(&piece.name),
-                n(t[0] + 3.0),
-                n(TEXT_MM * 1.3),
-                escape(&second)
             ));
         }
         out.push_str("  </g>\n");

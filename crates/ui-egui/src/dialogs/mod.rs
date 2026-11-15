@@ -93,6 +93,7 @@ pub mod shortcut_import;
 pub mod sleeve_ease;
 pub mod slices;
 pub mod spot_colors;
+mod start_pattern;
 pub(crate) mod svg_options;
 pub mod swatch_conflict;
 pub mod swatch_options;
@@ -127,6 +128,7 @@ pub(crate) use new_document::preset_name;
 pub use new_document::{open as open_new_document, preset_card};
 pub use png_options::open as open_raster_options;
 pub use save_pdf::{open as open_save_pdf, open_preset as open_pdf_preset};
+pub use start_pattern::open as open_start_pattern;
 pub use tools::open_tool_dialog;
 
 use crate::state::Dialog;
@@ -230,6 +232,7 @@ macro_rules! registry {
 registry! {
     DimensionOptions: [dimension::KIND] => dimension::SPEC,
     NewDocument: [new_document::KIND] => new_document::SPEC,
+    StartPattern: [start_pattern::KIND] => start_pattern::SPEC,
     Shape: ["rectangle", "roundedRectangle", "ellipse", "polygon", "star", "lineSegment", "rectangularGrid", "polarGrid"] => shapes::SPEC,
     Transform: ["move", "rotate", "scale", "reflect", "shear"] => transform::SPEC,
     PathOp: ["average", "offsetPath", "simplify", "splitIntoGrid"] => path_ops::SPEC,

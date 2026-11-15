@@ -2,9 +2,10 @@ version: 2
 updates:
   # Maintain Rust / Cargo dependencies
   - package-ecosystem: "cargo"
+    # /crates/affinity/fuzz is left out on purpose: it is its own workspace with a path dependency
+    # on the parent crate, which Dependabot cannot resolve in isolation (issue #121).
     directories:
       - "/"
-      - "/crates/affinity/fuzz"
       - "/crates/plugins/example"
     schedule:
       interval: "weekly"

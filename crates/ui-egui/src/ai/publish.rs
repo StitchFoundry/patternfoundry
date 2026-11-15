@@ -94,7 +94,7 @@ pub fn command(app: &mut VectorcraftApp, p: &Value) -> Result<Value, String> {
         "name": st.name,
         "fileName": makerfoundry::file_name(&st.name, "svg"),
         "bytes": design.len,
-        "sentTo": format!("{}{}", makerfoundry::SITE, makerfoundry::DESIGNS),
+        "sentTo": format!("{}{}", makerfoundry::site(), makerfoundry::DESIGNS),
         "signedIn": !app.ai.account.token.is_empty(),
     });
     app.ai.publish.design = Some(design);
@@ -182,8 +182,10 @@ pub fn window(app: &mut VectorcraftApp, ctx: &egui::Context) {
                 ui.add_space(6.0);
                 let len = d.len;
                 egui::Grid::new("publish-what").num_columns(2).spacing([10.0, 4.0]).show(ui, |ui| {
-                    ui.label(tl!("Name"));
-                    ui.add(egui::TextEdit::singleline(&mut st.name).desired_width(280.0).hint_text(tl!("What it is, e.g. A-line skirt")));
+                    let name_label = ui.label(tl!("Name"));
+                    // (labelled for assistive technology and test drivers: the field's accessible name is "Name")
+                    ui.add(egui::TextEdit::singleline(&mut st.name).desired_width(280.0).hint_text(tl!("What it is, e.g. A-line skirt")))
+                        .labelled_by(name_label.id);
                     ui.end_row();
                     ui.label(tl!("File"));
                     ui.label(format!("{}  ({:.1} KB)", makerfoundry::file_name(&st.name, "svg"), len as f64 / 1024.0));
@@ -192,7 +194,7 @@ pub fn window(app: &mut VectorcraftApp, ctx: &egui::Context) {
                     ui.label(tl!("SVG, a vector design"));
                     ui.end_row();
                     ui.label(tl!("Sent to"));
-                    ui.label(format!("{}{}", makerfoundry::SITE, makerfoundry::DESIGNS));
+                    ui.label(format!("{}{}", makerfoundry::site(), makerfoundry::DESIGNS));
                     ui.end_row();
                     ui.label(tl!("Account"));
                     let who = app.ai.account.info.as_ref().and_then(|i| i["email"].as_str()).map(str::to_string);

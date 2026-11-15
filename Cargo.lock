@@ -123,9 +123,9 @@ checksum = "320119579fcad9c21884f5c4861d16174d0e06250625266f50fe6898340abefa"
 
 [[package]]
 name = "aes"
-version = "0.9.3"
+version = "0.9.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "35f0f96ce78e38c3dc6d8948aa8163d06385be74000f3c7a95bf1eef35d3ea32"
+checksum = "fc0fc36d7440d015b45468ba08a21e80e056ebbd014c611c6298bb7503e04bd1"
 dependencies = [
  "cipher",
  "cpubits",
@@ -283,9 +283,9 @@ dependencies = [
 
 [[package]]
 name = "async-executor"
-version = "1.14.0"
+version = "1.14.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c96bf972d85afc50bf5ab8fe2d54d1586b4e0b46c97c50a0c9e71e2f7bcd812a"
+checksum = "f426a31126c735126297bc5ea7a521263c9faff4f63ca415267ee625651c4f37"
 dependencies = [
  "async-task",
  "concurrent-queue",
@@ -901,9 +901,9 @@ dependencies = [
 
 [[package]]
 name = "crc32fast"
-version = "1.5.3"
+version = "1.5.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0ba106e844045ddc02c20768ac4b0b7cb45f2cc2ecbd833ac9f5dacb183c2055"
+checksum = "5f97d3416d5337d15c4b0d78c8c91df922ca143f57ec20e2d1c188333047ef04"
 dependencies = [
  "cfg-if",
 ]
@@ -1419,9 +1419,9 @@ checksum = "1d674e81391d1e1ab681a28d99df07927c6d4aa5b027d7da16ba32d1d21ecd99"
 
 [[package]]
 name = "flate2"
-version = "1.1.10"
+version = "1.1.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6e634e2e0ebac1ee034020da1ca582e17ffe4e0f5e985823721e168928136dcb"
+checksum = "626d4928326b646e70f65ed36fc7cf9f206bdb68a0019ee7c6b4709da4e084c4"
 dependencies = [
  "crc32fast",
  "miniz_oxide 0.9.1",
@@ -1858,9 +1858,9 @@ checksum = "9f4d0e94ddd48749f06bbe4e5389fb9799a0c45bcaf00495042076ef05e3241a"
 
 [[package]]
 name = "hayro-ccitt"
-version = "0.4.0"
+version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2866f0d976e76497480b853d5e258dab6e4b89ecfe991124e08f15dfa8fd03ad"
+checksum = "adbed896e99325bc312778bb9c9c289d795d51c12775c44dd5e4352f679c7e46"
 
 [[package]]
 name = "hayro-cmap"
@@ -3170,14 +3170,14 @@ dependencies = [
 
 [[package]]
 name = "pf-aama"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "pf-dxf",
 ]
 
 [[package]]
 name = "pf-ai"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "proptest",
  "serde_json",
@@ -3186,7 +3186,7 @@ dependencies = [
 
 [[package]]
 name = "pf-core"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "serde",
  "serde_json",
@@ -3194,7 +3194,7 @@ dependencies = [
 
 [[package]]
 name = "pf-dxf"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "encoding_rs",
  "log",
@@ -3671,7 +3671,7 @@ dependencies = [
  "log",
  "pico-args",
  "rgb",
- "svgtypes 0.16.1",
+ "svgtypes 0.16.2",
  "tiny-skia 0.12.0",
  "usvg 0.49.0",
 ]
@@ -4341,9 +4341,9 @@ dependencies = [
 
 [[package]]
 name = "svgtypes"
-version = "0.16.1"
+version = "0.16.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "695b5790b3131dafa99b3bbfd25a216edb3d216dad9ca208d4657bfb8f2abc3d"
+checksum = "9f12b12995e3638c70618c1facb1ce65302f6a6f706b675f07c58a5d7391120e"
 dependencies = [
  "kurbo 0.13.1",
  "siphasher",
@@ -4538,9 +4538,9 @@ checksum = "fd3ca314f692efd6c868f8408f53fe444634a845f96c028b97d35f6a1f79f0ee"
 
 [[package]]
 name = "tokio"
-version = "1.53.1"
+version = "1.53.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "202caea871b69668250d242070849eb495be178ed697a3e98aebce5bc81a0bed"
+checksum = "ce3335fa71841cda333a58d7615b03901380ecf09d59b3296d21f8bbac0dde4e"
 dependencies = [
  "pin-project-lite",
 ]
@@ -4733,9 +4733,9 @@ checksum = "7df058c713841ad818f1dc5d3fd88063241cc61f49f5fbea4b951e8cf5a8d71d"
 
 [[package]]
 name = "unicode-script"
-version = "0.5.8"
+version = "0.5.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "383ad40bb927465ec0ce7720e033cb4ca06912855fc35db31b5755d0de75b1ee"
+checksum = "aa04c955db05429d464c74d495c1ee677e1866e783a4c3747f9c0cef7756cabf"
 
 [[package]]
 name = "unicode-segmentation"
@@ -4763,9 +4763,9 @@ checksum = "8ecb6da28b8a351d773b68d5825ac39017e680750f980f3a1a85cd8dd28a47c1"
 
 [[package]]
 name = "ureq"
-version = "3.5.0"
+version = "3.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cde93ff05758a36a851a398a772b0b79a82fbe3c186a46f2696baaeaf84c966b"
+checksum = "e7be76686bdf7198002062423ca0d8cf9b75a27c8e1de804513b97e97b555d9d"
 dependencies = [
  "base64 0.23.1",
  "log",
@@ -4780,9 +4780,9 @@ dependencies = [
 
 [[package]]
 name = "ureq-proto"
-version = "0.6.5"
+version = "0.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "841583fc36089d7d59419568ae157f43a5a03a2e5a81ba87c77d1596ef46e922"
+checksum = "622dce33c252115466d83f63e9744a18f12b4406aae51a01c15ad8fcf1185eb3"
 dependencies = [
  "base64 0.23.1",
  "http",
@@ -4844,7 +4844,7 @@ dependencies = [
  "siphasher",
  "skrifa 0.44.0",
  "strict-num",
- "svgtypes 0.16.1",
+ "svgtypes 0.16.2",
  "tiny-skia-path 0.12.0",
  "unicode-bidi",
  "unicode-script",
@@ -4877,7 +4877,7 @@ dependencies = [
 
 [[package]]
 name = "vectorcraft"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "arboard",
  "block2 0.6.2",
@@ -4915,7 +4915,7 @@ dependencies = [
 
 [[package]]
 name = "vectorcraft-affinity"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "crc32fast",
  "flate2",
@@ -4926,7 +4926,7 @@ dependencies = [
 
 [[package]]
 name = "vectorcraft-brush"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "kurbo 0.13.1",
  "serde",
@@ -4938,7 +4938,7 @@ dependencies = [
 
 [[package]]
 name = "vectorcraft-cad"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "image",
  "kurbo 0.13.1",
@@ -4954,7 +4954,7 @@ dependencies = [
 
 [[package]]
 name = "vectorcraft-cli"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "log",
  "objc2-core-foundation",
@@ -4976,7 +4976,7 @@ dependencies = [
 
 [[package]]
 name = "vectorcraft-color"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "kurbo 0.13.1",
  "moxcms 0.9.1",
@@ -4988,9 +4988,9 @@ dependencies = [
 
 [[package]]
 name = "vectorcraft-doc"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
- "hayro-ccitt 0.4.0",
+ "hayro-ccitt 0.5.0",
  "image",
  "jpeg-encoder",
  "kurbo 0.13.1",
@@ -5007,7 +5007,7 @@ dependencies = [
 
 [[package]]
 name = "vectorcraft-effects"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "image",
  "kurbo 0.13.1",
@@ -5023,7 +5023,7 @@ dependencies = [
 
 [[package]]
 name = "vectorcraft-engine"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "craft-docpath",
  "crc32fast",
@@ -5063,11 +5063,11 @@ dependencies = [
 
 [[package]]
 name = "vectorcraft-eps"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "fax 0.3.0",
  "flate2",
- "hayro-ccitt 0.4.0",
+ "hayro-ccitt 0.5.0",
  "image",
  "kurbo 0.13.1",
  "ruzstd",
@@ -5086,7 +5086,7 @@ dependencies = [
 
 [[package]]
 name = "vectorcraft-format"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "flate2",
  "proptest",
@@ -5101,7 +5101,7 @@ dependencies = [
 
 [[package]]
 name = "vectorcraft-geom"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "kurbo 0.13.1",
  "proptest",
@@ -5113,7 +5113,7 @@ dependencies = [
 
 [[package]]
 name = "vectorcraft-mcp"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "image",
  "log",
@@ -5132,7 +5132,7 @@ dependencies = [
 
 [[package]]
 name = "vectorcraft-metafile"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "image",
  "kurbo 0.13.1",
@@ -5146,7 +5146,7 @@ dependencies = [
 
 [[package]]
 name = "vectorcraft-pathops"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "kurbo 0.13.1",
  "linesweeper",
@@ -5158,7 +5158,7 @@ dependencies = [
 
 [[package]]
 name = "vectorcraft-pdf"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "aes",
  "craft-pdf",
@@ -5189,7 +5189,7 @@ dependencies = [
 
 [[package]]
 name = "vectorcraft-plugins"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "serde",
  "serde_json",
@@ -5203,7 +5203,7 @@ dependencies = [
 
 [[package]]
 name = "vectorcraft-render"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "flate2",
  "gif",
@@ -5230,14 +5230,14 @@ dependencies = [
 
 [[package]]
 name = "vectorcraft-scriptcheck"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "proptest",
 ]
 
 [[package]]
 name = "vectorcraft-svg"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "craft-docpath",
  "flate2",
@@ -5248,7 +5248,7 @@ dependencies = [
  "serde",
  "serde_json",
  "skrifa 0.49.0",
- "svgtypes 0.16.1",
+ "svgtypes 0.16.2",
  "thiserror 2.0.21",
  "usvg 0.49.0",
  "vectorcraft-brush",
@@ -5262,7 +5262,7 @@ dependencies = [
 
 [[package]]
 name = "vectorcraft-testkit"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "fax 0.3.0",
  "image",
@@ -5280,7 +5280,7 @@ dependencies = [
 
 [[package]]
 name = "vectorcraft-text"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "harfrust 0.15.0",
  "icu_segmenter",
@@ -5300,7 +5300,7 @@ dependencies = [
 
 [[package]]
 name = "vectorcraft-three-d"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "vectorcraft-geom",
  "vectorcraft-pathops",
@@ -5308,7 +5308,7 @@ dependencies = [
 
 [[package]]
 name = "vectorcraft-tools"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "image",
  "kurbo 0.13.1",
@@ -5324,7 +5324,7 @@ dependencies = [
 
 [[package]]
 name = "vectorcraft-trace"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "image",
  "kurbo 0.13.1",
@@ -5336,7 +5336,7 @@ dependencies = [
 
 [[package]]
 name = "vectorcraft-ui-egui"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "craft-ui",
  "egui",
@@ -5372,7 +5372,7 @@ dependencies = [
 
 [[package]]
 name = "vectorcraft-web"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "eframe",
  "egui",
@@ -5797,9 +5797,9 @@ dependencies = [
 
 [[package]]
 name = "webbrowser"
-version = "1.2.5"
+version = "1.2.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d2c8ddfbbf66e501434657400268cefe51b95140a0266236415cda7627732df7"
+checksum = "fe8d20d0214027baf11b8b0cc307c1da7657d8f4db9aa956f7de27a6fb1acbd5"
 dependencies = [
  "jni",
  "log",
@@ -6478,7 +6478,7 @@ checksum = "9440ea3e5aeabb0ac63af70daf835274065238cdd0cec83418f417eae38bacee"
 
 [[package]]
 name = "xtask"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "serde_json",
 ]
@@ -6496,9 +6496,9 @@ dependencies = [
 
 [[package]]
 name = "yoke-derive"
-version = "0.8.3"
+version = "0.8.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "33811428bee40dbceb6d545e95754741d17a6aef9a4849f0fd62e2ba4f412a78"
+checksum = "ec8ebde2db3681e8c9980cc27822030e68752690ddfa9473e739aeb4dbde6d71"
 dependencies = [
  "proc-macro2",
  "quote",

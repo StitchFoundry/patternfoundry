@@ -30,6 +30,22 @@ anything he clicks through.
 - Websites on Cloudflare Pages from bwattendorf/sitesentrix-web; email through Cloudflare Email
   Routing and Resend; hosting on Railway Pro.
 
+## Getting started (the new-user flow, #146)
+
+A pattern starts from measurements, not a page size. On the Home screen choose **Start a pattern**
+(or File › Start a Pattern…):
+
+1. **What are you making?** A bodice, skirt, sleeve or trousers.
+2. **Whose measurements?** Type your own (each has a short "how to measure" line; choose centimetres
+   or inches), pick one of the round sample sizes, or use a set you kept in My Measurements.
+3. **Create Pattern.** The pieces are drafted and the page is fitted to them; the paper size is only
+   chosen later, at Print (home printers get tiled pages with the 10 cm test square).
+
+Typed measurements stay on your computer. Tick "Keep these measurements" to save them to My
+Measurements for next time. Prefer the old way? **Blank page** (or File › New…) still offers the page presets.
+
+Code: `crates/ui-egui/src/dialogs/start_pattern.rs` (the dialog, `ui.startPattern`). Pattern › Draft … Block with no document or no measurements now opens a document or the Measurements panel and says what is missing (#138).
+
 ## Decided
 - Name: **PatternFoundry**; sewing-pattern design software; built on VectorCraft like
   StitchFoundry.
@@ -45,8 +61,9 @@ anything he clicks through.
 - **Accounts and AI:** the shared **Foundry Account** (one sign-in and one balance of "Foundry
   credits" across all SiteSentrix apps), served by the StitchFoundry cloud service,
   https://cloud.stitchfoundry.app. PatternFoundry never holds an Anthropic key: AI requests go
-  through the service, which adds the owner's key and charges the user's credits. Users may still
-  enter their own Anthropic key in the app's AI settings instead.
+  through the service, which adds the owner's key and charges the user's credits. The Foundry
+  Account is the only way to sign in and pay for AI: the app has no "use my own API key" option
+  (#140; a key saved by an older version is deleted on load).
 - **Building the AI features (PF-8):** reuse StitchFoundry's client code
   (`crates/sf-core/src/ai/cloud.rs`, and the Foundry Account window in
   `crates/ui-egui/src/embroidery/account.rs`), and point builds at the service with `SF_CLOUD_URL`,

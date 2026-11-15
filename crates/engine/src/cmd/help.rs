@@ -7,7 +7,7 @@ use serde_json::{Value, json};
 use super::*;
 
 /// This app's source repository.
-pub const GITHUB_URL: &str = "https://github.com/SiteSentrix/patternfoundry";
+pub const GITHUB_URL: &str = "https://github.com/StitchFoundry/patternfoundry";
 /// The MakerFoundry YouTube channel: videos for the Foundry apps.
 pub const YOUTUBE_URL: &str = "https://www.youtube.com/@MakerFoundryApp";
 /// The Buy Me a Coffee page: support the project.
@@ -33,11 +33,11 @@ mod tests {
     #[test]
     fn links() {
         let mut s = Session::new();
-        assert_eq!(s.execute("help.github", &json!({})).unwrap()["url"], "https://github.com/SiteSentrix/patternfoundry");
+        assert_eq!(s.execute("help.github", &json!({})).unwrap()["url"], "https://github.com/StitchFoundry/patternfoundry");
         assert_eq!(s.execute("help.youtube", &json!({})).unwrap()["url"], "https://www.youtube.com/@MakerFoundryApp");
         assert_eq!(s.execute("help.donate", &json!({})).unwrap()["url"], "https://buymeacoffee.com/bwattendorf");
         let links = s.execute("help.links", &json!({})).unwrap();
-        assert_eq!(links["github"], "https://github.com/SiteSentrix/patternfoundry");
+        assert_eq!(links["github"], "https://github.com/StitchFoundry/patternfoundry");
         assert_eq!(links["youtube"], "https://www.youtube.com/@MakerFoundryApp");
         assert_eq!(links["donate"], "https://buymeacoffee.com/bwattendorf");
         assert!(s.execute("help.discord", &json!({})).is_err(), "no community links of VectorCraft's makers");

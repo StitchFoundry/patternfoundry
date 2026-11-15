@@ -2259,6 +2259,8 @@ mod tests_place;
 #[cfg(test)]
 mod tests_placed_document;
 #[cfg(test)]
+mod tests_placement;
+#[cfg(test)]
 mod tests_plugins;
 #[cfg(test)]
 mod tests_prefs;

@@ -46,11 +46,11 @@ mod tests {
         crate::menus::invoke(&mut app, "help.donate", serde_json::json!({}));
         assert_eq!(
             *opened.lock().unwrap(),
-            ["https://github.com/SiteSentrix/patternfoundry", "https://www.youtube.com/@MakerFoundryApp", "https://buymeacoffee.com/bwattendorf"]
+            ["https://github.com/StitchFoundry/patternfoundry", "https://www.youtube.com/@MakerFoundryApp", "https://buymeacoffee.com/bwattendorf"]
         );
         // The control channel / MCP path returns the URL without opening a browser.
         let v = app.run("help.github", serde_json::json!({})).unwrap();
-        assert_eq!(v["url"], "https://github.com/SiteSentrix/patternfoundry");
+        assert_eq!(v["url"], "https://github.com/StitchFoundry/patternfoundry");
         assert_eq!(opened.lock().unwrap().len(), 3);
         let ctx = egui::Context::default();
         theme::install_fonts(&ctx);

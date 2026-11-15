@@ -266,3 +266,33 @@ fn a_quantity_too_large_to_add_up_opens_as_the_most_a_piece_can_be_cut() {
     assert_eq!(list["pieces"][0]["cut"], json!(pf_core::piece::MAX_CUT), "{list}");
     assert_eq!(list["pieces"][0]["mirror"], json!(true), "{list}");
 }
+
+/// Issue 169: a piece digitised as tens of thousands of short edges on both its cutting line and
+/// its sew line opens in moments, with its allowance (before, each seam edge was measured against
+/// every cutting edge: 40 000 points took 11 s, and the time grew with the square of the count).
+#[test]
+fn a_densely_digitised_dxf_aama_piece_opens_quickly() {
+    let n = 80_000;
+    let ring = |layer: &str, r: f64| {
+        let mut o = format!("0\nLWPOLYLINE\n8\n{layer}\n90\n{n}\n70\n1\n");
+        for i in 0..n {
+            let a = f64::from(i) / f64::from(n) * std::f64::consts::TAU;
+            o += &format!("10\n{:.3}\n20\n{:.3}\n", 500.0 + r * a.cos(), 500.0 + r * a.sin());
+        }
+        o
+    };
+    let dxf = format!(
+        "0\nSECTION\n2\nBLOCKS\n0\nBLOCK\n2\nRound\n0\nTEXT\n8\n1\n1\nPiece Name: Round\n{}{}0\nENDBLK\n0\nENDSEC\n0\nEOF\n",
+        ring("1", 310.0),
+        ring("14", 300.0)
+    );
+    let mut s = Session::new();
+    let started = std::time::Instant::now();
+    let opened = s.execute("document.open", &json!({"name": "round.dxf", "dataBase64": vectorcraft_format::base64_encode(dxf.as_bytes())})).unwrap();
+    let took = started.elapsed();
+    assert_eq!(opened["warnings"], json!([]), "{opened}");
+    let list = s.execute("piece.list", &json!({})).unwrap();
+    let info = s.execute("piece.info", &json!({"id": list["pieces"][0]["id"]})).unwrap();
+    assert!((info["allowance"].as_f64().unwrap() - 10.0).abs() < 0.01, "{info}");
+    assert!(took.as_secs_f64() < 15.0, "opening took {took:?}");
+}

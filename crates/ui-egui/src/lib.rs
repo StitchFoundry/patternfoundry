@@ -232,7 +232,7 @@ pub type HttpPostAsyncFn = std::rc::Rc<dyn Fn(HttpRequest, Box<dyn FnOnce(Result
 
 pub use pf_ai::HttpRequest;
 
-/// Keeps small secrets (the AI features' API key and Foundry session) out of the settings, which
+/// Keeps small secrets (the AI features' Foundry session) out of the settings, which
 /// the engine, the control channel and MCP agents can read.
 pub trait SecretStore {
     /// The secret `name`, when one is kept.
@@ -319,7 +319,7 @@ pub struct Services {
     pub http_post: Option<HttpPostFn>,
     /// Send an HTTPS POST without waiting (the web), when there is no [`Services::http_post`].
     pub http_post_async: Option<HttpPostAsyncFn>,
-    /// Where the AI features keep the API key and the Foundry session (desktop: private files
+    /// Where the AI features keep the Foundry session (desktop: private files
     /// next to the settings; the web: the browser's storage). Without it they last the session.
     pub secrets: Option<Box<dyn SecretStore>>,
     /// The window is on Wayland: the tool cursors are painted into it instead of handed to the
