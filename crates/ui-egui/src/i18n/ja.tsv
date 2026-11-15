@@ -5451,3 +5451,6 @@ menu	Pattern	型紙
 	inches	inches
 	Start a Pattern…	Start a Pattern…
 	Create Pattern	Create Pattern
+	Place Design	デザインを配置
+	Move Placed Design	配置したデザインを移動
+	Remove Placed Design	配置したデザインを削除
