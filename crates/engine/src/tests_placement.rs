@@ -40,7 +40,7 @@ fn it_moves_scales_to_a_true_width_turns_and_loses_its_hoop() {
     let info =
         s.execute("piece.setPlacement", &json!({"id": id.0, "index": 0, "at": [10, 20], "width": "45 mm", "rotation": -90, "hoop": null})).unwrap();
     let d = &info["placements"][0];
-    assert_eq!(d["at"], json!([10.0, 20.0]));
+    assert_eq!(d["at"], json!({"x": 10.0, "y": 20.0}));
     assert!((d["scale"].as_f64().unwrap() - 0.5).abs() < 1e-12);
     assert_eq!(d["rotation"], 270.0);
     assert!(d.get("hoop").is_none());
