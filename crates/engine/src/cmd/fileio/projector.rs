@@ -258,6 +258,10 @@ pub(super) fn encode(doc: &Document, p: &Value) -> Result<Encoded> {
         if !piece.material.is_empty() {
             text.push_str(&format!(" · {}", piece.material));
         }
+        for note in &piece.notes {
+            text.push('\n');
+            text.push_str(note);
+        }
         let t = at(piece.text_at);
         art.push(page.text(Point::new(t.x + mm_to_pt(3.0), t.y), &text, mm_to_pt(TEXT_MM)));
     }
