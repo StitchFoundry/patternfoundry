@@ -5374,3 +5374,6 @@ menu	Pattern	패턴
 	inches	inches
 	Start a Pattern…	Start a Pattern…
 	Create Pattern	Create Pattern
+	Place Design	디자인 배치
+	Move Placed Design	배치된 디자인 이동
+	Remove Placed Design	배치된 디자인 제거
