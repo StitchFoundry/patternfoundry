@@ -36,9 +36,10 @@ pub struct Hoop {
     pub height: f64,
 }
 
-/// A design placed on a piece.
+/// A design placed on a piece. One read from a file is checked like one made with
+/// [`Placement::new`] (see [`Placement::checked`]), so a bad size, scale or position is refused.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "camelCase", try_from = "Unchecked")]
 pub struct Placement {
     /// What the sewist calls it ("Rose"), shown in the cut-list note.
     pub name: String,
@@ -63,6 +64,35 @@ pub struct Placement {
 
 fn one() -> f64 {
     1.0
+}
+
+/// A [`Placement`] as written in a file, before [`Placement::checked`].
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct Unchecked {
+    name: String,
+    #[serde(default)]
+    file: String,
+    #[serde(default)]
+    kind: DesignKind,
+    width: f64,
+    height: f64,
+    at: Pt,
+    #[serde(default = "one")]
+    scale: f64,
+    #[serde(default)]
+    rotation: f64,
+    #[serde(default)]
+    hoop: Option<Hoop>,
+}
+
+impl TryFrom<Unchecked> for Placement {
+    type Error = PlacementError;
+
+    fn try_from(u: Unchecked) -> Result<Self, PlacementError> {
+        let Unchecked { name, file, kind, width, height, at, scale, rotation, hoop } = u;
+        Placement { name, file, kind, width, height, at, scale, rotation, hoop }.checked()
+    }
 }
 
 /// Why a placement is refused.
@@ -124,6 +154,24 @@ impl Placement {
             rotation: 0.0,
             hoop: None,
         })
+    }
+
+    /// This placement when every value is one [`Placement::new`] and the setters accept (the
+    /// turn brought within 0 up to 360), or why not.
+    pub fn checked(mut self) -> Result<Self, PlacementError> {
+        if self.name.chars().count() > crate::piece::MAX_NAME {
+            return Err(PlacementError::NameTooLong);
+        }
+        self.name = self.name.trim().to_string();
+        self.width = check_size(self.width)?;
+        self.height = check_size(self.height)?;
+        self.set_at(self.at)?;
+        self.set_scale(self.scale)?;
+        self.set_rotation(self.rotation)?;
+        if let Some(h) = self.hoop {
+            self.hoop = Some(Hoop::new(h.width, h.height)?);
+        }
+        Ok(self)
     }
 
     /// Set the scale.
@@ -274,6 +322,25 @@ mod tests {
         p.kind = DesignKind::Screen;
         p.set_scale(0.55).unwrap();
         assert_eq!(p.note(), "Print \"Rose\" here, 49.5 x 33 mm");
+    }
+
+    #[test]
+    fn a_placement_read_from_a_file_is_checked() {
+        let p = rose();
+        let json = serde_json::to_value(&p).unwrap();
+        assert_eq!(serde_json::from_value::<Placement>(json.clone()).unwrap(), p);
+        let bad = |key: &str, v: serde_json::Value| {
+            let mut j = json.clone();
+            j[key] = v;
+            serde_json::from_value::<Placement>(j)
+        };
+        assert!(bad("width", 0.0.into()).is_err());
+        assert!(bad("height", (MAX_DESIGN_MM * 2.0).into()).is_err());
+        assert!(bad("scale", 0.0.into()).is_err());
+        assert!(bad("scale", 1e9.into()).is_err());
+        assert!(bad("name", "x".repeat(crate::piece::MAX_NAME + 1).into()).is_err());
+        assert!(bad("hoop", serde_json::json!({ "width": -5.0, "height": 100.0 })).is_err());
+        assert_eq!(bad("rotation", (-90.0).into()).unwrap().rotation, 270.0);
     }
 
     #[test]
