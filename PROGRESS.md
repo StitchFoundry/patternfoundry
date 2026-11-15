@@ -21,3 +21,4 @@
 - 2026-11-14 (issue 178): a size chart's "not a number" error now names the line it is on in the text, counting comment and blank lines.
 - 2026-11-15 (nightly sweep): no reported bugs awaited triage; `cargo audit` has no vulnerabilities (unmaintained notices only); fmt and workspace clippy clean; pf-* tests pass; a mutation fuzz of the AAMA reader found no panics. Filed #182.
 - 2026-11-15 (issue 182): a design placement read from a file is now checked like one made in the app (size, scale, position, turn, name, hoop), so a bad value is refused instead of drawn.
+- 2026-11-15 (issue 164): version bumped to 0.1.2 (`cargo xtask version set`: Cargo.toml + Cargo.lock) and release notes added in `docs/release-notes/v0.1.2.md`. No other changes; checked with fmt and `cargo xtask version`; the full `cargo xtask ci` filled the session disk, so CI runs the gate.
