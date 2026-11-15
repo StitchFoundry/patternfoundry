@@ -21,6 +21,8 @@ use pf_core::{Mark, NotchKind, Pt, mm_to_pt, pt_to_mm};
 const C: &str = "document.export";
 /// Room under the pieces for the style system text, which sits at the origin (mm).
 const TEXT_ROOM_MM: f64 = 60.0;
+/// Each arm of a placed design's centre crosshair, mm.
+const PLACEMENT_CROSS_MM: f64 = 5.0;
 
 /// The DXF-AAMA options `document.formats` lists.
 pub(super) const OPTIONS: &[FormatOption] = &[
@@ -152,6 +154,15 @@ pub(crate) fn pieces(doc: &Document) -> Result<Vec<AamaPiece>> {
         for c in children.iter().filter(|c| mark_of(c).is_none()) {
             internal_lines(c, &mut internal);
         }
+        // Placed designs (PF-12.3): each one's outline, a centre crosshair and its hoop, drawn not cut.
+        let arm = mm_to_pt(PLACEMENT_CROSS_MM);
+        for d in &piece.placements {
+            let closed = |q: [Pt; 4]| vec![q[0], q[1], q[2], q[3], q[0]];
+            internal.push(closed(d.outline()));
+            internal.push(vec![d.at - Pt::new(arm, 0.0), d.at + Pt::new(arm, 0.0)]);
+            internal.push(vec![d.at - Pt::new(0.0, arm), d.at + Pt::new(0.0, arm)]);
+            internal.extend(d.hoop_outline().map(closed));
+        }
         let text_at = grain.map(|g| (g.from + g.to) * 0.5).unwrap_or_else(|| outline.points.first().copied().unwrap_or_default());
         let (right, left) = if piece.mirror { (piece.cut - piece.cut / 2, piece.cut / 2) } else { (piece.cut, 0) };
         // Points (y down) for now; `to_mm` turns everything at once.
@@ -177,6 +188,7 @@ pub(crate) fn pieces(doc: &Document) -> Result<Vec<AamaPiece>> {
             internal: internal.iter().map(|l| l.iter().map(|p| mm(*p)).collect()).collect(),
             drills: piece.drills.iter().map(|d| AamaDrill { at: mm(d.at), diameter: mm_to_pt(d.diameter) }).collect(),
             text_at: mm(text_at),
+            notes: piece.placements.iter().map(pf_core::placement::Placement::note).collect(),
         });
     }
     // Every piece name once in the file, as ASTM asks: a second "Front" is "Front 2".
