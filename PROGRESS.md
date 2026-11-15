@@ -19,3 +19,5 @@
 - 2026-11-13 (issue 162): README now has a Download section (links `/releases/latest`) and says "Early release"; web app head gets a description and an inline favicon. Docs/HTML only; checked by diff (full `cargo xtask ci` not run: session disk, CI runs it).
 - 2026-11-14 (nightly sweep): no reported bugs awaited triage; fmt clean, pf-core tests pass; filed #178 (S4).
 - 2026-11-14 (issue 178): a size chart's "not a number" error now names the line it is on in the text, counting comment and blank lines.
+- 2026-11-15 (nightly sweep): no reported bugs awaited triage; `cargo audit` has no vulnerabilities (unmaintained notices only); fmt and workspace clippy clean; pf-* tests pass; a mutation fuzz of the AAMA reader found no panics. Filed #182.
+- 2026-11-15 (issue 182): a design placement read from a file is now checked like one made in the app (size, scale, position, turn, name, hoop), so a bad value is refused instead of drawn.
