@@ -78,3 +78,26 @@ fn bad_placements_are_refused_and_change_nothing() {
     }
     assert_eq!(s.doc().unwrap().history.undo.len(), before);
 }
+
+/// A 10 cm square piece at 40 pt with a 10 mm allowance, a 40 x 20 mm design at its centre.
+fn placed_for_export() -> Session {
+    let mut s = Session::new();
+    s.execute("file.new", &json!({"width": 800, "height": 800})).unwrap();
+    s.execute("shape.rectangle", &json!({"x": 40, "y": 40, "width": mm_to_pt(100.0), "height": mm_to_pt(100.0)})).unwrap();
+    let made = s.execute("piece.make", &json!({"name": "Front", "allowance": 10})).unwrap();
+    let id = made["ids"][0].as_u64().unwrap();
+    let c = 40.0 + mm_to_pt(50.0);
+    s.execute("piece.addPlacement", &json!({"id": id, "name": "Rose", "widthMm": 40, "heightMm": 20, "at": [c, c]})).unwrap();
+    s
+}
+
+#[test]
+fn the_cutting_svg_draws_the_design_true_size_with_its_crosshair_and_note() {
+    let mut s = placed_for_export();
+    let r = s.execute("document.export", &json!({"format": "svgcut"})).unwrap();
+    let svg = String::from_utf8(vectorcraft_format::base64_decode(r["dataBase64"].as_str().unwrap()).unwrap()).unwrap();
+    // Page mm: the seam line starts 20 mm in, so the 40 x 20 mm outline centred at 70, 70 is exact.
+    assert!(svg.contains("M50 60 L90 60 L90 80 L50 80 L50 60"), "{svg}");
+    assert!(svg.contains("M65 70 L75 70") && svg.contains("M70 65 L70 75"), "{svg}");
+    assert!(svg.contains("Embroider &quot;Rose&quot; here, 40 x 20 mm"), "{svg}");
+}
