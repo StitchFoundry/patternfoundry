@@ -167,8 +167,20 @@ impl Session {
     /// The saved measurement sets, by name; files that can't be read are skipped (logged by file
     /// name, never by content).
     pub fn measurement_sets(&self) -> Vec<pf_core::measure::Measurements> {
-        let Some(dir) = &self.measurement_dir else { return vec![] };
         let mut out: Vec<pf_core::measure::Measurements> = Vec::new();
+        for (_, m) in self.measurement_files() {
+            if !out.iter().any(|o| o.name.eq_ignore_ascii_case(&m.name)) {
+                out.push(m);
+            }
+        }
+        out.sort_by_key(|m| m.name.to_lowercase());
+        out
+    }
+
+    /// Every readable measurement set file in the store, with the set it holds.
+    fn measurement_files(&self) -> Vec<(PathBuf, pf_core::measure::Measurements)> {
+        let Some(dir) = &self.measurement_dir else { return vec![] };
+        let mut out = Vec::new();
         for path in list_files(dir, MEASUREMENTS_EXT) {
             let set = read_capped(&path, MAX_MEASUREMENTS_FILE)
                 .ok()
@@ -176,34 +188,50 @@ impl Session {
                 .filter(|f| f.format == MEASUREMENTS_FORMAT)
                 .and_then(|f| rebuilt(f.set));
             match set {
-                Some(m) if !out.iter().any(|o| o.name.eq_ignore_ascii_case(&m.name)) => out.push(m),
-                Some(_) => {}
+                Some(m) => out.push((path, m)),
                 None => log::warn!(
                     "skipped measurement set file {}: not one PatternFoundry can read",
                     path.file_name().map(|n| n.to_string_lossy()).unwrap_or_default()
                 ),
             }
         }
-        out.sort_by_key(|m| m.name.to_lowercase());
         out
     }
 
-    /// Save measurement set `m` (named) to the store, replacing a set of the same name. Whether it
-    /// was written.
+    /// Remove the files of the saved sets named `name` (any case), except the file `keep`.
+    fn remove_measurement_files(&self, name: &str, keep: Option<&str>) {
+        let Some(dir) = &self.measurement_dir else { return };
+        for (path, m) in self.measurement_files() {
+            let file = path.file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_default();
+            if m.name.eq_ignore_ascii_case(name) && keep != Some(file.as_str()) {
+                take(dir, &file);
+            }
+        }
+    }
+
+    /// Save measurement set `m` (named) to the store, replacing a set of the same name in any
+    /// case ("me" replaces "Me"). Whether it was written.
     pub(crate) fn store_measurement_set(&self, m: &pf_core::measure::Measurements) -> bool {
         let Some(dir) = &self.measurement_dir else { return false };
         let mut set = m.clone();
         set.share = false;
         let file = MeasurementsFile { format: MEASUREMENTS_FORMAT.into(), set };
         let Ok(bytes) = serde_json::to_vec_pretty(&file) else { return false };
-        put(dir, &format!("{}.{MEASUREMENTS_EXT}", file_stem(&m.name)), &bytes)
+        let name = format!("{}.{MEASUREMENTS_EXT}", file_stem(&m.name));
+        // The new file first: the old one goes only once the set is safely written.
+        let written = put(dir, &name, &bytes);
+        if written {
+            self.remove_measurement_files(&m.name, Some(&name));
+        }
+        written
     }
 
-    /// Delete the saved measurement set `name`.
+    /// Delete the saved measurement set `name` (any case).
     pub(crate) fn remove_measurement_set(&self, name: &str) {
         if let Some(dir) = &self.measurement_dir {
             take(dir, &format!("{}.{MEASUREMENTS_EXT}", file_stem(name)));
         }
+        self.remove_measurement_files(name, None);
     }
 
     /// Keep the PDF presets this session saves in `dir`, and take the ones already there as the

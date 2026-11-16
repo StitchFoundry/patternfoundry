@@ -25,6 +25,46 @@ const TIME_LIMIT_MS: i32 = 60_000;
 /// Sentences for the status bar, waiting for the next frame.
 pub(crate) type Notes = Rc<RefCell<Vec<String>>>;
 
+/// The tab's session-storage key remembering the staging switch (this tab only, until it closes).
+const STAGING_KEY: &str = "pf-services";
+
+/// Choose the services for this tab: `?services=staging` (exactly that) or an earlier switch in
+/// this tab's session storage makes the app use the compiled-in staging services, with a banner;
+/// anything else leaves production. Run before the `open` link is read.
+pub(crate) fn choose_services() {
+    let Some(window) = web_sys::window() else { return };
+    let storage = window.session_storage().ok().flatten();
+    let remembered = storage.as_ref().and_then(|s| s.get_item(STAGING_KEY).ok().flatten()).as_deref() == Some("staging");
+    let search = window.location().search().unwrap_or_default();
+    if !pf_ai::makerfoundry::wants_staging(&search, remembered) {
+        return;
+    }
+    pf_ai::makerfoundry::set_staging(true);
+    if let Some(s) = storage {
+        // (not kept: the next load of this tab needs the switch again)
+        let _ = s.set_item(STAGING_KEY, "staging");
+    }
+    show_banner(&window);
+}
+
+/// The visible banner, a status region at the top of the page.
+fn show_banner(window: &web_sys::Window) {
+    let Some(document) = window.document() else { return };
+    let (Ok(el), Some(body)) = (document.create_element("div"), document.body()) else { return };
+    el.set_id("vectorcraft_staging");
+    // Best effort: the staging switch still works without the banner.
+    el.set_attribute("role", "status").ok();
+    el.set_attribute(
+        "style",
+        "position:fixed;top:0;left:0;right:0;z-index:10;background:#b45309;color:#fff;font:600 13px system-ui,sans-serif;text-align:center;padding:2px 0;pointer-events:none",
+    )
+    .ok();
+    el.set_text_content(Some(pf_ai::makerfoundry::STAGING_BANNER));
+    if let Err(e) = body.append_child(&el) {
+        log::warn!("couldn't show the staging banner: {e:?}");
+    }
+}
+
 /// The `open` link in the page address, taken out of it (the rest of the address is kept).
 pub(crate) fn take_link() -> Option<String> {
     let window = web_sys::window()?;

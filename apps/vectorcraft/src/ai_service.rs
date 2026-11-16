@@ -31,8 +31,9 @@ pub fn post(req: &HttpRequest) -> Result<(u16, String), String> {
     Ok((status, body))
 }
 
-/// Secrets kept as files in a folder of the user's own; a missing one falls back to an environment
-/// variable (`ANTHROPIC_API_KEY` for the key).
+/// Secrets kept as files in a folder of the user's own; a missing one may fall back to an
+/// environment variable (a Foundry session, for automation). There is none for an Anthropic API
+/// key: the app's AI always goes through the Foundry Account.
 pub struct SecretFiles {
     /// None: secrets aren't kept (runs without preferences).
     dir: Option<PathBuf>,
@@ -44,7 +45,7 @@ impl SecretFiles {
     }
 
     fn path(&self, name: &str) -> Option<PathBuf> {
-        // Names are ours (`anthropic-api-key`): never a path.
+        // Names are ours (`foundry-session`): never a path.
         let plain = !name.is_empty() && name.bytes().all(|b| b.is_ascii_lowercase() || b.is_ascii_digit() || b == b'-');
         self.dir.as_ref().filter(|_| plain).map(|d| d.join(name))
     }
@@ -53,7 +54,6 @@ impl SecretFiles {
 /// The environment variable a secret falls back to.
 fn env_var(name: &str) -> Option<&'static str> {
     match name {
-        "anthropic-api-key" => Some("ANTHROPIC_API_KEY"),
         // a Foundry session (automation, testing)
         "foundry-session" => Some("FOUNDRY_SESSION"),
         _ => None,

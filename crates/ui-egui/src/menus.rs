@@ -571,7 +571,7 @@ pub const UI_COMMANDS: &[(&str, &str, &str, &str)] = &[
         "ui.askAboutPatterns",
         "Ask About Patterns…",
         "",
-        "{question?: text (asked at once)} open Ask About Patterns: questions about sewing patterns or PatternFoundry answered by Claude with your own Anthropic API key or paid with Foundry credits; it can draft and change the pattern through the commands, each change after your Allow (the conversation and a summary of the pattern open now go along: its pieces and sizes and the names of the measurements set, never their values, which Claude reads only with your Allow) → {open, asking}",
+        "{question?: text (asked at once)} open Ask About Patterns: questions about sewing patterns or PatternFoundry answered by Claude, paid with Foundry credits; it can draft and change the pattern through the commands, each change after your Allow (the conversation and a summary of the pattern open now go along: its pieces and sizes and the names of the measurements set, never their values, which Claude reads only with your Allow) → {open, asking}",
     ),
     (
         "ui.projector",
@@ -613,7 +613,7 @@ pub const UI_COMMANDS: &[(&str, &str, &str, &str)] = &[
         "ui.checkMuslin",
         "Check My Muslin…",
         "",
-        "{photos?: [path] (added), check?: bool (send the check now)} open Check My Muslin: photos of a muslin (a toile) tried on, the pattern open now and a few answers about the fit, looked at by Claude (your own Anthropic API key or Foundry credits), which says what doesn't fit and how to alter the pattern, and offers to make the alterations (in the Ask About Patterns window, each after your Allow); the photos go with the check only and aren't kept → {open, photos, error}",
+        "{photos?: [path] (added), check?: bool (send the check now)} open Check My Muslin: photos of a muslin (a toile) tried on, the pattern open now and a few answers about the fit, looked at by Claude (paid with Foundry credits), which says what doesn't fit and how to alter the pattern, and offers to make the alterations (in the Ask About Patterns window, each after your Allow); the photos go with the check only and aren't kept → {open, photos, error}",
     ),
     (
         "ui.publishToMakerFoundry",
@@ -625,7 +625,7 @@ pub const UI_COMMANDS: &[(&str, &str, &str, &str)] = &[
         "ui.account",
         "Foundry Account…",
         "",
-        "{create?: bool (open on Create Account, else Sign In)} open Foundry Account: make an account or sign in to the Foundry service shared by the Foundry apps, see the credits and buy more (Stripe's page opens in the browser), and choose to pay for the AI features with them instead of your own Anthropic API key → {open, signedIn, server, credits, payWithCredits}",
+        "{create?: bool (open on Create Account, else Sign In)} open Foundry Account: make an account or sign in to the Foundry service shared by the Foundry apps, see the credits and buy more (Stripe's page opens in the browser); the AI features are paid with them → {open, signedIn, server, credits, payWithCredits}",
     ),
     (
         "ui.tileEdgeColor",

@@ -236,27 +236,39 @@ pub fn rename(text: &str, old: &str, new: &str) -> String {
 }
 
 /// Evaluate with a variable lookup.
+///
+/// A flat chain such as `a+1+1+…` parses to a left-leaning tree as deep as the formula is long,
+/// so its left spine is walked in a loop: recursion only follows brackets, signs and right-hand
+/// operands, whose nesting the parser caps at [`MAX_DEPTH`] (issue 175).
 pub fn eval_with(e: &Expr, lookup: &mut dyn FnMut(&str) -> Result<f64, ExprError>) -> Result<f64, ExprError> {
-    let v = match e {
+    let finite = |v: f64| if v.is_finite() { Ok(v) } else { Err(ExprError::NotFinite) };
+    let mut spine = Vec::new();
+    let mut leaf = e;
+    while let Expr::Bin(op, a, b) = leaf {
+        spine.push((*op, b.as_ref()));
+        leaf = a;
+    }
+    let mut x = finite(match leaf {
         Expr::Num(v) => *v,
         Expr::Var(n) => lookup(n)?,
         Expr::Neg(a) => -eval_with(a, lookup)?,
-        Expr::Bin(op, a, b) => {
-            let (x, y) = (eval_with(a, lookup)?, eval_with(b, lookup)?);
-            match op {
-                '+' => x + y,
-                '-' => x - y,
-                '*' => x * y,
-                _ => {
-                    if y == 0.0 {
-                        return Err(ExprError::DivZero);
-                    }
-                    x / y
+        Expr::Bin(..) => return Err(ExprError::Syntax("unbalanced expression".into())),
+    })?;
+    for (op, b) in spine.into_iter().rev() {
+        let y = eval_with(b, lookup)?;
+        x = finite(match op {
+            '+' => x + y,
+            '-' => x - y,
+            '*' => x * y,
+            _ => {
+                if y == 0.0 {
+                    return Err(ExprError::DivZero);
                 }
+                x / y
             }
-        }
-    };
-    if v.is_finite() { Ok(v) } else { Err(ExprError::NotFinite) }
+        })?;
+    }
+    Ok(x)
 }
 
 /// Evaluate an expression that uses no names.
@@ -362,6 +374,26 @@ mod tests {
             chain.insert(&format!("p{i}"), &format!("p{}+1", i + 1));
         }
         assert!(chain.value("p0").is_err());
+    }
+
+    #[test]
+    fn long_formulas_chained_through_many_names_do_not_overflow_the_stack() {
+        // Issue 175. Each formula is a flat `+` chain near the length limit with the next name at
+        // its far left, or brackets nested to the limit with the next name innermost, and the
+        // names chain as far as `Env` allows. Run on 1 MiB, the Windows main-thread stack.
+        let n = MAX_DEPTH - 1;
+        let ones = (MAX_LEN - 8) / 2;
+        let flat = |i: usize| format!("p{}{}", i + 1, "+1".repeat(ones));
+        let nested = |i: usize| format!("{}p{}{}", "1+(".repeat(MAX_DEPTH - 2), i + 1, ")".repeat(MAX_DEPTH - 2));
+        for (form, per) in [(&flat as &dyn Fn(usize) -> String, ones), (&nested, MAX_DEPTH - 2)] {
+            let mut env = Env::new();
+            for i in 0..n {
+                env.insert(&format!("p{i}"), &form(i));
+            }
+            env.insert(&format!("p{n}"), "0");
+            let v = std::thread::Builder::new().stack_size(1 << 20).spawn(move || env.value("p0")).unwrap().join().unwrap();
+            assert_eq!(v, Ok((n * per) as f64));
+        }
     }
 
     #[test]
