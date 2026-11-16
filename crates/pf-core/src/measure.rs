@@ -188,19 +188,29 @@ impl SizeChart {
             return Err(MeasureError::Chart("the header names no measurements".into()));
         }
         let columns: Vec<String> = names.iter().map(|n| n.to_ascii_lowercase().replace([' ', '-'], "_")).collect();
-        for c in &columns {
+        for (k, c) in columns.iter().enumerate() {
             check_name(c)?;
+            if columns.get(..k).is_some_and(|before| before.contains(c)) {
+                return Err(MeasureError::Chart(format!("the header names `{c}` twice")));
+            }
         }
         if columns.len() > MAX_ENTRIES {
             return Err(MeasureError::TooMany);
         }
-        let mut sizes = Vec::new();
+        let mut sizes: Vec<(String, Vec<Option<f64>>)> = Vec::new();
         for (i, line) in lines {
             if sizes.len() >= MAX_ENTRIES {
                 return Err(MeasureError::TooMany);
             }
             let row = cells(line);
             let Some((size, vals)) = row.split_first() else { continue };
+            // Sizes are found by name in any case: a second row of the same size would never be used.
+            if size.is_empty() {
+                return Err(MeasureError::Chart(format!("row {}: the size has no name", i + 1)));
+            }
+            if sizes.iter().any(|(s, _)| s.eq_ignore_ascii_case(size)) {
+                return Err(MeasureError::Chart(format!("row {}: the size `{size}` is named twice", i + 1)));
+            }
             let mut out = Vec::with_capacity(columns.len());
             for (j, c) in columns.iter().enumerate() {
                 let cell = vals.get(j).map(String::as_str).unwrap_or("");
@@ -318,5 +328,19 @@ mod tests {
         let text = "# Example chart (made up for the test)\nsize,bust\n\nS,86\nM,big\n";
         let e = SizeChart::from_text("", text, 10.0).unwrap_err().to_string();
         assert!(e.contains("row 5:"), "{e}");
+    }
+
+    #[test]
+    fn a_size_chart_names_each_size_and_measurement_once() {
+        // Issue 188: a size named twice (any case) left its second row unused.
+        let e = SizeChart::from_text("", "size,bust\nM,90\n# comment\nm,100\n", 10.0).unwrap_err().to_string();
+        assert!(e.contains("row 4:") && e.contains("`m`"), "{e}");
+        // A row with no size name.
+        let e = SizeChart::from_text("", "size,bust\nS,86\n,90\n", 10.0).unwrap_err().to_string();
+        assert!(e.contains("row 3:"), "{e}");
+        // A measurement named twice once its name is tidied (`Bust` and `bust`).
+        assert!(SizeChart::from_text("", "size,Bust,bust\nS,86,87\n", 10.0).is_err());
+        // Distinct names still read.
+        assert_eq!(SizeChart::from_text("", "size,bust\nS,86\nM,90\n", 10.0).unwrap().size_names(), ["S", "M"]);
     }
 }
