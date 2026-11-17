@@ -101,3 +101,29 @@ fn the_cutting_svg_draws_the_design_true_size_with_its_crosshair_and_note() {
     assert!(svg.contains("M65 70 L75 70") && svg.contains("M70 65 L70 75"), "{svg}");
     assert!(svg.contains("Embroider &quot;Rose&quot; here, 40 x 20 mm"), "{svg}");
 }
+
+#[test]
+fn the_link_names_the_app_and_checks_the_file() {
+    let (mut s, id) = piece();
+    let dir = std::env::temp_dir().join(format!("pf_link_{}", std::process::id()));
+    std::fs::create_dir_all(&dir).unwrap();
+    let dst = dir.join("rose.DST");
+    std::fs::write(&dst, b"x").unwrap();
+    let mut a = rose(id);
+    a["file"] = json!(dst.to_str().unwrap());
+    s.execute("piece.addPlacement", &a).unwrap();
+    s.execute(
+        "piece.addPlacement",
+        &json!({"id": id.0, "name": "Logo", "widthMm": 40, "heightMm": 40, "at": [0, 0], "kind": "screen", "file": "/no/such/logo.png"}),
+    )
+    .unwrap();
+    let r = s.execute("piece.placementLink", &json!({"id": id.0})).unwrap();
+    assert_eq!(r["links"][0]["app"], "StitchFoundry");
+    assert_eq!(r["links"][0]["openable"], true);
+    assert_eq!(r["links"][1]["app"], "ScreenFoundry");
+    assert_eq!(r["links"][1]["openable"], false);
+    let one = s.execute("piece.placementLink", &json!({"id": id.0, "index": 1})).unwrap();
+    assert_eq!(one["links"].as_array().unwrap().len(), 1);
+    assert!(s.execute("piece.placementLink", &json!({"id": id.0, "index": 2})).is_err());
+    std::fs::remove_dir_all(&dir).ok();
+}
