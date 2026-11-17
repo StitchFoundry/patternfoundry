@@ -4,7 +4,7 @@
 //! step.
 
 use super::*;
-use pf_core::placement::{DesignKind, Hoop, Placement};
+use pf_core::placement::{DesignKind, Hoop, MAX_FILE, Placement};
 
 pub fn specs() -> Vec<CommandSpec> {
     vec![
@@ -67,7 +67,7 @@ fn add_placement(s: &mut Session, p: &Value) -> Result<Value> {
         Some(_) => return Err(bad(CMD, "kind is \"embroidery\" or \"screen\"")),
     };
     if let Some(f) = str_param(p, "file") {
-        d.file = f.chars().take(1000).collect();
+        d.file = f.chars().take(MAX_FILE).collect();
     }
     if let Some(v) = number(p, "scale", CMD)? {
         d.set_scale(v).map_err(|e| err(CMD, e))?;
