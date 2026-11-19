@@ -171,4 +171,59 @@ mod tests {
         assert!(page_marks(Rect::new(0.0, 0.0, f64::NAN, 1.0), None, 0.0).squares.is_empty());
         assert!(page_marks(Rect::new(0.0, 0.0, 50.0, 50.0), None, 0.0).squares.is_empty());
     }
+
+    #[test]
+    fn rect_new_orders_corners_and_keeps_nan() {
+        assert_eq!(Rect::new(5.0, 9.0, 1.0, 2.0), Rect::new(1.0, 2.0, 5.0, 9.0));
+        let r = Rect::new(f64::NAN, 0.0, 1.0, 1.0);
+        assert!(!r.is_finite());
+    }
+
+    #[test]
+    fn names_survive_the_largest_indices() {
+        assert!(!row_name(usize::MAX).is_empty());
+        assert_eq!(tile_name(usize::MAX, 0), format!("A{}", usize::MAX));
+        assert_eq!(TileAt::of(usize::MAX - 1, usize::MAX, 1).map(|t| t.rows), Some(usize::MAX));
+    }
+
+    #[test]
+    fn a_bad_overlap_draws_no_overlap_lines() {
+        let area = Rect::new(36.0, 36.0, 576.0, 756.0);
+        for bad in [0.0, -18.0, f64::NAN, f64::NEG_INFINITY] {
+            let m = page_marks(area, TileAt::of(0, 6, 3), bad);
+            assert_eq!(m.lines.len(), 1, "overlap {bad}");
+        }
+        // Infinite overlap is kept finite-safe: treated as none, never a line at -inf.
+        let m = page_marks(area, TileAt::of(0, 6, 3), f64::INFINITY);
+        assert!(m.lines.iter().flatten().all(|p| p.x.is_finite() && p.y.is_finite()));
+    }
+
+    #[test]
+    fn a_single_tile_grid_has_a_border_only() {
+        let area = Rect::new(0.0, 0.0, 612.0, 792.0);
+        let m = page_marks(area, TileAt::of(0, 1, 1), 18.0);
+        assert_eq!(m.lines.len(), 1);
+        assert_eq!(m.lines[0].len(), 5);
+        assert_eq!(m.lines[0][0], m.lines[0][4]);
+        assert!(m.texts.iter().any(|(_, _, t)| t == "A1  (1 × 1)"));
+    }
+
+    #[test]
+    fn marks_follow_an_area_that_is_not_at_the_origin() {
+        let area = Rect::new(100.0, 200.0, 712.0, 992.0);
+        let m = page_marks(area, None, 0.0);
+        let inset = mm_to_pt(5.0);
+        assert_eq!(m.squares[0][0], Pt::new(100.0 + inset, 200.0 + inset));
+        let side = m.squares[0][2].x - m.squares[0][0].x;
+        assert!((side - mm_to_pt(100.0)).abs() < 1e-9);
+        assert!((m.squares[0][2].y - m.squares[0][0].y - side).abs() < 1e-9);
+    }
+
+    #[test]
+    fn infinite_and_inverted_areas_get_no_marks() {
+        let inf = Rect::new(0.0, 0.0, f64::INFINITY, 100.0);
+        assert_eq!(page_marks(inf, TileAt::of(0, 2, 2), 10.0), PageMarks::default());
+        let flat = Rect::new(0.0, 0.0, 100.0, 0.0);
+        assert_eq!(page_marks(flat, None, 0.0), PageMarks::default());
+    }
 }
