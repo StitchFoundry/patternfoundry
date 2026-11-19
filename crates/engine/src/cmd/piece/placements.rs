@@ -67,7 +67,7 @@ fn add_placement(s: &mut Session, p: &Value) -> Result<Value> {
         Some(_) => return Err(bad(CMD, "kind is \"embroidery\" or \"screen\"")),
     };
     if let Some(f) = str_param(p, "file") {
-        d.file = f.chars().take(1000).collect();
+        d.file = f.chars().take(pf_core::placement::MAX_FILE_CHARS).collect();
     }
     if let Some(v) = number(p, "scale", CMD)? {
         d.set_scale(v).map_err(|e| err(CMD, e))?;
