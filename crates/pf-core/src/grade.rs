@@ -20,12 +20,28 @@ use crate::Pt;
 /// Most sizes in a size range.
 pub const MAX_SIZES: usize = 60;
 
-/// The sizes a pattern is graded into, smallest first, and the size it is drawn in.
+/// The sizes a pattern is graded into, smallest first, and the size it is drawn in. One read from
+/// a file is checked like one made with [`GradeSizes::new`].
 #[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "camelCase", try_from = "UncheckedSizes")]
 pub struct GradeSizes {
     pub sizes: Vec<String>,
     pub base: String,
+}
+
+/// A [`GradeSizes`] as written in a file, before [`GradeSizes::new`].
+#[derive(Deserialize)]
+struct UncheckedSizes {
+    sizes: Vec<String>,
+    base: String,
+}
+
+impl TryFrom<UncheckedSizes> for GradeSizes {
+    type Error = GradeError;
+
+    fn try_from(u: UncheckedSizes) -> Result<Self, GradeError> {
+        GradeSizes::new(u.sizes, &u.base)
+    }
 }
 
 /// Why a size range or a rule can't be used.
@@ -91,14 +107,35 @@ impl GradeSizes {
     }
 }
 
-/// How a point moves from the base size.
+/// How a point moves from the base size. One read from a file is checked like one given to the
+/// app (see [`Rule::checked`]).
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "camelCase", try_from = "UncheckedRule")]
 pub enum Rule {
     /// The same move at every size step: `k` sizes up moves `k` times this, down the opposite.
     Step([f64; 2]),
     /// Each named size's move from the base (a size not named doesn't move).
     Sizes(BTreeMap<String, [f64; 2]>),
+}
+
+/// A [`Rule`] as written in a file, before [`Rule::checked`].
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
+enum UncheckedRule {
+    Step([f64; 2]),
+    Sizes(BTreeMap<String, [f64; 2]>),
+}
+
+impl TryFrom<UncheckedRule> for Rule {
+    type Error = GradeError;
+
+    fn try_from(u: UncheckedRule) -> Result<Self, GradeError> {
+        match u {
+            UncheckedRule::Step(m) => Rule::Step(m),
+            UncheckedRule::Sizes(map) => Rule::Sizes(map),
+        }
+        .checked()
+    }
 }
 
 /// A point's grade rule: the seam line's anchor it moves.
@@ -309,6 +346,27 @@ mod tests {
         let same = copy_rules(&back, &rules, &back, [false, false]);
         assert_eq!(same, rules);
         assert!(copy_rules(&back, &rules, &[], [false, false]).is_empty());
+    }
+
+    /// A size range and rules read from a file are checked like ones made in the app (#202).
+    #[test]
+    fn a_range_and_rules_read_from_a_file_are_checked() {
+        let range = |j: &str| serde_json::from_str::<GradeSizes>(j);
+        assert!(range(r#"{"sizes":[],"base":"M"}"#).is_err());
+        assert!(range(r#"{"sizes":["S","M"],"base":"XL"}"#).is_err());
+        assert!(range(r#"{"sizes":["S","s"],"base":"S"}"#).is_err());
+        assert!(
+            range(&format!(r#"{{"sizes":[{}],"base":"0"}}"#, (0..=MAX_SIZES).map(|i| format!("\"{i}\"")).collect::<Vec<_>>().join(","))).is_err()
+        );
+        assert_eq!(range(r#"{"sizes":["S","M"],"base":"M"}"#).unwrap(), GradeSizes::new(vec!["S".into(), "M".into()], "M").unwrap());
+        let rule = |j: &str| serde_json::from_str::<GradeRule>(j);
+        assert!(rule(r#"{"anchor":0,"rule":{"step":[1e300,0]}}"#).is_err());
+        assert!(rule(r#"{"anchor":0,"rule":{"sizes":{"L":[0,900]}}}"#).is_err());
+        assert!(rule(r#"{"anchor":0,"rule":{"sizes":{"":[1,1]}}}"#).is_err());
+        let ok = GradeRule { anchor: 2, rule: Rule::Sizes(BTreeMap::from([("L".to_string(), [5.0, 8.0])])) };
+        assert_eq!(rule(&serde_json::to_string(&ok).unwrap()).unwrap(), ok);
+        let step = GradeRule { anchor: 1, rule: Rule::Step([2.0, -1.0]) };
+        assert_eq!(rule(&serde_json::to_string(&step).unwrap()).unwrap(), step);
     }
 
     #[test]
