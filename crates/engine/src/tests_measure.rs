@@ -164,3 +164,46 @@ fn personal_measurements_stay_out_of_shared_files_unless_shared() {
     // The document itself keeps them.
     assert_eq!(s.execute("measure.info", &json!({})).unwrap()["values"], json!({"bust": 920.0}));
 }
+
+/// A document whose measurement set was edited outside the app (a name, a length or a formula
+/// `measure.set` refuses) is refused, as `measure.set` would refuse it; the set as saved opens.
+#[test]
+fn measurements_read_from_a_file_are_checked_like_measure_set() {
+    let mut s = session();
+    s.execute("measure.set", &json!({"name": "Me", "values": {"bust": 900}, "formulas": {"ease": "40"}})).unwrap();
+    let bytes = vectorcraft_format::save(&s.doc().unwrap().doc, false);
+    let open = |v: &Value| {
+        let data = vectorcraft_format::base64_encode(&serde_json::to_vec(v).unwrap());
+        let mut t = Session::new();
+        t.execute("document.open", &json!({"name": "edited.patternfoundry", "dataBase64": data})).map(|_| t)
+    };
+    let saved: Value = serde_json::from_slice(&bytes).unwrap();
+    let mut t = open(&saved).unwrap();
+    let info = t.execute("measure.info", &json!({})).unwrap();
+    assert_eq!((&info["values"], &info["formulas"]), (&json!({"bust": 900.0}), &json!({"ease": "40"})), "{info}");
+    for (key, edit) in [
+        ("values", json!({"bust": -5})),
+        ("values", json!({"bust": 1e300})),
+        ("values", json!({"2bust": 900})),
+        ("formulas", json!({"ease": "4 +"})),
+        ("formulas", json!({"not a name": "1"})),
+    ] {
+        let mut v = saved.clone();
+        find_key(&mut v, "measurements").expect("the document keeps its measurements")[key] = edit.clone();
+        assert!(open(&v).is_err(), "{key}: {edit}");
+    }
+}
+
+/// The first value under `key` anywhere in `v`.
+fn find_key<'a>(v: &'a mut Value, key: &str) -> Option<&'a mut Value> {
+    match v {
+        Value::Object(o) => {
+            if o.get(key).is_some_and(|m| !m.is_null()) {
+                return o.get_mut(key);
+            }
+            o.values_mut().find_map(|c| find_key(c, key))
+        }
+        Value::Array(a) => a.iter_mut().find_map(|c| find_key(c, key)),
+        _ => None,
+    }
+}
