@@ -24,3 +24,5 @@
 - 2026-11-15 (issue 164): version bumped to 0.1.2 (`cargo xtask version set`: Cargo.toml + Cargo.lock) and release notes added in `docs/release-notes/v0.1.2.md`. No other changes; checked with fmt and `cargo xtask version`; the full `cargo xtask ci` filled the session disk, so CI runs the gate.
 - 2026-11-16 (nightly sweep): no reported bugs awaited triage; fmt and workspace clippy clean; pf-* tests pass; filed #188 (S3).
 - 2026-11-16 (issue 188): a size chart that names a size twice (any case), a size with no name, or a measurement column twice is refused with the row it is on, instead of the second row being silently unused.
+- 2026-11-20 (nightly maintenance): fmt clean; pf-core/pf-aama/pf-dxf/pf-ai tests pass 3 times in a row with no flakes (full `cargo xtask ci` not run: session disk, see #205).
+- 2026-11-20 (nightly maintenance): added six tests for print tiling (`tiling.rs`: exact 10 cm and 1 in squares on A4, fit thresholds, bad overlap, reversed/NaN/infinite areas, extreme grids); tests only, no behaviour change.
