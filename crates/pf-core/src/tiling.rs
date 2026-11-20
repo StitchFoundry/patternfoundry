@@ -171,4 +171,77 @@ mod tests {
         assert!(page_marks(Rect::new(0.0, 0.0, f64::NAN, 1.0), None, 0.0).squares.is_empty());
         assert!(page_marks(Rect::new(0.0, 0.0, 50.0, 50.0), None, 0.0).squares.is_empty());
     }
+    #[test]
+    fn test_squares_are_true_squares_of_exact_size_on_a4() {
+        // A4 with 10 mm margins, in points.
+        let area = Rect::new(mm_to_pt(10.0), mm_to_pt(10.0), mm_to_pt(200.0), mm_to_pt(287.0));
+        let m = page_marks(area, TileAt::of(0, 1, 1), 0.0);
+        assert_eq!(m.squares.len(), 2);
+        let (cm, inch) = (&m.squares[0], &m.squares[1]);
+        // Closed square, not repeating its first point; both sides equal; 100 mm and 72 pt exactly.
+        assert_eq!(cm.len(), 4);
+        assert!((cm[1].x - cm[0].x - mm_to_pt(100.0)).abs() < 1e-9);
+        assert!((cm[2].y - cm[1].y - mm_to_pt(100.0)).abs() < 1e-9);
+        assert!((inch[1].x - inch[0].x - 72.0).abs() < 1e-9);
+        assert!((inch[2].y - inch[1].y - 72.0).abs() < 1e-9);
+        // The two squares do not overlap.
+        assert!(inch[0].x > cm[1].x);
+    }
+
+    #[test]
+    fn a_one_by_one_grid_has_a_border_and_no_overlap_lines() {
+        let area = Rect::new(36.0, 36.0, 576.0, 756.0);
+        let m = page_marks(area, TileAt::of(0, 1, 1), 18.0);
+        assert_eq!(m.lines.len(), 1);
+        // The border is closed: it ends where it started.
+        assert_eq!(m.lines[0].first(), m.lines[0].last());
+    }
+
+    #[test]
+    fn a_bad_overlap_is_treated_as_none() {
+        let area = Rect::new(36.0, 36.0, 576.0, 756.0);
+        for bad in [f64::NAN, f64::INFINITY, f64::NEG_INFINITY, -5.0, 0.0] {
+            let m = page_marks(area, TileAt::of(0, 4, 2), bad);
+            assert_eq!(m.lines.len(), 1, "overlap {bad}");
+        }
+    }
+
+    #[test]
+    fn a_reversed_or_degenerate_area_is_handled_without_panic() {
+        // Corners given backwards describe the same page.
+        let a = page_marks(Rect::new(576.0, 756.0, 36.0, 36.0), None, 0.0);
+        let b = page_marks(Rect::new(36.0, 36.0, 576.0, 756.0), None, 0.0);
+        assert_eq!(a, b);
+        // Zero-size, infinite and NaN areas give no marks at all.
+        for r in [Rect::new(10.0, 10.0, 10.0, 500.0), Rect::new(0.0, 0.0, f64::INFINITY, 500.0), Rect::new(f64::NAN, 0.0, 500.0, 500.0)] {
+            assert_eq!(page_marks(r, TileAt::of(0, 2, 2), 18.0), PageMarks::default());
+        }
+    }
+
+    #[test]
+    fn the_squares_appear_exactly_when_they_fit() {
+        let inset = mm_to_pt(5.0);
+        let need_w = mm_to_pt(100.0) + 72.0 + 3.0 * inset;
+        let h = mm_to_pt(100.0) + 2.0 * inset;
+        // Just wide enough: both. A hair narrower: the inch alone.
+        assert_eq!(page_marks(Rect::new(0.0, 0.0, need_w, h), None, 0.0).squares.len(), 2);
+        assert_eq!(page_marks(Rect::new(0.0, 0.0, need_w - 0.01, h), None, 0.0).squares.len(), 1);
+        // Just tall enough for the inch square, then a hair short of it.
+        let min = 72.0 + 2.0 * inset;
+        assert_eq!(page_marks(Rect::new(0.0, 0.0, min, min), None, 0.0).squares.len(), 1);
+        assert!(page_marks(Rect::new(0.0, 0.0, min - 0.01, min), None, 0.0).squares.is_empty());
+    }
+
+    #[test]
+    fn names_and_grids_survive_extreme_numbers() {
+        assert!(row_name(usize::MAX).chars().all(|c| c.is_ascii_uppercase()));
+        assert!(!tile_name(usize::MAX, usize::MAX).is_empty());
+        assert_eq!(TileAt::of(usize::MAX - 1, usize::MAX, 1).map(|t| t.rows), Some(usize::MAX));
+        assert_eq!(TileAt::of(0, 0, 3), None);
+        // A single column grid: every tile is its own row, none has a right neighbour.
+        let area = Rect::new(36.0, 36.0, 576.0, 756.0);
+        let m = page_marks(area, TileAt::of(0, 3, 1), 18.0);
+        assert_eq!(m.lines.len(), 2);
+        assert!((m.lines[1][0].y - (756.0 - 18.0)).abs() < 1e-9);
+    }
 }
