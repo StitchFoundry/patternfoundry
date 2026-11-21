@@ -171,4 +171,93 @@ mod tests {
         assert!(page_marks(Rect::new(0.0, 0.0, f64::NAN, 1.0), None, 0.0).squares.is_empty());
         assert!(page_marks(Rect::new(0.0, 0.0, 50.0, 50.0), None, 0.0).squares.is_empty());
     }
+
+    fn side(s: &[Pt]) -> f64 {
+        s[1].x - s[0].x
+    }
+
+    #[test]
+    fn a_bad_overlap_draws_no_overlap_lines_and_never_moves_the_squares() {
+        let area = Rect::new(36.0, 36.0, 576.0, 756.0);
+        let tile = TileAt::of(0, 6, 3);
+        let base = page_marks(area, tile, 0.0);
+        // Zero, negative, NaN and infinite overlaps all mean "no overlap line": the border only.
+        for bad in [0.0, -18.0, f64::NAN, f64::INFINITY, f64::NEG_INFINITY] {
+            let m = page_marks(area, tile, bad);
+            assert_eq!(m.lines.len(), 1, "overlap {bad}");
+            assert_eq!(m.squares, base.squares, "overlap {bad}");
+        }
+    }
+
+    #[test]
+    fn a_single_tile_grid_has_a_border_and_no_overlap_lines() {
+        let area = Rect::new(36.0, 36.0, 576.0, 756.0);
+        let m = page_marks(area, TileAt::of(0, 1, 1), 18.0);
+        assert_eq!(m.lines.len(), 1);
+        // The border is closed: it returns to its first corner.
+        assert_eq!(m.lines[0].first(), m.lines[0].last());
+        assert!(m.texts.iter().any(|(_, _, t)| t == "A1  (1 × 1)"));
+    }
+
+    #[test]
+    fn the_test_squares_keep_their_size_at_the_edge_of_fitting() {
+        let inset = mm_to_pt(5.0);
+        let cm10 = mm_to_pt(100.0);
+        let w = cm10 + 72.0 + 3.0 * inset;
+        let h = cm10 + 2.0 * inset;
+        let fits = page_marks(Rect::new(0.0, 0.0, w, h), None, 0.0);
+        assert_eq!(fits.squares.len(), 2);
+        assert!((side(&fits.squares[0]) - cm10).abs() < 1e-9);
+        assert_eq!(side(&fits.squares[1]), 72.0);
+        // A hair narrower or shorter: the 10 cm square is dropped, the 1 in square stays true.
+        for (w, h) in [(w - 0.01, h), (w, h - 0.01)] {
+            let m = page_marks(Rect::new(0.0, 0.0, w, h), None, 0.0);
+            assert_eq!(m.squares.len(), 1, "{w} x {h}");
+            assert_eq!(side(&m.squares[0]), 72.0);
+        }
+    }
+
+    #[test]
+    fn an_area_with_a_zero_negative_or_infinite_size_gets_no_marks() {
+        let tile = TileAt::of(0, 2, 2);
+        for r in [
+            Rect::new(10.0, 10.0, 10.0, 500.0),
+            Rect::new(10.0, 10.0, 500.0, 10.0),
+            Rect::new(0.0, 0.0, f64::INFINITY, 500.0),
+            Rect::new(f64::NAN, 0.0, 500.0, 500.0),
+        ] {
+            assert_eq!(page_marks(r, tile, 18.0), PageMarks::default(), "{r:?}");
+        }
+    }
+
+    #[test]
+    fn corners_given_in_either_order_make_the_same_rectangle() {
+        let r = Rect::new(576.0, 756.0, 36.0, 36.0);
+        assert_eq!(r, Rect::new(36.0, 36.0, 576.0, 756.0));
+        assert_eq!((r.width(), r.height()), (540.0, 720.0));
+        assert_eq!(page_marks(r, None, 0.0), page_marks(Rect::new(36.0, 36.0, 576.0, 756.0), None, 0.0));
+    }
+
+    #[test]
+    fn huge_grid_positions_do_not_overflow_or_panic() {
+        assert_eq!(TileAt::of(usize::MAX - 1, usize::MAX, usize::MAX), Some(TileAt { col: usize::MAX - 1, row: 0, cols: usize::MAX, rows: 1 }));
+        assert!(!row_name(usize::MAX).is_empty());
+        assert!(tile_name(usize::MAX, usize::MAX).ends_with(&usize::MAX.to_string()));
+        assert_eq!(TileAt::of(0, 0, 3), None);
+    }
+
+    #[test]
+    fn overlap_lines_sit_one_overlap_inside_the_far_edges() {
+        let area = Rect::new(36.0, 36.0, 576.0, 756.0);
+        // Middle tile of a 3 x 3 grid has neighbours right and below.
+        let m = page_marks(area, TileAt::of(4, 9, 3), 18.0);
+        assert_eq!(m.lines.len(), 3);
+        assert_eq!(m.lines[1], vec![Pt::new(558.0, 36.0), Pt::new(558.0, 756.0)]);
+        assert_eq!(m.lines[2], vec![Pt::new(36.0, 738.0), Pt::new(576.0, 738.0)]);
+        // Bottom-right tile: border only. Right-edge tile on the top row: only the one below.
+        assert_eq!(page_marks(area, TileAt::of(8, 9, 3), 18.0).lines.len(), 1);
+        assert_eq!(page_marks(area, TileAt::of(2, 9, 3), 18.0).lines.len(), 2);
+        // Every mark text is inside the printable area.
+        assert!(m.texts.iter().all(|(p, _, _)| p.x >= area.x0 && p.x < area.x1 && p.y >= area.y0 && p.y < area.y1));
+    }
 }
