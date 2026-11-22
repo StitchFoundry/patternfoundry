@@ -135,8 +135,18 @@ pub struct Piece {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub sewn: Vec<Sewn>,
     /// Embroidery and screen-print designs placed on the piece (PF-12.1).
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    #[serde(default, skip_serializing_if = "Vec::is_empty", deserialize_with = "placements")]
     pub placements: Vec<crate::placement::Placement>,
+}
+
+/// A piece's placed designs as read from a file: at most [`crate::placement::MAX_PLACEMENTS`],
+/// the limit [`Piece::add_placement`] keeps (issue 196).
+fn placements<'de, D: serde::Deserializer<'de>>(d: D) -> Result<Vec<crate::placement::Placement>, D::Error> {
+    let v = Vec::<crate::placement::Placement>::deserialize(d)?;
+    if v.len() > crate::placement::MAX_PLACEMENTS {
+        return Err(serde::de::Error::custom(crate::placement::PlacementError::TooMany));
+    }
+    Ok(v)
 }
 
 /// A run of a piece's seam line sewn to a run of another (or the same) piece's: from anchor
