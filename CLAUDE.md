@@ -72,6 +72,21 @@ Commits are made by **Claude**, with Bruce Wattendorf credited as co-author (own
 - End every commit message with: `Co-Authored-By: Bruce Wattendorf <bwattendorf@gmail.com>`
 - One task id per commit (`PF-1.2: seam allowance`). No model names in commits, code or docs.
 
+## PR size rules (hard limits)
+- One issue = one small PR. Target under 300 changed lines and under 10 files (lockfiles, generated
+  files and tests excluded from the count).
+- Before coding, estimate the size. If it will be bigger, STOP and split: comment on the issue with a
+  numbered list of slices, each independently mergeable and green on main, then open the slices as new
+  `claude-proposed` issues ("Part 1 of N: ..."). Work only slice 1 in this run.
+- Never leave main broken between slices: gate unfinished work behind a flag or keep it unreferenced.
+- Save and commit after every file; open a DRAFT PR early so a step-limit cut-off keeps the work.
+  Resume the same branch instead of restarting.
+- Before opening or updating a PR: `git fetch` and rebase/merge main so the branch is current; run the
+  repo's CI command locally first (`cargo xtask ci`).
+- Do not run the full heavy test suite more than once per run; run only the affected package's tests
+  while iterating.
+- If you hit your step limit, write a handoff comment (done, left, next command) on the PR.
+
 ## Licence
 MIT OR Apache-2.0 (`LICENSE-MIT`, `LICENSE-APACHE`). VectorCraft's own licence and brand terms
 apply to the merged code: carry no ArtCraft name, wordmark or logo (saying in plain text that
