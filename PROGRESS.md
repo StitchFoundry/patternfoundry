@@ -25,3 +25,7 @@
 - 2026-11-16 (nightly sweep): no reported bugs awaited triage; fmt and workspace clippy clean; pf-* tests pass; filed #188 (S3).
 - 2026-11-16 (issue 188): a size chart that names a size twice (any case), a size with no name, or a measurement column twice is refused with the row it is on, instead of the second row being silently unused.
 - 2026-11-17 (issue 172): `piece.placementLink` (PF-12.4) tells which app edits each placed design (StitchFoundry or ScreenFoundry) and whether its file is a real design file on this computer. Still open on #172: reading size from DST/PNG/SVG, the hoop-in-UI/canvas handles, "Open in" buttons. Checked: placement tests, i18n tests, clippy; CI runs the full gate.
+- 2026-11-18 (nightly sweep): no reported bugs awaited triage; fmt and workspace clippy clean; pf-* tests pass; `cargo audit` has no vulnerabilities, only unmaintained notices and yanked wasmi 2.0.0 (filed #199).
+- 2026-11-18 (issue 199): `cargo update -p wasmi` moves wasmi, wasmi_core, wasmi_collections and wasmi_ir 2.0.0 → 2.0.1 (lockfile only); `cargo audit` no longer reports a yanked crate. Checked with vectorcraft-plugins tests, its clippy and `cargo xtask wasm`.
+- 2026-11-22 (nightly sweep): no reported bugs awaited triage; fmt and pf-* clippy clean; pf-* tests pass; filed #214 (S3).
+- 2026-11-22 (issue 214): reading a DXF-AAMA file found each block's insert by scanning every insert (80 000 of each: 16 s); a map makes it 0.3 s, still first insert in any case.
