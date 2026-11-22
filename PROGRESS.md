@@ -25,3 +25,7 @@
 - 2026-11-16 (nightly sweep): no reported bugs awaited triage; fmt and workspace clippy clean; pf-* tests pass; filed #188 (S3).
 - 2026-11-16 (issue 188): a size chart that names a size twice (any case), a size with no name, or a measurement column twice is refused with the row it is on, instead of the second row being silently unused.
 - 2026-11-18 (issue 174): added the PR size rules (one issue = one small PR, split into slices, handoff comment) to CLAUDE.md and the claude-fix prompt. Docs/prompt only; no code touched, so `cargo xtask ci` was not run.
+- 2026-11-18 (nightly sweep): no reported bugs awaited triage; fmt and workspace clippy clean; pf-* tests pass; `cargo audit` has no vulnerabilities, only unmaintained notices and yanked wasmi 2.0.0 (filed #199).
+- 2026-11-18 (issue 199): `cargo update -p wasmi` moves wasmi, wasmi_core, wasmi_collections and wasmi_ir 2.0.0 → 2.0.1 (lockfile only); `cargo audit` no longer reports a yanked crate. Checked with vectorcraft-plugins tests, its clippy and `cargo xtask wasm`.
+- 2026-11-22 (nightly sweep): no reported bugs awaited triage; fmt and pf-* clippy clean; pf-* tests pass; filed #214 (S3).
+- 2026-11-22 (issue 214): reading a DXF-AAMA file found each block's insert by scanning every insert (80 000 of each: 16 s); a map makes it 0.3 s, still first insert in any case.
