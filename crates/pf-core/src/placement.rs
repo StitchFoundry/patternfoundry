@@ -17,6 +17,8 @@ pub const MIN_SCALE: f64 = 0.01;
 pub const MAX_SCALE: f64 = 100.0;
 /// Most designs on one piece.
 pub const MAX_PLACEMENTS: usize = 50;
+/// Most characters kept of a design's file name.
+pub const MAX_FILE_CHARS: usize = 1000;
 
 /// What a placed design is, which decides the app that edits it.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
@@ -163,6 +165,7 @@ impl Placement {
             return Err(PlacementError::NameTooLong);
         }
         self.name = self.name.trim().to_string();
+        self.file = self.file.chars().take(MAX_FILE_CHARS).collect();
         self.width = check_size(self.width)?;
         self.height = check_size(self.height)?;
         self.set_at(self.at)?;
@@ -341,6 +344,25 @@ mod tests {
         assert!(bad("name", "x".repeat(crate::piece::MAX_NAME + 1).into()).is_err());
         assert!(bad("hoop", serde_json::json!({ "width": -5.0, "height": 100.0 })).is_err());
         assert_eq!(bad("rotation", (-90.0).into()).unwrap().rotation, 270.0);
+    }
+
+    #[test]
+    fn a_long_file_name_read_from_a_file_is_cut() {
+        let mut j = serde_json::to_value(rose()).unwrap();
+        j["file"] = "f".repeat(5000).into();
+        let p = serde_json::from_value::<Placement>(j).unwrap();
+        assert_eq!(p.file.chars().count(), MAX_FILE_CHARS);
+    }
+
+    #[test]
+    fn a_piece_read_from_a_file_keeps_the_design_limit() {
+        let piece = |n: usize| {
+            let mut j = serde_json::to_value(crate::piece::Piece::default()).unwrap();
+            j["placements"] = serde_json::Value::Array(vec![serde_json::to_value(rose()).unwrap(); n]);
+            serde_json::from_value::<crate::piece::Piece>(j)
+        };
+        assert_eq!(piece(MAX_PLACEMENTS).unwrap().placements.len(), MAX_PLACEMENTS);
+        assert!(piece(MAX_PLACEMENTS + 1).is_err());
     }
 
     #[test]
