@@ -176,3 +176,26 @@ fn each_notch_shape_is_drawn_as_its_cut() {
     let top = u.iter().map(|p| p[1]).fold(f64::NEG_INFINITY, f64::max);
     assert!((top - 6.0).abs() < 1e-9 && near(u[0], [-1.5, 0.0]) && near(u[u.len() - 1], [1.5, 0.0]), "{u:?}");
 }
+
+#[test]
+fn many_blocks_and_inserts_read_quickly_and_each_block_takes_its_first_insert_in_any_case() {
+    let n = 80_000;
+    let mut text = String::from("0\nSECTION\n2\nBLOCKS\n");
+    for k in 0..n {
+        text.push_str(&format!("0\nBLOCK\n2\nB{k}\n0\nENDBLK\n"));
+    }
+    text.push_str(
+        "0\nBLOCK\n2\nP\n0\nLWPOLYLINE\n8\n1\n70\n1\n10\n0\n20\n0\n10\n10\n20\n0\n10\n10\n20\n10\n0\nENDBLK\n0\nENDSEC\n0\nSECTION\n2\nENTITIES\n",
+    );
+    for k in 0..n {
+        text.push_str(&format!("0\nINSERT\n2\nI{k}\n10\n0\n20\n0\n"));
+    }
+    text.push_str("0\nINSERT\n2\np\n10\n100\n20\n50\n0\nINSERT\n2\nP\n10\n7\n20\n7\n0\nENDSEC\n0\nEOF\n");
+    let started = std::time::Instant::now();
+    let st = read(text.as_bytes()).unwrap();
+    let took = started.elapsed();
+    assert_eq!(st.pieces.len(), 1);
+    assert_eq!(st.pieces[0].boundary, vec![[100.0, 50.0], [110.0, 50.0], [110.0, 60.0]]);
+    // Scanning every insert for every block took ~12 s here (#214); a lookup takes a fraction of one.
+    assert!(took < std::time::Duration::from_secs(3), "reading took {took:?}");
+}
