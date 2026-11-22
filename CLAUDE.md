@@ -23,6 +23,10 @@ break wasm, `cargo xtask ci` before every commit, progress docs), with "StitchFo
 2. Unless the user gives you a task, take the next unfinished one. Orient → plan → implement +
    test → verify → record → commit.
 
+3. **Progress notes:** a PR never edits `PROGRESS.md`. Add one file
+   `progress/<yyyy-mm-dd>-<issue-or-pr-number>.md` (done + next 3 steps); a separate roll-up PR folds
+   them into `PROGRESS.md`. See [`progress/README.md`](progress/README.md) and `AGENTS.md`.
+
 ## Non-negotiables for pattern work
 - **Clean room, no copying.** We build our own software that matches and beats what is out
   there; we never copy it. Behaviour comes only from public documentation (vendor help pages,
