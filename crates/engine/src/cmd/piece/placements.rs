@@ -4,7 +4,7 @@
 //! step.
 
 use super::*;
-use pf_core::placement::{DesignKind, Hoop, Placement};
+use pf_core::placement::{DesignKind, Hoop, MAX_FILE, Placement};
 
 pub fn specs() -> Vec<CommandSpec> {
     vec![
@@ -34,6 +34,15 @@ pub fn specs() -> Vec<CommandSpec> {
             "{id?, index: the design's place in piece.info's placements} → piece.info",
             has_doc,
             remove_placement
+        ),
+        cmd!(
+            query "piece.placementLink",
+            "Placed Design Link",
+            [],
+            None,
+            "{id?, index?: the design's place in piece.info's placements (default: every design)} → {links: [{index, name, app: \"StitchFoundry\" | \"ScreenFoundry\" (the app that edits the design), file, openable (true when the file is a real design file on this computer)}]}",
+            has_doc,
+            placement_link
         ),
     ]
 }
@@ -67,7 +76,7 @@ fn add_placement(s: &mut Session, p: &Value) -> Result<Value> {
         Some(_) => return Err(bad(CMD, "kind is \"embroidery\" or \"screen\"")),
     };
     if let Some(f) = str_param(p, "file") {
-        d.file = f.chars().take(1000).collect();
+        d.file = f.chars().take(MAX_FILE).collect();
     }
     if let Some(v) = number(p, "scale", CMD)? {
         d.set_scale(v).map_err(|e| err(CMD, e))?;
@@ -128,4 +137,36 @@ fn remove_placement(s: &mut Session, p: &Value) -> Result<Value> {
         piece.placements.remove(i);
         Ok(())
     })
+}
+
+/// File types each editor opens (lower case, no dot).
+const EMBROIDERY_FILES: &[&str] = &["dst", "pes", "exp", "jef", "vp3", "hus", "xxx", "pec"];
+const SCREEN_FILES: &[&str] = &["png", "svg"];
+
+fn placement_link(s: &mut Session, p: &Value) -> Result<Value> {
+    const CMD: &str = "piece.placementLink";
+    let id = one_piece(s, p, CMD)?;
+    let doc = &s.doc()?.doc;
+    let piece = doc.node(id).and_then(piece_on).ok_or_else(|| bad(CMD, "not a pattern piece"))?;
+    let only = match p.get("index") {
+        None => None,
+        Some(_) => Some(index_of(p, piece, CMD)?),
+    };
+    let links: Vec<Value> = piece
+        .placements
+        .iter()
+        .enumerate()
+        .filter(|(i, _)| only.is_none_or(|o| o == *i))
+        .map(|(i, d)| {
+            let (app, types) = match d.kind {
+                DesignKind::Embroidery => ("StitchFoundry", EMBROIDERY_FILES),
+                DesignKind::Screen => ("ScreenFoundry", SCREEN_FILES),
+            };
+            let path = std::path::Path::new(&d.file);
+            let ext = path.extension().and_then(|e| e.to_str()).map(str::to_ascii_lowercase);
+            let openable = !d.file.is_empty() && ext.is_some_and(|e| types.contains(&e.as_str())) && path.is_file();
+            json!({"index": i, "name": d.name, "app": app, "file": d.file, "openable": openable})
+        })
+        .collect();
+    Ok(json!({ "links": links }))
 }
