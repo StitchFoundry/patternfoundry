@@ -26,3 +26,7 @@
 - 2026-11-16 (issue 188): a size chart that names a size twice (any case), a size with no name, or a measurement column twice is refused with the row it is on, instead of the second row being silently unused.
 - 2026-11-19 (nightly sweep): no reported bugs awaited triage; `cargo audit` has no vulnerabilities (unmaintained notices and #199's yanked wasmi only); fmt and pf-core clippy clean; pf-* tests pass. Filed #202 (S4).
 - 2026-11-19 (issue 202): a size range and grade rules read from a file are now checked like ones set in the app (sizes, base, names, moves of -500 to 500 mm), so a bad value is refused on load.
+- 2026-11-18 (nightly sweep): no reported bugs awaited triage; fmt and workspace clippy clean; pf-* tests pass; `cargo audit` has no vulnerabilities, only unmaintained notices and yanked wasmi 2.0.0 (filed #199).
+- 2026-11-18 (issue 199): `cargo update -p wasmi` moves wasmi, wasmi_core, wasmi_collections and wasmi_ir 2.0.0 → 2.0.1 (lockfile only); `cargo audit` no longer reports a yanked crate. Checked with vectorcraft-plugins tests, its clippy and `cargo xtask wasm`.
+- 2026-11-22 (nightly sweep): no reported bugs awaited triage; fmt and pf-* clippy clean; pf-* tests pass; filed #214 (S3).
+- 2026-11-22 (issue 214): reading a DXF-AAMA file found each block's insert by scanning every insert (80 000 of each: 16 s); a map makes it 0.3 s, still first insert in any case.
