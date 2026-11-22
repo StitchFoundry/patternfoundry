@@ -68,6 +68,10 @@ When a task lands, update in the same PR: the area row in `docs/target-app-parit
 - Grade by behaviour against the public documentation (`plan/illustrator/` notes), not by whether a menu item exists. Scores are self-assessed, so err low; mark each number measured or estimated.
 - Keep the README's Status section in step with the ROADMAP headline.
 
+### Progress notes: never edit `PROGRESS.md` in a PR
+- A PR must **not** edit `PROGRESS.md` (every PR edits it at the same place, so after one merge the rest conflict). Instead add ONE new file `progress/<yyyy-mm-dd>-<issue-or-pr-number>.md` with what was done and the next 3 steps. See [`progress/README.md`](progress/README.md).
+- `PROGRESS.md` is updated only by the small progress roll-up PR (daily or weekly, by the nightly/maintenance agent), which folds the `progress/*.md` notes into it and deletes the folded files.
+
 ## Contributor credits (About window)
 
 - About ▸ Contributors/Models are compiled into the binary from `contributors/contributors.json`
