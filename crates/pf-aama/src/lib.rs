@@ -671,12 +671,13 @@ pub fn read(bytes: &[u8]) -> Result<Style, AamaError> {
             style.tolerance = v.parse().unwrap_or(0.0);
         }
     }
-    // Where each block is inserted.
-    let inserts: Vec<(String, Mm)> = entities
-        .iter()
-        .filter(|(k, _)| k == "INSERT")
-        .map(|(_, e)| (get(e, 2).map(Value::as_str).unwrap_or_default(), [num(e, 10), num(e, 20)]))
-        .collect();
+    // Where each block is inserted: the first insert naming it, in any case. A map, so a file of
+    // many blocks and inserts isn't read in time growing with their product (#214).
+    let mut inserts: std::collections::HashMap<String, Mm> = std::collections::HashMap::new();
+    for (_, e) in entities.iter().filter(|(k, _)| k == "INSERT") {
+        let name = get(e, 2).map(Value::as_str).unwrap_or_default().to_ascii_lowercase();
+        inserts.entry(name).or_insert([num(e, 10), num(e, 20)]);
+    }
     let records = pf_dxf::records(section("BLOCKS"));
     let mut i = 0;
     while i < records.len() {
@@ -693,7 +694,7 @@ pub fn read(bytes: &[u8]) -> Result<Style, AamaError> {
         if name.starts_with('*') {
             continue;
         }
-        let at = inserts.iter().find(|(n, _)| n.eq_ignore_ascii_case(&name)).map_or([0.0, 0.0], |(_, p)| *p);
+        let at = inserts.get(&name.to_ascii_lowercase()).copied().unwrap_or([0.0, 0.0]);
         let shift = |p: Mm| [p[0] + at[0], p[1] + at[1]];
         let mut piece = Piece { name: name.clone(), quantity: (1, 0), ..Piece::default() };
         let mut text_at = None;
