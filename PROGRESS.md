@@ -34,5 +34,6 @@
 - 2026-11-17 (issue 196): a piece read from a file takes at most 50 placed designs and keeps a design's file name to 1000 characters, the limits the placement commands keep.
 - 2026-11-18 (nightly sweep): no reported bugs awaited triage; fmt and workspace clippy clean; pf-* tests pass; `cargo audit` has no vulnerabilities, only unmaintained notices and yanked wasmi 2.0.0 (filed #199).
 - 2026-11-18 (issue 199): `cargo update -p wasmi` moves wasmi, wasmi_core, wasmi_collections and wasmi_ir 2.0.0 → 2.0.1 (lockfile only); `cargo audit` no longer reports a yanked crate. Checked with vectorcraft-plugins tests, its clippy and `cargo xtask wasm`.
+- 2026-11-22 (issue 213): added `.github/workflows/dependabot-automerge.yml` (enables auto-merge only for patch/minor Dependabot PRs; skips 0.x minors, majors, github_actions) and `docs/dependabot-automerge.md`. YAML parses and the jq rules were checked on sample metadata; full `cargo xtask ci` not run (no Rust touched). Needs Bruce to review and merge.
 - 2026-11-22 (nightly sweep): no reported bugs awaited triage; fmt and pf-* clippy clean; pf-* tests pass; filed #214 (S3).
 - 2026-11-22 (issue 214): reading a DXF-AAMA file found each block's insert by scanning every insert (80 000 of each: 16 s); a map makes it 0.3 s, still first insert in any case.

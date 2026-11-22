@@ -1,0 +1,76 @@
+# Turns on GitHub auto-merge for safe Dependabot PRs. It never merges anything itself:
+# GitHub still waits for every required check and branch rule. See docs/dependabot-automerge.md.
+name: Dependabot auto-merge
+
+on:
+  pull_request:
+
+permissions: {}
+
+jobs:
+  automerge:
+    # Only Dependabot's own PRs; agent and human PRs are never touched.
+    if: github.event.pull_request.user.login == 'dependabot[bot]' && github.repository == 'SiteSentrix/patternfoundry'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Fetch Dependabot metadata
+        id: meta
+        uses: dependabot/fetch-metadata@21025c705c08248db411dc16f3619e6b5f9ea21a # v2.5.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Decide
+        id: decide
+        env:
+          UPDATES: ${{ steps.meta.outputs.updated-dependencies-json }}
+        run: |
+          # One reason per dependency that is NOT safe; empty means every update is safe.
+          reasons=$(printf '%s' "$UPDATES" | jq -r '
+            .[] |
+            if .packageEcosystem == "github_actions" then
+              "\(.dependencyName): GitHub Actions bumps (workflow files) stay manual"
+            elif (.updateType != "version-update:semver-patch" and .updateType != "version-update:semver-minor") then
+              "\(.dependencyName): \(.updateType) is not a patch or minor bump"
+            elif (.updateType == "version-update:semver-minor" and (.newVersion | startswith("0."))) then
+              "\(.dependencyName): 0.x minor bump (\(.prevVersion) -> \(.newVersion)) is treated as breaking"
+            else empty end')
+          if [ -z "$UPDATES" ] || [ "$UPDATES" = "[]" ]; then
+            reasons="no update metadata found"
+          fi
+          if [ -z "$reasons" ]; then
+            echo "safe=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "safe=false" >> "$GITHUB_OUTPUT"
+            {
+              echo "reasons<<EOF_REASONS"
+              echo "$reasons"
+              echo "EOF_REASONS"
+            } >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Enable auto-merge (squash)
+        if: steps.decide.outputs.safe == 'true'
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr merge --auto --squash "$PR_URL"
+
+      - name: Say why it was skipped (once)
+        if: steps.decide.outputs.safe != 'true'
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REASONS: ${{ steps.decide.outputs.reasons }}
+        run: |
+          marker='<!-- dependabot-automerge-skip -->'
+          if gh pr view "$PR_URL" --json comments --jq '.comments[].body' | grep -qF "$marker"; then
+            echo "Already commented; nothing to do."
+            exit 0
+          fi
+          gh pr comment "$PR_URL" --body "$marker
+          Auto-merge not enabled; a human needs to review this one:
+
+          $REASONS"
