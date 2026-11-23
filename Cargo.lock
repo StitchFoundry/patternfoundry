@@ -3682,9 +3682,9 @@ dependencies = [
 
 [[package]]
 name = "resvg"
-version = "0.49.0"
+version = "0.50.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1572844b6727a1bf842190e9947641a68ac44bed83f50afb4bd1407a2564bee8"
+checksum = "77bb4b284cf8a5c8ae721594af53387fb755d2196fddb32b2acfb4fa9251fa0c"
 dependencies = [
  "bytemuck",
  "log",
@@ -3692,7 +3692,7 @@ dependencies = [
  "rgb",
  "svgtypes 0.16.2",
  "tiny-skia 0.12.0",
- "usvg 0.49.0",
+ "usvg 0.50.0",
 ]
 
 [[package]]
@@ -4873,6 +4873,25 @@ dependencies = [
 ]
 
 [[package]]
+name = "usvg"
+version = "0.50.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bdb896f04730b97805bbc3191fc57e4bf03face0f14577dd42e783c4d8c98802"
+dependencies = [
+ "data-url",
+ "imagesize 0.15.0",
+ "kurbo 0.13.1",
+ "log",
+ "pico-args",
+ "roxmltree 0.21.2",
+ "simplecss",
+ "siphasher",
+ "strict-num",
+ "svgtypes 0.16.2",
+ "tiny-skia-path 0.12.0",
+]
+
+[[package]]
 name = "utf8-zero"
 version = "0.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5264,7 +5283,7 @@ dependencies = [
  "image",
  "kurbo 0.13.1",
  "proptest",
- "resvg 0.49.0",
+ "resvg 0.50.0",
  "serde",
  "serde_json",
  "skrifa 0.49.0",
