@@ -15,3 +15,5 @@
       ([why and how](https://github.com/storytold/vectorcraft/blob/main/docs/development.md#robustness-vectorcraft-never-crashes)).
 - [ ] Clean-room: nothing copied from Adobe products or GPL/AGPL code ([AGENTS.md](https://github.com/storytold/vectorcraft/blob/main/AGENTS.md)).
 - [ ] Every new asset has a row in `ASSETS.md`.
+- [ ] Progress: this PR does **not** edit `PROGRESS.md`; it adds one note
+      `progress/<yyyy-mm-dd>-<issue-or-pr-number>.md` (done + next 3 steps, see `progress/README.md`).

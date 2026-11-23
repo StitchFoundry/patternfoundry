@@ -57,9 +57,11 @@ fn check_mm(name: &str, mm: f64) -> Result<f64, MeasureError> {
     if mm.is_finite() && (0.0..=MAX_MM).contains(&mm) { Ok(mm) } else { Err(MeasureError::Value(name.to_string(), mm)) }
 }
 
-/// A set of measurements and formulas.
+/// A set of measurements and formulas. One read from a file is made again through
+/// [`Measurements::set_value`] and [`Measurements::set_formula`], so a name, length or formula
+/// the app would refuse is refused there too.
 #[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "camelCase", try_from = "Unchecked")]
 pub struct Measurements {
     /// Whose or which: "Me", "Size 12"…
     #[serde(default)]
@@ -85,6 +87,39 @@ pub struct Measurements {
 
 fn is_female(f: &crate::avatar::Figure) -> bool {
     *f == crate::avatar::Figure::Female
+}
+
+/// A [`Measurements`] as written in a file, before its checks.
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct Unchecked {
+    #[serde(default)]
+    name: String,
+    #[serde(default)]
+    values: BTreeMap<String, f64>,
+    #[serde(default)]
+    formulas: BTreeMap<String, String>,
+    #[serde(default)]
+    size: Option<String>,
+    #[serde(default)]
+    share: bool,
+    #[serde(default)]
+    figure: crate::avatar::Figure,
+}
+
+impl TryFrom<Unchecked> for Measurements {
+    type Error = MeasureError;
+
+    fn try_from(u: Unchecked) -> Result<Self, MeasureError> {
+        let mut m = Measurements { name: u.name, size: u.size, share: u.share, figure: u.figure, ..Default::default() };
+        for (k, v) in &u.values {
+            m.set_value(k, Some(*v))?;
+        }
+        for (k, f) in &u.formulas {
+            m.set_formula(k, Some(f))?;
+        }
+        Ok(m)
+    }
 }
 
 impl Measurements {
@@ -188,19 +223,29 @@ impl SizeChart {
             return Err(MeasureError::Chart("the header names no measurements".into()));
         }
         let columns: Vec<String> = names.iter().map(|n| n.to_ascii_lowercase().replace([' ', '-'], "_")).collect();
-        for c in &columns {
+        for (k, c) in columns.iter().enumerate() {
             check_name(c)?;
+            if columns.get(..k).is_some_and(|before| before.contains(c)) {
+                return Err(MeasureError::Chart(format!("the header names `{c}` twice")));
+            }
         }
         if columns.len() > MAX_ENTRIES {
             return Err(MeasureError::TooMany);
         }
-        let mut sizes = Vec::new();
+        let mut sizes: Vec<(String, Vec<Option<f64>>)> = Vec::new();
         for (i, line) in lines {
             if sizes.len() >= MAX_ENTRIES {
                 return Err(MeasureError::TooMany);
             }
             let row = cells(line);
             let Some((size, vals)) = row.split_first() else { continue };
+            // Sizes are found by name in any case: a second row of the same size would never be used.
+            if size.is_empty() {
+                return Err(MeasureError::Chart(format!("row {}: the size has no name", i + 1)));
+            }
+            if sizes.iter().any(|(s, _)| s.eq_ignore_ascii_case(size)) {
+                return Err(MeasureError::Chart(format!("row {}: the size `{size}` is named twice", i + 1)));
+            }
             let mut out = Vec::with_capacity(columns.len());
             for (j, c) in columns.iter().enumerate() {
                 let cell = vals.get(j).map(String::as_str).unwrap_or("");
@@ -268,6 +313,23 @@ mod tests {
     }
 
     #[test]
+    fn a_set_read_from_a_file_is_checked_like_one_made_in_the_app() {
+        let ok: Measurements = serde_json::from_str(r#"{"name":"Me","values":{"bust":920},"formulas":{"ease":"40"}}"#).unwrap();
+        assert_eq!(ok.values["bust"], 920.0);
+        for bad in [
+            r#"{"values":{"bust":-5}}"#,
+            r#"{"values":{"bust":1e300}}"#,
+            r#"{"values":{"2bust":900}}"#,
+            r#"{"formulas":{"ease":"4 +"}}"#,
+            r#"{"formulas":{"not a name":"1"}}"#,
+        ] {
+            assert!(serde_json::from_str::<Measurements>(bad).is_err(), "{bad}");
+        }
+        let many: BTreeMap<String, f64> = (0..=MAX_ENTRIES).map(|i| (format!("m{i}"), 1.0)).collect();
+        assert!(serde_json::from_value::<Measurements>(serde_json::json!({"values": many})).is_err());
+    }
+
+    #[test]
     fn bad_names_values_and_formulas_are_refused() {
         let mut m = Measurements::default();
         assert!(m.set_value("2bust", Some(900.0)).is_err());
@@ -318,5 +380,19 @@ mod tests {
         let text = "# Example chart (made up for the test)\nsize,bust\n\nS,86\nM,big\n";
         let e = SizeChart::from_text("", text, 10.0).unwrap_err().to_string();
         assert!(e.contains("row 5:"), "{e}");
+    }
+
+    #[test]
+    fn a_size_chart_names_each_size_and_measurement_once() {
+        // Issue 188: a size named twice (any case) left its second row unused.
+        let e = SizeChart::from_text("", "size,bust\nM,90\n# comment\nm,100\n", 10.0).unwrap_err().to_string();
+        assert!(e.contains("row 4:") && e.contains("`m`"), "{e}");
+        // A row with no size name.
+        let e = SizeChart::from_text("", "size,bust\nS,86\n,90\n", 10.0).unwrap_err().to_string();
+        assert!(e.contains("row 3:"), "{e}");
+        // A measurement named twice once its name is tidied (`Bust` and `bust`).
+        assert!(SizeChart::from_text("", "size,Bust,bust\nS,86,87\n", 10.0).is_err());
+        // Distinct names still read.
+        assert_eq!(SizeChart::from_text("", "size,bust\nS,86\nM,90\n", 10.0).unwrap().size_names(), ["S", "M"]);
     }
 }
