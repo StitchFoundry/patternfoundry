@@ -42,6 +42,7 @@ pub mod piece;
 pub mod placement;
 pub mod swatch;
 pub mod tiling;
+pub mod update;
 pub mod view3d;
 
 pub use allowance::{Outline, cutting_line};
