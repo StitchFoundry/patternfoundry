@@ -125,7 +125,7 @@ pub enum AvatarError {
 impl std::fmt::Display for AvatarError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            AvatarError::Measurement(m) => write!(f, "the avatar needs {m} (mm, measure.set)"),
+            AvatarError::Measurement(m) => write!(f, "the avatar needs your {} measurement", m.replace('_', " ")),
             AvatarError::Order(why) => f.write_str(why),
         }
     }

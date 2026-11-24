@@ -1117,6 +1117,9 @@ pub fn run_ui_command(app: &mut VectorcraftApp, id: &str, p: &Value) -> Option<R
         }
         return Some(app.run("window.panel.close", json!({"panel": panel})));
     }
+    if let Some(why) = crate::dialogs::needed_measurements::ask(app, id, p) {
+        return Some(Err(why));
+    }
     if let Some(result) = crate::panel_docking::command(app, id, p) {
         return Some(result);
     }
