@@ -24,7 +24,7 @@ fn the_10_cm_test_square_measures_10_cm_in_an_svg_reader() {
     let (w, h) = (mm(tree.size().width()), mm(tree.size().height()));
     assert!((w - 100.0).abs() < 0.01 && (h - 100.0).abs() < 0.01, "{w} × {h} mm: {svg}");
     // The square fills the page: drawn 100 mm across.
-    let b = tree.root().abs_bounding_box();
+    let b = tree.root().abs_bounding_box().unwrap();
     assert!((mm(b.width()) - 100.0).abs() < 0.01, "{}", mm(b.width()));
     // Opened again, it is the same 10 cm.
     let back = import(&svg).unwrap();
