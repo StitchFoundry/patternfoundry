@@ -5223,6 +5223,9 @@ swatch	Bright Violet	Violet cerah
 	Measurements	Ukuran
 	No measurements yet	Belum ada ukuran
 	Set Measurements	Atur ukuran
+	Measurements Needed	Ukuran Diperlukan
+	The avatar is made from these measurements. Enter the ones it is missing.	Avatar dibuat dari ukuran-ukuran ini. Masukkan yang belum ada.
+	The avatar needs your measurements: {names}.	Avatar membutuhkan ukuran Anda: {names}.
 	Set Point Formula	Atur rumus titik
 	Share in exported files	Bagikan di file ekspor
 	Figure	Postur

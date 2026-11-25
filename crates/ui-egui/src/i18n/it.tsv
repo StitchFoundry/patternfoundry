@@ -4855,6 +4855,9 @@ lighting	Light	Luce
 	Measurements	Misure
 	No measurements yet	Ancora nessuna misura
 	Set Measurements	Imposta misure
+	Measurements Needed	Misure necessarie
+	The avatar is made from these measurements. Enter the ones it is missing.	L’avatar è creato da queste misure. Inserisci quelle mancanti.
+	The avatar needs your measurements: {names}.	L’avatar ha bisogno delle tue misure: {names}.
 	Set Point Formula	Imposta formula del punto
 	Share in exported files	Condividi nei file esportati
 	Figure	Figura

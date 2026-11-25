@@ -5196,6 +5196,9 @@ theme	Appearance	Utseende
 	Measurements	Mått
 	No measurements yet	Inga mått ännu
 	Set Measurements	Ange mått
+	Measurements Needed	Mått behövs
+	The avatar is made from these measurements. Enter the ones it is missing.	Avataren skapas från dessa mått. Ange de som saknas.
+	The avatar needs your measurements: {names}.	Avataren behöver dina mått: {names}.
 	Set Point Formula	Ange punktformel
 	Share in exported files	Dela i exporterade filer
 	Figure	Figur

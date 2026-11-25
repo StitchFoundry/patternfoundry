@@ -4835,6 +4835,9 @@ theme	Appearance	Giao diện
 	Measurements	Số đo
 	No measurements yet	Chưa có số đo nào
 	Set Measurements	Đặt số đo
+	Measurements Needed	Cần số đo
+	The avatar is made from these measurements. Enter the ones it is missing.	Hình đại diện được tạo từ các số đo này. Hãy nhập những số đo còn thiếu.
+	The avatar needs your measurements: {names}.	Hình đại diện cần các số đo của bạn: {names}.
 	Set Point Formula	Đặt công thức điểm
 	Share in exported files	Chia sẻ trong tệp đã xuất
 	Figure	Vóc dáng

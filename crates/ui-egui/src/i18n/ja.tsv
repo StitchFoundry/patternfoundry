@@ -4895,6 +4895,9 @@ lighting	Light	ライト
 	Measurements	寸法
 	No measurements yet	寸法はまだありません
 	Set Measurements	寸法を設定
+	Measurements Needed	必要な寸法
+	The avatar is made from these measurements. Enter the ones it is missing.	アバターはこれらの寸法から作られます。不足している寸法を入力してください。
+	The avatar needs your measurements: {names}.	アバターには次の寸法が必要です: {names}
 	Set Point Formula	点の数式を設定
 	Share in exported files	書き出したファイルで共有
 	Figure	体型

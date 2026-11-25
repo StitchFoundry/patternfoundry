@@ -5204,6 +5204,9 @@ theme	Appearance	Външен вид
 	Measurements	Мерки
 	No measurements yet	Още няма мерки
 	Set Measurements	Задаване на мерки
+	Measurements Needed	Необходими мерки
+	The avatar is made from these measurements. Enter the ones it is missing.	Аватарът е създаден от тези мерки. Въведете липсващите.
+	The avatar needs your measurements: {names}.	Аватарът се нуждае от вашите мерки: {names}.
 	Set Point Formula	Задаване на формула на точка
 	Share in exported files	Споделяне в експортираните файлове
 	Figure	Фигура

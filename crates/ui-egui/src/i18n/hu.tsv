@@ -5226,6 +5226,9 @@ imageTrace	Outline	Körvonal
 	Measurements	Méretek
 	No measurements yet	Még nincsenek méretek
 	Set Measurements	Méretek beállítása
+	Measurements Needed	Szükséges méretek
+	The avatar is made from these measurements. Enter the ones it is missing.	Az avatar ezekből a méretekből készül. Adja meg a hiányzókat.
+	The avatar needs your measurements: {names}.	Az avatarhoz szükség van a méreteire: {names}.
 	Set Point Formula	Pontképlet beállítása
 	Share in exported files	Megosztás az exportált fájlokban
 	Figure	Alkat

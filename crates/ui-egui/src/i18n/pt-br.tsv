@@ -5158,6 +5158,9 @@ mark-style	Japanese	Japonesas
 	Measurements	Medidas
 	No measurements yet	Ainda não há medidas
 	Set Measurements	Definir medidas
+	Measurements Needed	Medidas necessárias
+	The avatar is made from these measurements. Enter the ones it is missing.	O avatar é feito a partir destas medidas. Informe as que estão faltando.
+	The avatar needs your measurements: {names}.	O avatar precisa das suas medidas: {names}.
 	Set Point Formula	Definir fórmula do ponto
 	Share in exported files	Compartilhar nos arquivos exportados
 	Figure	Silhueta

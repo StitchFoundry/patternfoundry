@@ -5240,6 +5240,9 @@ mark-style	Japanese	Japonské
 	Measurements	Míry
 	No measurements yet	Zatím žádné míry
 	Set Measurements	Nastavit míry
+	Measurements Needed	Potřebné míry
+	The avatar is made from these measurements. Enter the ones it is missing.	Avatar vzniká z těchto měr. Zadejte ty, které chybí.
+	The avatar needs your measurements: {names}.	Avatar potřebuje vaše míry: {names}.
 	Set Point Formula	Nastavit vzorec bodu
 	Share in exported files	Sdílet v exportovaných souborech
 	Figure	Postava

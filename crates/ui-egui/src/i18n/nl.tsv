@@ -5265,6 +5265,9 @@ swatch	Bright Violet	Felviolet
 	Measurements	Maten
 	No measurements yet	Nog geen maten
 	Set Measurements	Maten instellen
+	Measurements Needed	Maten nodig
+	The avatar is made from these measurements. Enter the ones it is missing.	De avatar wordt gemaakt van deze maten. Voer de ontbrekende in.
+	The avatar needs your measurements: {names}.	De avatar heeft je maten nodig: {names}.
 	Set Point Formula	Puntformule instellen
 	Share in exported files	Delen in geëxporteerde bestanden
 	Figure	Figuur

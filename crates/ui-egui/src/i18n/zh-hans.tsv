@@ -5076,6 +5076,9 @@ lighting	Light	光源
 	Measurements	尺寸
 	No measurements yet	还没有尺寸
 	Set Measurements	设置尺寸
+	Measurements Needed	需要尺寸
+	The avatar is made from these measurements. Enter the ones it is missing.	头像由这些尺寸生成。请输入缺少的尺寸。
+	The avatar needs your measurements: {names}.	头像需要您的尺寸：{names}。
 	Set Point Formula	设置点公式
 	Share in exported files	在导出的文件中共享
 	Figure	体型

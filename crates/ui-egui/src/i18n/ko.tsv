@@ -4818,6 +4818,9 @@ lighting	Light	광원
 	Measurements	치수
 	No measurements yet	아직 치수가 없습니다
 	Set Measurements	치수 설정
+	Measurements Needed	필요한 치수
+	The avatar is made from these measurements. Enter the ones it is missing.	아바타는 이 치수로 만들어집니다. 빠진 치수를 입력하세요.
+	The avatar needs your measurements: {names}.	아바타에 다음 치수가 필요합니다: {names}.
 	Set Point Formula	점 수식 설정
 	Share in exported files	내보낸 파일에서 공유
 	Figure	체형

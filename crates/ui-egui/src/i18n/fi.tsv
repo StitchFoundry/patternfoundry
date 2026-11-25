@@ -5204,6 +5204,9 @@ mark-style	Japanese	Japanilainen
 	Measurements	Mitat
 	No measurements yet	Ei vielä mittoja
 	Set Measurements	Aseta mitat
+	Measurements Needed	Mitat tarvitaan
+	The avatar is made from these measurements. Enter the ones it is missing.	Avatar luodaan näistä mitoista. Syötä puuttuvat.
+	The avatar needs your measurements: {names}.	Avatar tarvitsee mittasi: {names}.
 	Set Point Formula	Aseta pistekaava
 	Share in exported files	Jaa vietyihin tiedostoihin
 	Figure	Vartalo
