@@ -18,6 +18,9 @@ vectorcraft-brush = { workspace = true }
 vello_cpu = { workspace = true }
 # Filter types (Gaussian blur, drop shadow) are not re-exported by vello_cpu 0.2.
 vello_common = { version = "0.3", default-features = false }
+# fearless_simd (pulled in by vello_common) needs `std` or `libm` for f32 math; vello_cpu 0.4
+# no longer turns it on for us, so enable it here (feature unification applies it everywhere).
+fearless_simd = { version = "0.7", default-features = false, features = ["std"] }
 image = { workspace = true }
 flate2 = { workspace = true }
 jpeg-encoder = { workspace = true }
