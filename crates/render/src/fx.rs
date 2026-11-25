@@ -533,7 +533,7 @@ fn shadow_filter(dx: f64, dy: f64, blur: f64, color: peniko::Color) -> Filter {
 
 /// The layer filter of a drop shadow with Darkness: the object's own pixels blurred.
 fn shade_filter(blur: f64) -> Filter {
-    Filter::from_primitive(FilterPrimitive::GaussianBlur { std_deviation: (blur / 2.0).max(0.0) as f32, edge_mode: EdgeMode::None })
+    Filter::from_primitive(FilterPrimitive::gaussian_blur((blur / 2.0).max(0.0) as f32, EdgeMode::None))
 }
 
 /// How much darker (0..1) a drop shadow with Darkness `darkness` makes the values `ink` paints:
