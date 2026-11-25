@@ -5192,6 +5192,9 @@ effect	Points	Σημεία
 	Measurements	Μέτρα
 	No measurements yet	Δεν υπάρχουν ακόμη μέτρα
 	Set Measurements	Ορισμός μέτρων
+	Measurements Needed	Απαιτούμενα μέτρα
+	The avatar is made from these measurements. Enter the ones it is missing.	Το άβαταρ δημιουργείται από αυτά τα μέτρα. Εισαγάγετε αυτά που λείπουν.
+	The avatar needs your measurements: {names}.	Το άβαταρ χρειάζεται τα μέτρα σας: {names}.
 	Set Point Formula	Ορισμός τύπου σημείου
 	Share in exported files	Κοινή χρήση στα εξαγόμενα αρχεία
 	Figure	Σιλουέτα
