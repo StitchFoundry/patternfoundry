@@ -35,7 +35,7 @@ pub fn specs() -> Vec<CommandSpec> {
             "Make Pattern Piece",
             ["Pattern"],
             None,
-            "{ids? (default: the selection), allowance?: mm (10; or a length with its unit, \"5/8 in\"), name?} each closed path becomes a pattern piece: a group of its seam line (the path) with its cutting line, grainline and label generated → {ids}",
+            "{ids? (default: the selection), allowance?: mm (10; or a length with its unit, \"5/8 in\"), name?, sew?: true (a drafted skirt block's back and front are also cut on their centre folds and sewn at the side seams, ready to drape)} each closed path becomes a pattern piece: a group of its seam line (the path) with its cutting line, grainline and label generated → {ids}",
             has_selection,
             make
         ),
@@ -532,6 +532,7 @@ fn ids_json(ids: &[NodeId]) -> Value {
 
 fn make(s: &mut Session, p: &Value) -> Result<Value> {
     const CMD: &str = "piece.make";
+    let sew = p.get("sew").and_then(Value::as_bool).unwrap_or(false);
     let allowance = match p.get("allowance") {
         Some(v) => allowance_param(v, CMD)?,
         None => pf_core::piece::DEFAULT_ALLOWANCE_MM,
@@ -583,10 +584,52 @@ fn make(s: &mut Session, p: &Value) -> Result<Value> {
         for &g in &made {
             rebuild(d, g)?;
         }
+        if sew {
+            sew_skirt_block(d, &made)?;
+        }
         sel.set(made.iter().copied());
         Ok(made)
     })?;
     Ok(ids_json(&ids))
+}
+
+/// The standard seams of the skirt block's back and front when both are among `made`: each cut on
+/// its centre fold and the side seams sewn together (anchors of the block's outlines:
+/// back 4 to 6 with fold edge 7; front 2 to 4 with fold edge 0). Anything else is left alone.
+fn sew_skirt_block(d: &mut Document, made: &[NodeId]) -> Result<()> {
+    let part_of = |d: &Document, g: NodeId| {
+        let seam = seam_of(d, g)?;
+        let b = seam.extras().block.as_ref()?;
+        let NodeKind::Path { path, .. } = &seam.kind else { return None };
+        let anchors = path.subpaths.iter().find(|sp| sp.closed)?.anchors.len();
+        (b.kind == pf_core::block::BlockKind::Skirt && anchors == 8).then_some(b.part)
+    };
+    let find = |d: &Document, part: usize| made.iter().copied().find(|g| part_of(d, *g) == Some(part));
+    let (Some(back), Some(front)) = (find(d, 0), find(d, 1)) else { return Ok(()) };
+    let used: std::collections::BTreeSet<String> = sewn_runs(d).into_iter().map(|r| r.0).collect();
+    let label = free_label(&used);
+    for (id, name, fold, from, to) in [(back, "Back Skirt", 7, 4, 6), (front, "Front Skirt", 0, 2, 4)] {
+        let Some(mut piece) = d.node(id).and_then(piece_on).cloned() else { continue };
+        piece.fold = Some(fold);
+        if piece.name.is_empty() {
+            piece.name = name.to_string();
+        }
+        piece.sewn.push(pf_core::Sewn { label: label.clone(), from, to });
+        if let Some(n) = d.node_mut(id) {
+            n.extras_mut().pattern = Some(Box::new(PatternTag::Piece(Box::new(piece))));
+        }
+        rebuild(d, id)?;
+    }
+    Ok(())
+}
+
+/// The first of A, B… Z, A2, B2… not in `used`.
+fn free_label(used: &std::collections::BTreeSet<String>) -> String {
+    let letter = |i: usize| {
+        let c = char::from(b'A' + (i % 26) as u8);
+        if i < 26 { c.to_string() } else { format!("{c}{}", i / 26 + 1) }
+    };
+    (0..).map(letter).find(|l| !used.contains(l)).unwrap_or_default()
 }
 
 fn release(s: &mut Session, p: &Value) -> Result<Value> {
@@ -953,14 +996,7 @@ fn sew(s: &mut Session, p: &Value) -> Result<Value> {
             }
             l.to_string()
         }
-        _ => {
-            // A, B… Z, then A2, B2…
-            let letter = |i: usize| {
-                let c = char::from(b'A' + (i % 26) as u8);
-                if i < 26 { c.to_string() } else { format!("{c}{}", i / 26 + 1) }
-            };
-            (0..).map(letter).find(|l| !used.contains(l)).unwrap_or_default()
-        }
+        _ => free_label(&used),
     };
     let (am, bm) = (run_mm(doc, a, af, at), run_mm(doc, b, bf, bt));
     let runs = [(a, af, at), (b, bf, bt)];

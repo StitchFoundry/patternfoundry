@@ -209,6 +209,10 @@ fn make(app: &mut VectorcraftApp, d: &Dialog, command: &str, source: &str, value
         }
     }
     let r = app.run(command, json!({}))?;
+    // The skirt is made into pieces with its standard seams sewn, so Drape on Avatar works at once.
+    if command == "block.skirt" {
+        app.run("piece.make", json!({"ids": r["ids"], "sew": true}))?;
+    }
     app.run("artboard.fitToArt", json!({})).ok();
     Ok(r)
 }
