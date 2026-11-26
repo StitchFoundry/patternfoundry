@@ -51,6 +51,33 @@ fn a_skirt_drapes_on_the_avatar_resting_at_the_waist() {
     std::fs::remove_dir_all(&dir).ok();
 }
 
+/// The skirt block made into pieces with `sew` drapes with no `piece.sew` call (the new user's
+/// path: Start a Pattern > Skirt, then Drape on Avatar).
+#[test]
+fn the_skirt_block_made_into_pieces_is_sewn_and_drapes() {
+    let mut s = Session::new();
+    s.execute("file.new", &json!({"width": 2000, "height": 1000})).unwrap();
+    let m = json!({"values": {"bust": 880, "waist": 680, "hip": 960, "nape_to_waist": 410, "waist_to_hip": 200, "skirt_length": 600}});
+    s.execute("measure.set", &m).unwrap();
+    let ids = s.execute("block.skirt", &json!({})).unwrap()["ids"].clone();
+    // Without `sew` the pieces are not sewn, as before.
+    let mut plain = Session::new();
+    plain.execute("file.new", &json!({"width": 2000, "height": 1000})).unwrap();
+    plain.execute("measure.set", &m).unwrap();
+    let p = plain.execute("block.skirt", &json!({})).unwrap()["ids"].clone();
+    plain.execute("piece.make", &json!({"ids": p})).unwrap();
+    assert!(plain.execute("piece.seams", &json!({})).unwrap()["seams"].as_array().unwrap().is_empty());
+    assert!(plain.execute("drape.make", &json!({})).unwrap_err().to_string().contains("sewn"));
+
+    s.execute("piece.make", &json!({"ids": ids, "sew": true})).unwrap();
+    let seams = s.execute("piece.seams", &json!({})).unwrap();
+    let seams = seams["seams"].as_array().unwrap();
+    assert_eq!(seams.len(), 1, "{seams:?}");
+    assert!(seams[0]["difference"].as_f64().unwrap().abs() < 1.0, "the side seams are as long: {seams:?}");
+    let r = s.execute("drape.make", &json!({"precision": 25, "steps": 30, "draw": false})).unwrap();
+    assert_eq!(r["pieces"], json!(2), "{r}");
+}
+
 #[test]
 fn draping_needs_sewn_pieces_and_the_measurements() {
     let mut s = Session::new();
