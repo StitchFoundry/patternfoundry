@@ -229,6 +229,33 @@ fn drape_layers(app: &VectorcraftApp, i: usize) -> usize {
     app.session.documents()[i].doc.layers.iter().filter(|l| l.name.as_deref() == Some("Drape")).count()
 }
 
+/// Whether the view shows all of the document's art, the new avatar and drape pictures included.
+fn view_shows_all_art(app: &VectorcraftApp) -> bool {
+    let (v, r) = (app.view().unwrap(), app.canvas_rect.unwrap());
+    let a = app.session.active().unwrap().doc.art_bounds().unwrap();
+    let (c, z) = (a.center(), v.zoom);
+    (c.x - v.center.x).abs() + a.width() / 2.0 <= r.width() as f64 / 2.0 / z + 1e-6
+        && (c.y - v.center.y).abs() + a.height() / 2.0 <= r.height() as f64 / 2.0 / z + 1e-6
+}
+
+/// Draw Avatar and Drape on Avatar (#154) zoom the view to show the pictures they draw beside the
+/// pattern, so the user need not find View › Fit All in Window.
+#[test]
+fn drawing_the_avatar_and_the_drape_brings_them_into_view() {
+    let (mut app, _) = app(Gate::default());
+    skirt(&mut app);
+    app.canvas_rect = Some(egui::Rect::from_min_size(egui::Pos2::ZERO, egui::vec2(460.0, 260.0)));
+    app.run("view.actualSize", json!({})).unwrap();
+    app.run("avatar.draw", json!({"origin": [0, 0]})).unwrap();
+    assert!(app.session.active().unwrap().doc.layers.iter().any(|l| l.name.as_deref() == Some("Avatar")));
+    assert!(view_shows_all_art(&app));
+    app.run("view.actualSize", json!({})).unwrap();
+    app.run("drape.make", json!({"background": true, "precision": 30, "steps": 20})).unwrap();
+    background::wait_all(&mut app);
+    assert_eq!(drape_layers(&app, 0), 1);
+    assert!(view_shows_all_art(&app));
+}
+
 /// Pattern › Drape on Avatar (PF-10.7) drapes off the UI thread: the call comes back at once, a
 /// job shows its progress (counting the drape's steps) with Cancel, and the drape view is drawn
 /// in the document it was asked for when it is done, even with another document in front by then.
