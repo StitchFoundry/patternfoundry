@@ -149,6 +149,12 @@ fn placements<'de, D: serde::Deserializer<'de>>(d: D) -> Result<Vec<crate::place
     Ok(v)
 }
 
+/// A piece as read from a file, checked like one made with the piece commands (issue 239).
+fn checked_piece<'de, D: serde::Deserializer<'de>>(d: D) -> Result<Box<Piece>, D::Error> {
+    let p = Box::<Piece>::deserialize(d)?;
+    p.checked().map(Box::new).map_err(serde::de::Error::custom)
+}
+
 /// A run of a piece's seam line sewn to a run of another (or the same) piece's: from anchor
 /// `from` forward to anchor `to`, sewn to the run with the same `label` ("A", "B"…).
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -246,6 +252,39 @@ impl Piece {
     /// The style of corner `i` (where edge `i - 1` meets edge `i`).
     pub fn corner_of(&self, i: usize) -> Corner {
         self.corners.get(&i).copied().unwrap_or_default()
+    }
+
+    /// The piece, if every value is one the piece commands accept: names, allowances (the
+    /// piece's and each edge's), cut count, notches and drill holes. For a piece read from a file.
+    pub fn checked(self) -> Result<Self, PieceError> {
+        for s in [&self.name, &self.fabric] {
+            if s.chars().count() > MAX_NAME {
+                return Err(PieceError::NameTooLong);
+            }
+        }
+        check_allowance(self.allowance)?;
+        for mm in self.edges.values() {
+            check_allowance(*mm)?;
+        }
+        if !(1..=MAX_CUT).contains(&self.cut) {
+            return Err(PieceError::Cut(self.cut));
+        }
+        if self.notches.len() > MAX_NOTCHES {
+            return Err(PieceError::TooManyNotches);
+        }
+        if let Some(n) = self.notches.iter().find(|n| !(n.at.is_finite() && (0.0..=1.0).contains(&n.at))) {
+            return Err(PieceError::NotchAt(n.at));
+        }
+        if self.drills.len() > MAX_NOTCHES {
+            return Err(PieceError::TooManyDrills);
+        }
+        if let Some(d) = self.drills.iter().find(|d| !d.at.is_finite()) {
+            return Err(PieceError::Drill(d.at.x));
+        }
+        if let Some(d) = self.drills.iter().find(|d| !(d.diameter.is_finite() && (0.0..=MAX_DRILL_MM).contains(&d.diameter))) {
+            return Err(PieceError::Drill(d.diameter));
+        }
+        Ok(self)
     }
 
     pub fn set_cut(&mut self, cut: u32) -> Result<(), PieceError> {
@@ -357,6 +396,8 @@ pub enum Mark {
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub enum PatternTag {
+    /// Read from a file it is checked ([`Piece::checked`]), so a bad value is refused (issue 239).
+    #[serde(deserialize_with = "checked_piece")]
     Piece(Box<Piece>),
     Mark(Mark),
     /// On an image: a photo of a fabric (PF-10.16).
@@ -445,6 +486,29 @@ mod tests {
         p.transform(|q| q + Pt::new(1.0, 1.0));
         assert_eq!(p.drills, [Drill { at: Pt::new(4.0, 5.0), diameter: 3.0 }]);
         assert_eq!(check_name("  Sleeve "), Ok("Sleeve".into()));
+    }
+
+    #[test]
+    fn a_piece_read_from_a_file_is_checked_like_one_made_in_the_app() {
+        let read = |piece: serde_json::Value| serde_json::from_value::<PatternTag>(serde_json::json!({ "piece": piece }));
+        let good = read(serde_json::json!({"name": "Front", "allowance": 15, "edges": {"0": 0}, "cut": 2,
+            "notches": [{"edge": 0, "at": 1.0}], "drills": [{"at": {"x": 1, "y": 2}, "diameter": 3}]}));
+        assert!(good.is_ok(), "{good:?}");
+        for bad in [
+            serde_json::json!({"allowance": -50}),
+            serde_json::json!({"allowance": 1e300}),
+            serde_json::json!({"edges": {"0": -1}}),
+            serde_json::json!({"cut": 0}),
+            serde_json::json!({"cut": 1000}),
+            serde_json::json!({"notches": [{"edge": 0, "at": 7.5}]}),
+            serde_json::json!({"notches": vec![serde_json::json!({"edge": 0, "at": 0.5}); MAX_NOTCHES + 1]}),
+            serde_json::json!({"drills": [{"at": {"x": 0, "y": 0}, "diameter": -3}]}),
+            serde_json::json!({"drills": vec![serde_json::json!({"at": {"x": 0, "y": 0}}); MAX_NOTCHES + 1]}),
+            serde_json::json!({"name": "x".repeat(MAX_NAME + 1)}),
+            serde_json::json!({"fabric": "x".repeat(MAX_NAME + 1)}),
+        ] {
+            assert!(read(bad.clone()).is_err(), "{bad}");
+        }
     }
 
     #[test]
