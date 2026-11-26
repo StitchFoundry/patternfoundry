@@ -5239,6 +5239,9 @@ theme	Appearance	Apparence
 	Measurements	Mesures
 	No measurements yet	Aucune mesure pour l’instant
 	Set Measurements	Définir les mesures
+	Measurements Needed	Mesures requises
+	The avatar is made from these measurements. Enter the ones it is missing.	L’avatar est créé à partir de ces mesures. Saisissez celles qui manquent.
+	The avatar needs your measurements: {names}.	L’avatar a besoin de vos mesures : {names}.
 	Set Point Formula	Définir la formule du point
 	Share in exported files	Partager dans les fichiers exportés
 	Figure	Silhouette

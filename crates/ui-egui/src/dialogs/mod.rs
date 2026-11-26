@@ -56,6 +56,7 @@ pub mod live_paint_gaps;
 pub mod missing_fonts;
 pub mod missing_links;
 pub(crate) mod modal;
+pub mod needed_measurements;
 pub mod new_color_group;
 mod new_document;
 pub mod new_swatch;
@@ -233,6 +234,7 @@ registry! {
     DimensionOptions: [dimension::KIND] => dimension::SPEC,
     NewDocument: [new_document::KIND] => new_document::SPEC,
     StartPattern: [start_pattern::KIND] => start_pattern::SPEC,
+    NeededMeasurements: [needed_measurements::KIND] => needed_measurements::SPEC,
     Shape: ["rectangle", "roundedRectangle", "ellipse", "polygon", "star", "lineSegment", "rectangularGrid", "polarGrid"] => shapes::SPEC,
     Transform: ["move", "rotate", "scale", "reflect", "shear"] => transform::SPEC,
     PathOp: ["average", "offsetPath", "simplify", "splitIntoGrid"] => path_ops::SPEC,

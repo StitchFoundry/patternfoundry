@@ -4821,6 +4821,9 @@ effect	Soft	Weich
 	Measurements	Maße
 	No measurements yet	Noch keine Maße
 	Set Measurements	Maße festlegen
+	Measurements Needed	Maße erforderlich
+	The avatar is made from these measurements. Enter the ones it is missing.	Der Avatar wird aus diesen Maßen erstellt. Geben Sie die fehlenden ein.
+	The avatar needs your measurements: {names}.	Der Avatar benötigt Ihre Maße: {names}.
 	Set Point Formula	Punktformel festlegen
 	Share in exported files	In exportierten Dateien teilen
 	Figure	Figur

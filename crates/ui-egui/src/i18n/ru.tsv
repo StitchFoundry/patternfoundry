@@ -4851,6 +4851,9 @@ lighting	Light	Свет
 	Measurements	Мерки
 	No measurements yet	Мерок пока нет
 	Set Measurements	Задать мерки
+	Measurements Needed	Нужны мерки
+	The avatar is made from these measurements. Enter the ones it is missing.	Аватар создаётся по этим меркам. Введите недостающие.
+	The avatar needs your measurements: {names}.	Аватару нужны ваши мерки: {names}.
 	Set Point Formula	Задать формулу точки
 	Share in exported files	Делиться в экспортированных файлах
 	Figure	Фигура

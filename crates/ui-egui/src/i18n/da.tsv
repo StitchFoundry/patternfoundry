@@ -5223,6 +5223,9 @@ swatch	Bright Violet	Kraftig violet
 	Measurements	Mål
 	No measurements yet	Ingen mål endnu
 	Set Measurements	Angiv mål
+	Measurements Needed	Mål påkrævet
+	The avatar is made from these measurements. Enter the ones it is missing.	Avataren er lavet ud fra disse mål. Indtast dem, der mangler.
+	The avatar needs your measurements: {names}.	Avataren har brug for dine mål: {names}.
 	Set Point Formula	Angiv punktformel
 	Share in exported files	Del i eksporterede filer
 	Figure	Figur

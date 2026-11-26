@@ -4835,6 +4835,9 @@ lighting	Light	Світло
 	Measurements	Мірки
 	No measurements yet	Мірок ще немає
 	Set Measurements	Задати мірки
+	Measurements Needed	Потрібні мірки
+	The avatar is made from these measurements. Enter the ones it is missing.	Аватар створюється за цими мірками. Введіть відсутні.
+	The avatar needs your measurements: {names}.	Аватару потрібні ваші мірки: {names}.
 	Set Point Formula	Задати формулу точки
 	Share in exported files	Ділитися в експортованих файлах
 	Figure	Фігура

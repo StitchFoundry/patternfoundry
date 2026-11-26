@@ -5148,6 +5148,9 @@ imageTrace	Outline	კონტური
 	Measurements	ზომები
 	No measurements yet	ზომები ჯერ არ არის
 	Set Measurements	ზომების დაყენება
+	Measurements Needed	საჭირო ზომები
+	The avatar is made from these measurements. Enter the ones it is missing.	ავატარი იქმნება ამ ზომებისგან. შეიყვანეთ ის ზომები, რომლებიც აკლია.
+	The avatar needs your measurements: {names}.	ავატარს სჭირდება თქვენი ზომები: {names}.
 	Set Point Formula	წერტილის ფორმულის დაყენება
 	Share in exported files	გაზიარება ექსპორტირებულ ფაილებში
 	Figure	ფიგურა
