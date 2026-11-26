@@ -118,6 +118,42 @@ pub fn tightness_colour(t: f64) -> [u8; 3] {
     [(r * 220.0 + 20.0) as u8, (g * 200.0 + 30.0) as u8, (b * 220.0 + 20.0) as u8]
 }
 
+/// The worst stretch (a share, 0.3 is 30%) over which a garment is called too tight.
+pub const TOO_TIGHT_STRETCH: f64 = 0.30;
+/// The widest gap (mm) a seam may be left open by before it is called not meeting.
+pub const OPEN_SEAM_MM: f64 = 20.0;
+
+/// How a draped garment fits, from the drape's measures: its [`fit_message`] level.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Fit {
+    /// Room to spare: nothing is cut tighter than the body.
+    Loose,
+    /// Close, some cloth `TIGHT` or more larger than cut, but nothing is strained.
+    Snug,
+    /// Stretched past [`TOO_TIGHT_STRETCH`].
+    TooTight,
+    /// A seam stays open past [`OPEN_SEAM_MM`].
+    OpenSeam,
+}
+
+/// The fit and one line in plain words for the drape's `worst_stretch` (a share), `widest_seam`
+/// (mm) and `tightest` (a share: the most a triangle of cloth is larger than cut). A seam that
+/// does not meet is named first: it usually means a wrong measurement.
+pub fn fit_message(worst_stretch: f64, widest_seam: f64, tightest: f64) -> (Fit, String) {
+    if widest_seam > OPEN_SEAM_MM {
+        let m = format!("Seams do not meet (up to {} mm apart): check your measurements", widest_seam.round());
+        return (Fit::OpenSeam, m);
+    }
+    if worst_stretch > TOO_TIGHT_STRETCH {
+        let m = format!("Too tight: the cloth is pulled {}% past its cut size: check your measurements", (worst_stretch * 100.0).round());
+        return (Fit::TooTight, m);
+    }
+    if tightest >= TIGHT {
+        return (Fit::Snug, "Snug: close to the body, with little room to spare".into());
+    }
+    (Fit::Loose, "Fits with room to spare".into())
+}
+
 /// Draw `shapes` seen from `side`, `mm` a pixel (at least a tenth of a millimetre).
 pub fn draw(shapes: &[Shape], side: Side, mm: f64) -> Option<Picture> {
     if !(mm.is_finite() && mm >= 0.1) {
@@ -278,6 +314,23 @@ mod tests {
         assert!(loose[2] > loose[0] && loose[2] > loose[1]);
         assert!(mid[1] > mid[0] && mid[1] > mid[2]);
         assert!(tight[0] > tight[1] && tight[0] > tight[2]);
+    }
+
+    /// The fit line (issue #157): a seam gap over 20 mm or a stretch over 30% is named, a seam
+    /// first; at the limits it is not; a skirt with some cloth 10% larger is snug, else loose.
+    #[test]
+    fn the_fit_message_names_a_problem_past_its_thresholds() {
+        assert_eq!(fit_message(0.05, 3.0, 0.02), (Fit::Loose, "Fits with room to spare".into()));
+        assert_eq!(fit_message(0.05, 3.0, 0.10).0, Fit::Snug);
+        assert_eq!(fit_message(0.30, 20.0, 0.50).0, Fit::Snug);
+        let (fit, text) = fit_message(2.18, 10.0, 3.0);
+        assert_eq!(fit, Fit::TooTight);
+        assert!(text.contains("218%"), "{text}");
+        let (fit, text) = fit_message(0.1, 56.4, 0.0);
+        assert_eq!(fit, Fit::OpenSeam);
+        assert!(text.contains("56 mm") && text.contains("measurements"), "{text}");
+        // Both: the seam is named first.
+        assert_eq!(fit_message(2.18, 56.0, 3.0).0, Fit::OpenSeam);
     }
 
     /// A printed shape (PF-10.16) shows its fabric at true size, repeating: a swatch of two 10 mm

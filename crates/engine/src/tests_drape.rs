@@ -41,6 +41,9 @@ fn a_skirt_drapes_on_the_avatar_resting_at_the_waist() {
     assert!((580.0..680.0).contains(&(top - hem)), "{r}");
     assert!(r["widestSeam"].as_f64().unwrap() < 5.0, "{r}");
     assert!(r["worstStretch"].as_f64().unwrap() < 15.0, "{r}");
+    // A skirt that fits is told so in plain words, not as a problem.
+    assert!(matches!(r["fit"].as_str(), Some("loose" | "snug")), "{r}");
+    assert!(!r["fitMessage"].as_str().unwrap().is_empty(), "{r}");
     // The draped cloth as a mesh.
     let dir = std::env::temp_dir().join(format!("pf-drape-{}", std::process::id()));
     std::fs::create_dir_all(&dir).unwrap();
