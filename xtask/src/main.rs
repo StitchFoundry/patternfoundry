@@ -21,6 +21,14 @@ mod wix;
 
 use std::path::{Path, PathBuf};
 use std::process::{Command, ExitCode};
+use std::sync::atomic::{AtomicBool, Ordering};
+
+/// Set by `ci --agent`: every cargo call gets the low-disk environment.
+static AGENT: AtomicBool = AtomicBool::new(false);
+
+/// Environment that keeps `target/` small: no debuginfo, no incremental caches.
+const AGENT_ENV: [(&str, &str); 3] =
+    [("CARGO_PROFILE_DEV_DEBUG", "0"), ("CARGO_PROFILE_TEST_DEBUG", "0"), ("CARGO_INCREMENTAL", "0")];
 
 const USAGE: &str = "\
 usage: cargo xtask <command>
@@ -32,7 +40,9 @@ commands:
   pdf-deps        verify immutable shared PDF writer and patched Krilla sources
   layers          enforce the crate dependency layering (plan/architecture.md §3)
   wasm            cargo check --target wasm32-unknown-unknown for the wasm-safe crates and the web app
-  ci              fmt --check, clippy -D warnings, test, no-bundled-fonts, pdf-deps, assets, brands, cursors (warnings only), layers, wasm (stops at first failure)
+  ci [--agent]    fmt --check, clippy -D warnings, test, no-bundled-fonts, pdf-deps, assets, brands, cursors (warnings only), layers, wasm (stops at first failure);
+                  --agent is for small disks: no debuginfo or incremental caches, and tests run one package
+                  at a time with `cargo clean -p` after each
   corpus [--download] [--affinity]
                   show where test corpora live; --download fetches PngSuite into corpus/pngsuite,
                   --affinity the pinned public Affinity documents into corpus/affinity
@@ -56,7 +66,7 @@ fn main() -> ExitCode {
         Some("layers") => cmd_layers(),
         Some("pdf-deps") => pdf_deps::run(&root()),
         Some("wasm") => cmd_wasm(),
-        Some("ci") => cmd_ci(),
+        Some("ci") => cmd_ci(rest.contains(&"--agent")),
         Some("corpus") if rest.contains(&"--affinity") => affinity_corpus::fetch(),
         Some("corpus") => cmd_corpus(rest.contains(&"--download")),
         Some("bundle") => bundle::run(&root()),
@@ -101,7 +111,31 @@ pub fn repo_files(root: &Path) -> Result<Vec<String>, String> {
 pub fn cargo() -> Command {
     let mut c = Command::new(std::env::var("CARGO").unwrap_or_else(|_| "cargo".into()));
     c.current_dir(root());
+    if AGENT.load(Ordering::Relaxed) {
+        c.envs(AGENT_ENV);
+    }
     c
+}
+
+/// Workspace package names (the chunks of the agent test run), sorted.
+fn package_names(meta: &serde_json::Value) -> Vec<String> {
+    let mut v: Vec<String> =
+        meta["packages"].as_array().into_iter().flatten().filter_map(|p| p["name"].as_str().map(str::to_owned)).collect();
+    v.sort();
+    v
+}
+
+/// `cargo test` one package at a time, deleting its build output after each.
+fn test_in_chunks() -> Result<(), String> {
+    for pkg in package_names(&metadata()?) {
+        let mut c = cargo();
+        c.args(["test", "-p", &pkg]);
+        run(c, &format!("cargo test -p {pkg}"))?;
+        let mut c = cargo();
+        c.args(["clean", "-p", &pkg]);
+        run(c, &format!("cargo clean -p {pkg}"))?;
+    }
+    Ok(())
 }
 
 fn run(mut cmd: Command, what: &str) -> Result<(), String> {
@@ -184,7 +218,8 @@ fn cmd_wasm() -> Result<(), String> {
     if failed == 0 { Ok(()) } else { Err(format!("{failed} crate(s) failed the wasm check")) }
 }
 
-fn cmd_ci() -> Result<(), String> {
+fn cmd_ci(agent: bool) -> Result<(), String> {
+    AGENT.store(agent, Ordering::Relaxed);
     type Step = (&'static str, Box<dyn Fn() -> Result<(), String>>);
     let steps: Vec<Step> = vec![
         (
@@ -205,7 +240,10 @@ fn cmd_ci() -> Result<(), String> {
         ),
         (
             "test",
-            Box::new(|| {
+            Box::new(move || {
+                if agent {
+                    return test_in_chunks();
+                }
                 let mut c = cargo();
                 c.args(["test", "--workspace"]);
                 run(c, "cargo test --workspace")
@@ -269,4 +307,23 @@ Tests that use a corpus skip cleanly when it is absent.
         return Ok(());
     }
     pngsuite::fetch()
+}
+
+#[cfg(test)]
+mod agent_tests {
+    use super::*;
+
+    #[test]
+    fn agent_env_drops_debuginfo_and_incremental() {
+        assert!(AGENT_ENV.contains(&("CARGO_PROFILE_DEV_DEBUG", "0")));
+        assert!(AGENT_ENV.contains(&("CARGO_PROFILE_TEST_DEBUG", "0")));
+        assert!(AGENT_ENV.contains(&("CARGO_INCREMENTAL", "0")));
+    }
+
+    #[test]
+    fn chunks_are_sorted_workspace_packages() {
+        let meta = serde_json::json!({"packages": [{"name": "b"}, {"name": "a"}]});
+        assert_eq!(package_names(&meta), ["a", "b"]);
+        assert!(package_names(&serde_json::json!({})).is_empty());
+    }
 }
