@@ -369,6 +369,82 @@ mod tests {
         assert_eq!(rule(&serde_json::to_string(&step).unwrap()).unwrap(), step);
     }
 
+    /// Edge cases (#210): which bad values are refused, and which leave a piece unmoved.
+    #[test]
+    fn bad_rule_values_are_refused_and_the_limit_is_inclusive() {
+        for bad in [f64::NAN, f64::INFINITY, f64::NEG_INFINITY, 500.001, -500.001, 1e300] {
+            assert_eq!(Rule::Step([bad, 0.0]).checked(), Err(GradeError::Move), "{bad}");
+            assert_eq!(Rule::Step([0.0, bad]).checked(), Err(GradeError::Move), "{bad}");
+            assert_eq!(Rule::Sizes(BTreeMap::from([("L".to_string(), [0.0, bad])])).checked(), Err(GradeError::Move), "{bad}");
+        }
+        assert_eq!(Rule::Step([500.0, -500.0]).checked(), Ok(Rule::Step([500.0, -500.0])));
+        // A size name is trimmed, and an empty or 41-character one is refused.
+        let named = |k: &str| Rule::Sizes(BTreeMap::from([(k.to_string(), [1.0, 1.0])])).checked();
+        assert_eq!(named(" L "), Ok(Rule::Sizes(BTreeMap::from([("L".to_string(), [1.0, 1.0])]))));
+        assert_eq!(named("  "), Err(GradeError::Name));
+        assert_eq!(named(&"x".repeat(41)), Err(GradeError::Name));
+        assert!(named(&"x".repeat(40)).is_ok());
+    }
+
+    #[test]
+    fn a_size_missing_from_the_chart_leaves_the_piece_unchanged() {
+        let s = sizes();
+        let step = Rule::Step([2.0, -1.0]);
+        let each = Rule::Sizes(BTreeMap::from([("L".to_string(), [3.0, 0.0])]));
+        assert_eq!(step.offset(&s, "XXL"), [0.0, 0.0]);
+        assert_eq!(each.offset(&s, "XXL"), [0.0, 0.0]);
+        assert_eq!(step.offset(&s, ""), [0.0, 0.0]);
+        let pts = [Pt::new(0.0, 0.0), Pt::new(10.0, 0.0), Pt::new(10.0, 10.0), Pt::new(0.0, 10.0)];
+        let rules = [GradeRule { anchor: 0, rule: step }, GradeRule { anchor: 2, rule: each }];
+        assert!(moves(&pts, &rules, &s, "XXL").iter().all(|v| *v == [0.0, 0.0]));
+    }
+
+    #[test]
+    fn a_range_of_one_size_grades_nothing_and_a_range_is_limited() {
+        let one = GradeSizes::new(vec!["M".into()], "M").unwrap();
+        assert_eq!(one.steps("M"), Some(0));
+        assert_eq!(Rule::Step([9.0, 9.0]).offset(&one, "M"), [0.0, 0.0]);
+        let pts = [Pt::new(0.0, 0.0), Pt::new(10.0, 0.0), Pt::new(10.0, 10.0)];
+        let rules = [GradeRule { anchor: 0, rule: Rule::Step([9.0, 9.0]) }, GradeRule { anchor: 1, rule: Rule::Step([-4.0, 1.0]) }];
+        assert!(moves(&pts, &rules, &one, "M").iter().all(|v| *v == [0.0, 0.0]));
+        let many = |n: usize| GradeSizes::new((0..n).map(|i| i.to_string()).collect(), "0");
+        assert!(many(MAX_SIZES).is_ok());
+        assert_eq!(many(MAX_SIZES + 1), Err(GradeError::TooMany));
+        assert_eq!(GradeSizes::new(vec!["  ".into()], "M"), Err(GradeError::Name));
+        assert_eq!(GradeSizes::new(vec!["x".repeat(41)], "x"), Err(GradeError::Name));
+    }
+
+    #[test]
+    fn grading_a_piece_with_no_points_or_one_or_two() {
+        let s = sizes();
+        let rule = GradeRule { anchor: 0, rule: Rule::Step([1.0, 2.0]) };
+        // No points: nothing to move, and the rule's anchor is past the end.
+        assert!(moves(&[], std::slice::from_ref(&rule), &s, "L").is_empty());
+        assert!(moves(&[], &[], &s, "L").is_empty());
+        // One point takes its rule; two rules on it count once.
+        let one = [Pt::new(5.0, 5.0)];
+        assert_eq!(moves(&one, std::slice::from_ref(&rule), &s, "L"), [[1.0, 2.0]]);
+        assert_eq!(moves(&one, &[rule.clone(), GradeRule { anchor: 0, rule: Rule::Step([7.0, 7.0]) }], &s, "L"), [[1.0, 2.0]]);
+        // Two points, each ruled: each takes its own move.
+        let two = [Pt::new(0.0, 0.0), Pt::new(10.0, 0.0)];
+        let rules = [rule, GradeRule { anchor: 1, rule: Rule::Step([3.0, 0.0]) }];
+        assert_eq!(moves(&two, &rules, &s, "L"), [[1.0, 2.0], [3.0, 0.0]]);
+        // Rules copied to or from an empty outline give none; rules past the outline are dropped.
+        assert!(copy_rules(&[], &rules, &two, [false, false]).is_empty());
+        assert!(copy_rules(&two, &[GradeRule { anchor: 9, rule: Rule::Step([1.0, 1.0]) }], &two, [false, false]).is_empty());
+        assert_eq!(copy_rules(&one, &rules[..1], &two, [false, false]).len(), 1);
+    }
+
+    #[test]
+    fn points_on_one_spot_move_without_a_nan() {
+        // Every point in one place: the run has no length, so the points share the move evenly.
+        let pts = [Pt::new(3.0, 3.0); 3];
+        let rules = [GradeRule { anchor: 0, rule: Rule::Step([0.0, 0.0]) }, GradeRule { anchor: 2, rule: Rule::Step([4.0, 4.0]) }];
+        let m = moves(&pts, &rules, &sizes(), "L");
+        assert_eq!(m, [[0.0, 0.0], [2.0, 2.0], [4.0, 4.0]]);
+        assert!(m.iter().flatten().all(|v| v.is_finite()));
+    }
+
     #[test]
     fn the_last_ruled_point_wraps_round_to_the_first() {
         // A square with rules on two opposite corners: the points between them, both ways round.

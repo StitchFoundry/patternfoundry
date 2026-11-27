@@ -591,6 +591,66 @@ mod tests {
         assert_eq!(lay(&parts, 300.0, 0.0, 0.0), Err(MarkerError::Step));
     }
 
+    /// Edge cases (#210). A part's count (quantity) is the caller's: it passes that many copies, so
+    /// a quantity of 0 is no parts here.
+    #[test]
+    fn no_parts_make_an_empty_marker_and_unusable_outlines_are_left_out() {
+        let l = lay(&[], 1000.0, 2.0, 3.0).unwrap();
+        assert!(l.placed.is_empty());
+        assert_eq!(l.length, 0.0);
+        // No outline, a line and a point are no polygon: not laid, and the others still are.
+        let parts = vec![
+            Part::default(),
+            Part { points: vec![Pt::new(0.0, 0.0), Pt::new(50.0, 0.0)], turn: true, fold: false },
+            Part { points: vec![Pt::new(f64::NAN, 0.0), Pt::new(5.0, 0.0), Pt::new(5.0, 5.0)], turn: true, fold: false },
+            Part { points: rect(100.0, 100.0), turn: true, fold: false },
+        ];
+        let l = lay(&parts, 300.0, 0.0, 5.0).unwrap();
+        assert_eq!(l.placed[..3], [None, None, None]);
+        assert!(l.placed[3].is_some());
+        assert!((l.length - 100.0).abs() < 1e-9, "{}", l.length);
+        // Only unusable parts: nothing laid, no length.
+        let l = lay(&parts[..3], 300.0, 0.0, 5.0).unwrap();
+        assert!(l.placed.iter().all(Option::is_none));
+        assert_eq!(l.length, 0.0);
+    }
+
+    #[test]
+    fn a_part_the_width_of_the_fabric_is_laid_and_one_a_row_wider_is_not() {
+        let one = |h: f64| lay(&[Part { points: rect(100.0, h), turn: false, fold: false }], 300.0, 0.0, 5.0).unwrap();
+        assert!(one(300.0).placed[0].is_some());
+        assert_eq!(one(305.0).placed[0], None);
+        assert_eq!(one(305.0).length, 0.0);
+        // Longer than the fabric is wide is fine: it runs along the length.
+        let l = lay(&[Part { points: rect(2000.0, 100.0), turn: false, fold: false }], 300.0, 0.0, 5.0).unwrap();
+        assert!(l.placed[0].is_some());
+        assert!((l.length - 2000.0).abs() < 1e-6, "{}", l.length);
+        // A part too wide is left out and the rest still go on, in order given.
+        let parts = vec![
+            Part { points: rect(100.0, 500.0), turn: true, fold: false },
+            Part { points: rect(100.0, 100.0), turn: true, fold: false },
+            Part { points: rect(100.0, 400.0), turn: true, fold: true },
+        ];
+        let l = lay(&parts, 300.0, 0.0, 5.0).unwrap();
+        assert_eq!(l.placed.len(), 3);
+        assert_eq!([l.placed[0], l.placed[2]], [None, None]);
+        assert!(l.placed[1].is_some());
+    }
+
+    #[test]
+    fn a_marker_too_big_for_its_limits_is_refused() {
+        let part = Part { points: rect(10.0, 10.0), turn: false, fold: false };
+        let many: Vec<Part> = (0..=MAX_PARTS).map(|_| part.clone()).collect();
+        assert_eq!(lay(&many, 100.0, 0.0, 5.0), Err(MarkerError::TooMany));
+        let long = Part { points: vec![Pt::new(0.0, 0.0); MAX_POINTS + 1], turn: false, fold: false };
+        assert_eq!(lay(&[long], 100.0, 0.0, 5.0), Err(MarkerError::TooMany));
+        for bad in [f64::NAN, f64::INFINITY, -1.0] {
+            assert_eq!(lay(&[part.clone()], bad, 0.0, 5.0), Err(MarkerError::Width), "{bad}");
+        }
+        assert_eq!(lay(&[part.clone()], 100.0, f64::NAN, 5.0), Err(MarkerError::Gap));
+        assert_eq!(lay(&[part], 100.0, 0.0, f64::NAN), Err(MarkerError::Step));
+    }
+
     #[test]
     fn a_part_on_the_fold_lies_against_it_and_opens_out_whole() {
         // A half front, centre front (x = 0, from (0, 400) up to (0, 0)) on the fold.
