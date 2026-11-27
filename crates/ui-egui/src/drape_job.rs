@@ -55,6 +55,8 @@ pub fn start(app: &mut VectorcraftApp, p: &Value) -> Result<Value, String> {
         app.session.set_active(i);
         let out = finish(&mut app.session, &params, drape).map_err(|e| e.to_string())?;
         app.sync_views();
+        // The drape is drawn beside the pattern, off screen: show it.
+        crate::canvas::fit(app, "view.fitAll");
         app.status(crate::i18n::msg("Draped on the avatar"));
         Ok(out)
     };
