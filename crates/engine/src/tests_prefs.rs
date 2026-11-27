@@ -171,6 +171,22 @@ fn reset_category_and_all() {
     assert!(s.execute("prefs.reset", &json!({"category": "Bogus"})).is_err());
 }
 
+/// Settings > General > MakerFoundry > Offer to share after export (#165): on by default, set and
+/// reset like any preference, kept through a save/load round trip.
+#[test]
+fn offer_share_after_export_defaults_on_and_can_be_turned_off() {
+    let mut s = Session::new();
+    assert!(s.prefs.offer_share_after_export);
+    assert_eq!(s.execute("prefs.get", &json!({"key": "offerShareAfterExport"})).unwrap(), json!(true));
+    s.execute("prefs.set", &json!({"key": "offerShareAfterExport", "value": false})).unwrap();
+    assert!(!s.prefs.offer_share_after_export);
+    let back: Prefs = serde_json::from_value(s.prefs.to_json()).unwrap();
+    assert!(!back.offer_share_after_export);
+    assert!(s.execute("prefs.set", &json!({"key": "offerShareAfterExport", "value": "maybe"})).is_err());
+    s.execute("prefs.reset", &json!({"category": "General"})).unwrap();
+    assert!(s.prefs.offer_share_after_export);
+}
+
 #[test]
 fn list_describes_every_pref() {
     let mut s = Session::new();
