@@ -790,6 +790,7 @@ pub fn finish(s: &mut Session, p: &Value, setup: Setup) -> Result<Value> {
         "worstStretch": r1(cloth.worst_stretch() * 100.0),
         "widestSeam": r1(cloth.widest_seam()),
     });
+    out["warnings"] = json!(warnings(r1(cloth.worst_stretch() * 100.0), cloth.widest_seam()));
     let tight = cloth.tightness();
     out["tightest"] = json!(r1(tight.iter().copied().fold(0.0, f64::max) * 100.0));
     // The draped cloth as a file: OBJ (the cloth), or glTF (the avatar and the cloth in its
@@ -835,6 +836,24 @@ pub fn finish(s: &mut Session, p: &Value, setup: Setup) -> Result<Value> {
         }
     }
     Ok(out)
+}
+
+/// Worst stretch (percent) above which a drape is flagged as not trustworthy.
+pub const STRETCH_WARN: f64 = 30.0;
+/// Widest seam gap (mm) above which a drape is flagged.
+pub const SEAM_GAP_WARN: f64 = 10.0;
+
+/// Plain-language warnings for a drape whose worst stretch (percent) or widest seam gap (mm) is
+/// over the limits; empty when the drape is fine.
+pub fn warnings(worst_stretch: f64, widest_seam: f64) -> Vec<String> {
+    let mut out = Vec::new();
+    if worst_stretch > STRETCH_WARN {
+        out.push(format!("worst stretch {worst_stretch:.0}% is over {STRETCH_WARN:.0}%: the pieces do not fit this body, so the drape is not a reliable picture of the fit"));
+    }
+    if widest_seam > SEAM_GAP_WARN {
+        out.push(format!("a seam is open {widest_seam:.0} mm (over {SEAM_GAP_WARN:.0} mm): the pieces do not meet there"));
+    }
+    out
 }
 
 /// The skin's colour, in the drape view and the glTF file.

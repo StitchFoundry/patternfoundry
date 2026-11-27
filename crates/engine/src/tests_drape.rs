@@ -622,3 +622,19 @@ fn the_drape_exports_as_gltf_in_its_fabric_photo() {
     assert!(gltf["meshes"][1]["primitives"][0]["attributes"].get("COLOR_0").is_some() && gltf.get("images").is_none());
     assert!(s.execute("drape.make", &json!({"steps": 5, "format": "glb", "draw": false, "colour": "red"})).is_err());
 }
+
+#[test]
+fn a_drape_warns_when_the_stretch_or_a_seam_gap_is_too_big() {
+    use super::cmd::drape::warnings;
+    // The figures from #158: 178% and 218% stretch used to pass without a word.
+    assert!(warnings(12.0, 3.0).is_empty());
+    assert!(warnings(30.0, 10.0).is_empty());
+    assert_eq!(warnings(178.0, 3.0).len(), 1);
+    assert!(warnings(218.0, 3.0)[0].contains("218%"));
+    assert_eq!(warnings(12.0, 25.0).len(), 1);
+    assert_eq!(warnings(50.0, 25.0).len(), 2);
+    // The result carries the list, empty for a skirt that fits.
+    let mut s = skirt();
+    let r = s.execute("drape.make", &json!({"precision": 20, "steps": 120, "draw": false})).unwrap();
+    assert_eq!(r["warnings"], json!([]), "{r}");
+}
