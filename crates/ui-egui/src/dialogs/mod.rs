@@ -108,6 +108,7 @@ mod tools;
 pub(crate) mod transform;
 pub mod transform_each;
 pub mod trouser_seams;
+pub mod use_as_fabric;
 pub mod variables;
 mod warp_effect;
 pub mod width_point;
@@ -330,6 +331,7 @@ registry! {
     BlendOptions: [blend_options::KIND] => blend_options::SPEC,
     LivePaintGaps: [live_paint_gaps::KIND] => live_paint_gaps::SPEC,
     BlockOptions: [block_options::KIND] => block_options::SPEC,
+    UseAsFabric: [use_as_fabric::KIND] => use_as_fabric::SPEC,
     BrushOptions: [brush_options::KIND] => brush_options::SPEC,
     EditSelection: [edit_selection::KIND] => edit_selection::SPEC,
     PerspectivePlane: [perspective_plane::KIND] => perspective_plane::SPEC,
