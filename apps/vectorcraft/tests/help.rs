@@ -17,6 +17,7 @@ fn run(args: &[&str], env: &[(&str, &str)]) -> Output {
         .env_remove("WAYLAND_DISPLAY")
         .env_remove("WAYLAND_SOCKET")
         .env_remove("VECTORCRAFT_CONTROL_PORT")
+        .env_remove("PATTERNFOUNDRY_CONTROL_PORT")
         .env("VECTORCRAFT_NO_PREFS", "1")
         .envs(env.iter().copied())
         .stdin(Stdio::null())

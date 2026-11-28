@@ -16,6 +16,7 @@ fn rejects_with_env(args: &[&str], env: &[(&str, &str)], message: &str) {
     let mut child = Command::new(BIN)
         .args(args)
         .env_remove("VECTORCRAFT_CONTROL_PORT")
+        .env_remove("PATTERNFOUNDRY_CONTROL_PORT")
         .env_remove("VECTORCRAFT_AUTOMATION_READ_ROOT")
         .env_remove("VECTORCRAFT_AUTOMATION_WRITE_ROOT")
         .env("VECTORCRAFT_NO_PREFS", "1")
@@ -86,6 +87,7 @@ fn control_without_a_valid_port_fails_before_startup() {
     rejects(&["--control="], &format!("{need}, not ``"));
     rejects(&["--control", "7979", "--control", "7980"], "--control given twice");
     rejects_with_env(&[], &[("VECTORCRAFT_CONTROL_PORT", "abc")], "VECTORCRAFT_CONTROL_PORT needs a port number from 1 to 65535, not `abc`");
+    rejects_with_env(&[], &[("PATTERNFOUNDRY_CONTROL_PORT", "0")], "PATTERNFOUNDRY_CONTROL_PORT needs a port number from 1 to 65535, not `0`");
 }
 
 #[test]

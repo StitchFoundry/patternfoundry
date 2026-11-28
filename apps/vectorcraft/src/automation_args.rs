@@ -74,13 +74,16 @@ impl ControlArg {
     }
 }
 
-/// `VECTORCRAFT_CONTROL_PORT`, for when `--control` isn't given: unset or empty is no control
-/// channel, anything else must be a port.
-pub fn env_control_port(value: Option<OsString>) -> Result<Option<u16>, String> {
-    match value {
-        Some(v) if !v.is_empty() => port("VECTORCRAFT_CONTROL_PORT", Some(&v.to_string_lossy())).map(Some),
-        _ => Ok(None),
+/// `PATTERNFOUNDRY_CONTROL_PORT` (or the older `VECTORCRAFT_CONTROL_PORT`, used when the first is
+/// unset or empty), for when `--control` isn't given: neither set is no control channel, anything
+/// else must be a port.
+pub fn env_control_port(patternfoundry: Option<OsString>, vectorcraft: Option<OsString>) -> Result<Option<u16>, String> {
+    for (name, value) in [("PATTERNFOUNDRY_CONTROL_PORT", patternfoundry), ("VECTORCRAFT_CONTROL_PORT", vectorcraft)] {
+        if let Some(v) = value.filter(|v| !v.is_empty()) {
+            return port(name, Some(&v.to_string_lossy())).map(Some);
+        }
     }
+    Ok(None)
 }
 
 /// A port from 1 to 65535 (the server would listen on 0's random port without saying which).
@@ -170,16 +173,22 @@ mod tests {
 
     #[test]
     fn control_port_variable_is_a_port_or_unset() {
-        assert_eq!(env_control_port(None), Ok(None));
-        assert_eq!(env_control_port(Some("".into())), Ok(None));
-        assert_eq!(env_control_port(Some("7979".into())), Ok(Some(7979)));
+        assert_eq!(env_control_port(None, None), Ok(None));
+        assert_eq!(env_control_port(Some("".into()), Some("".into())), Ok(None));
+        assert_eq!(env_control_port(Some("7979".into()), None), Ok(Some(7979)));
+        assert_eq!(env_control_port(None, Some("7980".into())), Ok(Some(7980)));
+        // The new name wins, even over a bad old one; an empty new name falls back.
+        assert_eq!(env_control_port(Some("7979".into()), Some("abc".into())), Ok(Some(7979)));
+        assert_eq!(env_control_port(Some("".into()), Some("7980".into())), Ok(Some(7980)));
+        let new_need = "PATTERNFOUNDRY_CONTROL_PORT needs a port number from 1 to 65535";
+        assert_eq!(env_control_port(Some("0".into()), Some("7980".into())), Err(format!("{new_need}, not `0`")));
         let need = "VECTORCRAFT_CONTROL_PORT needs a port number from 1 to 65535";
-        assert_eq!(env_control_port(Some("abc".into())), Err(format!("{need}, not `abc`")));
-        assert_eq!(env_control_port(Some("0".into())), Err(format!("{need}, not `0`")));
+        assert_eq!(env_control_port(None, Some("abc".into())), Err(format!("{need}, not `abc`")));
+        assert_eq!(env_control_port(None, Some("0".into())), Err(format!("{need}, not `0`")));
         #[cfg(unix)]
         {
             use std::os::unix::ffi::OsStringExt;
-            assert_eq!(env_control_port(Some(OsString::from_vec(vec![0x39, 0xff]))), Err(format!("{need}, not `9\u{fffd}`")));
+            assert_eq!(env_control_port(None, Some(OsString::from_vec(vec![0x39, 0xff]))), Err(format!("{need}, not `9\u{fffd}`")));
         }
     }
 }

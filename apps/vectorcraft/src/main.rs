@@ -6,7 +6,7 @@
 //! `--in-window-menus` (or `VECTORCRAFT_IN_WINDOW_MENUS=1`) keeps the menus inside the window on
 //! macOS instead of the macOS menu bar (`mac_menu`).
 //!
-//! `--control <port>` (or `VECTORCRAFT_CONTROL_PORT`; a port from 1 to 65535, or the app doesn't
+//! `--control <port>` (or `PATTERNFOUNDRY_CONTROL_PORT`, or the older `VECTORCRAFT_CONTROL_PORT`; a port from 1 to 65535, or the app doesn't
 //! start) starts a localhost JSON-lines control server:
 //! `{"id":1,"method":"ui.inspect","params":{}}` → `{"id":1,"ok":true,"result":…}`.
 //! See `vectorcraft_ui_egui::control` for the methods. `--automation-read-root` and
@@ -672,7 +672,7 @@ Opens the PatternFoundry desktop app with the given files.
 
 Options:
   --control <port>               Start the localhost JSON-lines control server on <port>
-                                 (or VECTORCRAFT_CONTROL_PORT)
+                                 (or PATTERNFOUNDRY_CONTROL_PORT)
   --automation-read-root <dir>   Confine the files control requests read to <dir>
   --automation-write-root <dir>  Confine the files control requests write to <dir>
   --in-window-menus              Keep the menus inside the window on macOS
@@ -727,7 +727,7 @@ fn main() -> std::process::ExitCode {
     // After the arguments: `--control` and `--version` win over a bad environment value.
     let control_port = match control.port {
         Some(port) => Some(port),
-        None => match automation_args::env_control_port(std::env::var_os("VECTORCRAFT_CONTROL_PORT")) {
+        None => match automation_args::env_control_port(std::env::var_os("PATTERNFOUNDRY_CONTROL_PORT"), std::env::var_os("VECTORCRAFT_CONTROL_PORT")) {
             Ok(port) => port,
             Err(e) => {
                 eprintln!("patternfoundry: {e}");
