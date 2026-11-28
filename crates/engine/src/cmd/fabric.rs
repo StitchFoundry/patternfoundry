@@ -26,6 +26,7 @@ pub fn specs() -> Vec<CommandSpec> {
             has_selection,
             clear
         ),
+        cmd!(query "fabric.info", "Fabric Photo Info", [], None, "{id? (default: the selected image)} what Use as Fabric… starts from → {id, fabric (is it a fabric photo now), name, width: mm (the photo's width on the fabric: its own, else as wide as the image is placed), turns, even, seamless}", has_doc, photo_info),
         cmd!(query "fabric.list", "Fabric Photos", [], None, "{} the document's fabric photos, in paint order → {fabrics: [{id, name, width, turns, even, seamless}]}", has_doc, list),
     ]
 }
@@ -92,6 +93,17 @@ fn clear(s: &mut Session, p: &Value) -> Result<Value> {
         Ok(())
     })?;
     Ok(json!({"id": id.0}))
+}
+
+fn photo_info(s: &mut Session, p: &Value) -> Result<Value> {
+    let st = s.doc()?;
+    let id = super::links::image_param(st, p, "fabric.info")?;
+    let old = photo(&st.doc, id).cloned();
+    let placed = st.doc.bounds_of(&[id], false).map(|b| pt_to_mm(b.width())).filter(|w| pf_core::piece::FABRIC_PHOTO_WIDTH.contains(w));
+    let f = old.clone().unwrap_or(FabricPhoto { name: String::new(), width: placed.unwrap_or(1000.0), turns: 0, even: false, seamless: false });
+    let mut out = info(id, &f);
+    out["fabric"] = json!(old.is_some());
+    Ok(out)
 }
 
 fn list(s: &mut Session, _p: &Value) -> Result<Value> {

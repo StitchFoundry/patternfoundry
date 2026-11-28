@@ -592,6 +592,12 @@ pub const UI_COMMANDS: &[(&str, &str, &str, &str)] = &[
         "{id? (default: the selected block part)} open Block Options (dialog `blockOptions`: one field per option of block.options, mm or null for the default); OK runs block.setOptions",
     ),
     (
+        "ui.useAsFabric",
+        "Use as Fabric…",
+        "",
+        "{id? (default: the selected image)} open Use as Fabric (dialog `useAsFabric`: `width` mm, starting from the photo's own or as placed; `inches`, `name`, `turns` 0..3, `even`, `seamless`); OK runs fabric.set and says to drape again to see it",
+    ),
+    (
         "ui.checkMarker",
         "Check Marker",
         "",
@@ -1629,6 +1635,7 @@ pub fn run_ui_command(app: &mut VectorcraftApp, id: &str, p: &Value) -> Option<R
             Ok(Value::Null)
         }
         "ui.blockOptions" => crate::dialogs::block_options::open(app, p),
+        "ui.useAsFabric" => crate::dialogs::use_as_fabric::open(app, p),
         "ui.checkTrouserSeams" => crate::dialogs::trouser_seams::check(app, p),
         "ui.checkMarker" => crate::dialogs::check_marker::check(app, p),
         "ui.projector" => crate::projector::command(app, p),
@@ -2338,7 +2345,7 @@ pub fn enabled(app: &VectorcraftApp, id: &str) -> bool {
     }
     // Pattern › Draft … Block opens a document when none is open, and Block Options… says what to
     // select: neither is greyed out for a new user ([`invoke`]).
-    if BLOCK_DRAFTS.contains(&id) || id == "ui.blockOptions" {
+    if BLOCK_DRAFTS.contains(&id) || id == "ui.blockOptions" || id == "ui.useAsFabric" {
         return true;
     }
     if let Some(c) = vectorcraft_engine::find_command(id) {
@@ -2836,7 +2843,7 @@ pub fn menu_tree_named(english_names: bool) -> Vec<(&'static str, Vec<Item>)> {
                 c("Projector View", "ui.projector"),
                 c("Draw Avatar", "avatar.draw"),
                 cp("Drape on Avatar", "drape.make", json!({"background": true})),
-                cp("Use as Fabric…", "fabric.set", json!({"width": "", "name": "", "turns": 0, "even": true, "seamless": true})),
+                c("Use as Fabric…", "ui.useAsFabric"),
                 c("Stop Using as Fabric", "fabric.clear"),
                 c("Export Avatar as glTF…", "avatar.exportGlb"),
                 cp("Export Drape as glTF…", "drape.make", json!({"format": "glb", "draw": false})),
@@ -3799,6 +3806,12 @@ pub fn invoke(app: &mut VectorcraftApp, id: &str, p: Value) {
     if id == "ui.blockOptions" {
         if app.run(id, p).is_err() {
             crate::dialogs::confirm::tell(app, tl!("Select a drafted block first"), "");
+        }
+        return;
+    }
+    if id == "ui.useAsFabric" {
+        if app.run(id, p).is_err() {
+            crate::dialogs::confirm::tell(app, "Select a placed photo first", "");
         }
         return;
     }
