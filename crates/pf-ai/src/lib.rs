@@ -10,6 +10,7 @@
 //!   through PatternFoundry's commands.
 //! * [`muslin`] – Check My Muslin: photos of a muslin (a test garment) tried on, looked at by
 //!   Claude for fit, which says what to alter and, with the user's leave, alters the pattern.
+//! * [`share_prompt`] – the "Share it on MakerFoundry?" prompt after an export: when it shows.
 //! * [`cloud`] – Foundry accounts: signing in, the credits, and AI requests sent through the
 //!   service.
 //!
@@ -26,6 +27,7 @@ pub mod ask;
 pub mod cloud;
 pub mod makerfoundry;
 pub mod muslin;
+pub mod share_prompt;
 
 /// The Messages API endpoint.
 pub const API_URL: &str = "https://api.anthropic.com/v1/messages";
