@@ -824,6 +824,10 @@ impl VectorcraftApp {
                         self.ui.view.pixel_preview = true;
                     }
                 }
+                // The avatar is drawn beside the pattern, off screen: show it (Fit All in Window).
+                if id == "avatar.draw" || (id == "drape.make" && params.get("path").is_none()) {
+                    crate::canvas::fit(self, "view.fitAll");
+                }
                 if id == "text.setStyle"
                     && let Some(font) = params.get("font").and_then(Value::as_str)
                 {
