@@ -63,7 +63,11 @@ fn body(_app: &mut VectorcraftApp, ui: &mut egui::Ui, d: &mut Dialog) -> bool {
     widgets::label_row(ui, "Lengthwise grain turned", LABEL_W, |ui| {
         let turns = d.fields.get("turns").and_then(Value::as_u64).unwrap_or(0);
         for (i, label) in TURNS.iter().enumerate() {
-            if ui.selectable_label(turns == i as u64, *label).on_hover_text("Quarter turns clockwise that bring the selvedge upright in the photo").clicked() {
+            if ui
+                .selectable_label(turns == i as u64, *label)
+                .on_hover_text("Quarter turns clockwise that bring the selvedge upright in the photo")
+                .clicked()
+            {
                 d.fields.insert("turns".into(), json!(i));
             }
         }
@@ -101,7 +105,9 @@ mod tests {
         app.run("file.new", json!({"width": 1400, "height": 1000})).unwrap();
         assert!(app.run("ui.useAsFabric", json!({})).is_err(), "no image selected");
         let mut png = Vec::new();
-        image::RgbaImage::from_pixel(64, 32, image::Rgba([200, 30, 30, 255])).write_to(&mut std::io::Cursor::new(&mut png), image::ImageFormat::Png).unwrap();
+        image::RgbaImage::from_pixel(64, 32, image::Rgba([200, 30, 30, 255]))
+            .write_to(&mut std::io::Cursor::new(&mut png), image::ImageFormat::Png)
+            .unwrap();
         let placed = app.run("file.place", json!({"name": "wool.png", "dataBase64": vectorcraft_format::base64_encode(&png)})).unwrap();
         let id = placed["ids"][0].as_u64().unwrap();
         app.run("select.set", json!({"ids": [id]})).unwrap();
