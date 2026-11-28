@@ -27,12 +27,36 @@ pub struct PointFormula {
     pub y: Option<String>,
 }
 
-/// A path's formulas.
+/// A path's formulas. One read from a file is made again through [`Draft::set`], so a formula or
+/// a count the app would refuse is refused there too (issue 246).
 #[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+#[serde(try_from = "Unchecked")]
 pub struct Draft {
     /// The point the formulas measure from, in document coordinates.
     pub origin: Pt,
     pub points: Vec<PointFormula>,
+}
+
+/// A [`Draft`] as written in a file, before its checks.
+#[derive(Deserialize)]
+struct Unchecked {
+    origin: Pt,
+    points: Vec<PointFormula>,
+}
+
+impl TryFrom<Unchecked> for Draft {
+    type Error = DraftError;
+
+    fn try_from(u: Unchecked) -> Result<Self, DraftError> {
+        if u.points.len() > MAX_POINTS {
+            return Err(DraftError::TooMany);
+        }
+        let mut d = Draft { origin: u.origin, points: Vec::with_capacity(u.points.len()) };
+        for p in &u.points {
+            d.set(p.anchor, p.x.as_deref(), p.y.as_deref())?;
+        }
+        Ok(d)
+    }
 }
 
 /// Why a formula can't go on a point.
@@ -164,6 +188,22 @@ mod tests {
         m.set_value("bust", Some(1000.0)).unwrap();
         let placed = d.place(&mut m.env());
         assert!((placed[0].x.unwrap() - (100.0 + mm_to_pt(260.0))).abs() < 1e-9);
+    }
+
+    #[test]
+    fn a_draft_read_from_a_file_is_checked_like_one_made_in_the_app() {
+        let read = |v: serde_json::Value| serde_json::from_value::<Draft>(v);
+        let good = read(serde_json::json!({"origin": {"x": 1, "y": 2}, "points": [{"anchor": 3, "x": "bust / 4"}, {"anchor": 1, "y": "10"}]}))
+            .unwrap();
+        assert_eq!(good.points.iter().map(|p| p.anchor).collect::<Vec<_>>(), [1, 3], "kept in order");
+        let many: Vec<_> = (0..=MAX_POINTS).map(|a| serde_json::json!({"anchor": a, "x": "1"})).collect();
+        for bad in [
+            serde_json::json!({"origin": {"x": 0, "y": 0}, "points": many}),
+            serde_json::json!({"origin": {"x": 0, "y": 0}, "points": [{"anchor": 0, "x": "1 +"}]}),
+            serde_json::json!({"origin": {"x": 0, "y": 0}, "points": [{"anchor": 0, "y": "x".repeat(expr::MAX_LEN + 1)}]}),
+        ] {
+            assert!(read(bad.clone()).is_err(), "{}", &bad.to_string()[..80.min(bad.to_string().len())]);
+        }
     }
 
     #[test]
